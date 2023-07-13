@@ -3,27 +3,27 @@
 
 import SwiftUI
 
-struct CircleButtonStyle: ButtonStyle {
-  let foregroundIdleColor: Color
-  let backgroundIdleColor: Color
-  let foregroundPressedColor: Color
-  let backgroundPressedColor: Color
+public struct CircleButtonStyle: ButtonStyle {
+  public let foregroundIdleColor: Color
+  public let backgroundIdleColor: Color
+  public let foregroundPressedColor: Color
+  public let backgroundPressedColor: Color
   
-  init(foregroundIdleColor: Color, backgroundIdleColor: Color, foregroundPressedColor: Color, backgroundPressedColor: Color) {
+  public init(foregroundIdleColor: Color, backgroundIdleColor: Color, foregroundPressedColor: Color, backgroundPressedColor: Color) {
     self.foregroundIdleColor = foregroundIdleColor
     self.backgroundIdleColor = backgroundIdleColor
     self.foregroundPressedColor = foregroundPressedColor
     self.backgroundPressedColor = backgroundPressedColor
   }
   
-  init(foregroundIdleColor: Color, backgroundIdleColor: Color) {
+  public init(foregroundIdleColor: Color, backgroundIdleColor: Color) {
     self.foregroundIdleColor = foregroundIdleColor
     self.backgroundIdleColor = backgroundIdleColor
     self.foregroundPressedColor = foregroundIdleColor
     self.backgroundPressedColor = backgroundIdleColor
   }
   
-  func makeBody(configuration: Configuration) -> some View {
+  public func makeBody(configuration: Configuration) -> some View {
     if configuration.isPressed {
       ZStack {
         Circle()

@@ -8,20 +8,28 @@
 import Foundation
 import SwiftUI
 
-struct CalcGrid: View {
-  let grayStyle = CircleButtonStyle(foregroundIdleColor: .black, backgroundIdleColor: .gray)
-  let darkgrayStyle = CircleButtonStyle(foregroundIdleColor: .white, backgroundIdleColor: .secondary)
+public struct CalcGrid: View {
+  public let grayStyle = CircleButtonStyle(foregroundIdleColor: .black, backgroundIdleColor: .gray)
+  public let darkgrayStyle = CircleButtonStyle(foregroundIdleColor: .white, backgroundIdleColor: .secondary)
   
-  let onOrangeBackground = CircleBackground(foreground: .orange, background: .white)
-  let offOrangeBackground = CircleBackground(foreground: .white, background: .orange)
+  public let onOrangeBackground = CircleBackground(foreground: .orange, background: .white)
+  public let offOrangeBackground = CircleBackground(foreground: .white, background: .orange)
   
-  @State private var isDivideOn = false
-  @State private var isMultiplyOn = false
-  @State private var isMinusOn = false
-  @State private var isPlusOn = false
-  @State private var isEqualOn = false
+  @Binding private var isDivideOn: Bool
+  @Binding private var isMultiplyOn: Bool
+  @Binding private var isMinusOn: Bool
+  @Binding private var isPlusOn: Bool
+  @Binding private var isEqualOn: Bool
   
-  var body: some View {
+  public init(isDivideOn: Binding<Bool>, isMultiplyOn: Binding<Bool>, isMinusOn: Binding<Bool>, isPlusOn: Binding<Bool>, isEqualOn: Binding<Bool>) {
+    self._isDivideOn = isDivideOn
+    self._isMultiplyOn = isMultiplyOn
+    self._isMinusOn = isMinusOn
+    self._isPlusOn = isPlusOn
+    self._isEqualOn = isEqualOn
+  }
+  
+  public var body: some View {
     Grid(alignment: .center, horizontalSpacing: 10.0, verticalSpacing: 10.0) {
       GridRow {
         Button("AC") {}
@@ -101,11 +109,11 @@ struct CalcGrid: View {
   }
 }
 
-struct CircleBackground: ViewModifier {
-  let foreground: Color
-  let background: Color
+public struct CircleBackground: ViewModifier {
+  public let foreground: Color
+  public let background: Color
   
-  func body(content: Content) -> some View {
+  public func body(content: Content) -> some View {
     ZStack {
       Circle()
         .foregroundColor(self.background)
@@ -117,19 +125,6 @@ struct CircleBackground: ViewModifier {
 }
 
 #Preview {
-  ZStack {
-    Color.black
-      .ignoresSafeArea()
-    VStack(alignment: .trailing) {
-      Spacer()
-      
-      Text("0")
-        .font(.largeTitle)
-        .foregroundColor(.white)
-        .padding(.horizontal)
-      
-      CalcGrid()
-    }
-    .padding(.horizontal)
-  }
+  
+  
 }
