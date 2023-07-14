@@ -10,7 +10,7 @@ import ComposableArchitecture
 
 struct CalcScreenHorizontalFeature: ReducerProtocol {
   struct State: Equatable {
-    
+    var currentNum: Decimal = 0
   }
   enum Action: Equatable {
     //    case internalAction
@@ -43,7 +43,7 @@ struct CalcScreenHorizontal: View {
   
   var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      Text("Horizontal Calc Screen Not yet implemented")
+      Text(viewStore.currentNum.formatted())
     }
   }
 }

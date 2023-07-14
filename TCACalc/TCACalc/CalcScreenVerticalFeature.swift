@@ -75,23 +75,8 @@ struct CalcScreenVerticalFeature: ReducerProtocol {
           return .none
           
           // SPYING ON SUBVIEWS
-        case let .calcGrid(calcGridAction):
-          switch calcGridAction {
-            case .view(.onTap(int: let int)):
-              state.currentNum.append(int)
-              return .none
-            case .view(.onTapACButton):
-              state.currentNum = 0
-              return .none
-            case .view(.onTapPercentButton):
-              state.currentNum /= 100
-              return .none
-            case .view(.onTapNegateSignButton):
-              state.currentNum *= -1
-              return .none
-            default:
-              return .none
-          }
+        case .calcGrid:
+          return .none
       }
     }
     Reduce<State, Action> { state, action in

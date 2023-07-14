@@ -14,6 +14,20 @@ struct CalcScreenFeature: ReducerProtocol {
     var vScreen: CalcScreenVerticalFeature.State
     
     var currentOrientation = UIDeviceOrientation.portrait
+    
+    /// to mutate `currentNum` use `updateCurrentNum(byPerforming: )`
+    private(set) var currentNum: Decimal = 0
+    
+    mutating func updateCurrentNum(byPerforming mutation: (inout Decimal) -> Void) {
+      mutation(&self.currentNum)
+      mutation(&self.hScreen.currentNum)
+      mutation(&self.vScreen.currentNum)
+    }
+    
+//    mutating func currentNumDidUpdate(to newValue: Decimal) {
+//      self.hScreen.currentNum = newValue
+//      self.vScreen.currentNum = newValue
+//    }
   }
   enum Action: Equatable {
     //    case internalAction
@@ -38,12 +52,30 @@ struct CalcScreenFeature: ReducerProtocol {
   var body: some ReducerProtocolOf<Self> {
     Reduce<State, Action> { state, action in
       switch action {
-        case let .hScreen(hScreenAction):
-          return .none
-        case let .vScreen(vScreenAction):
-          return .none
         case let .currentOrientationChangedTo(newOrientation):
           state.currentOrientation = newOrientation
+          return .none
+          
+          // SPYING ON SUBVIEWS
+        case let .vScreen(.calcGrid(calcGridAction)):
+          switch calcGridAction {
+            case .view(.onTap(int: let int)):
+              state.updateCurrentNum(byPerforming: { $0.append(int)})
+              return .none
+            case .view(.onTapACButton):
+              state.updateCurrentNum(byPerforming: { $0 = 0})
+              return .none
+            case .view(.onTapPercentButton):
+              state.updateCurrentNum(byPerforming: { $0 /= 100 })
+              return .none
+            case .view(.onTapNegateSignButton):
+              state.updateCurrentNum(byPerforming: { $0 *= -1 })
+              return .none
+            default:
+              return .none
+          }
+          
+        case let .hScreen(hScreenAction):
           return .none
       }
     }
@@ -69,12 +101,7 @@ struct CalcScreen: View {
           case .portrait, .portraitUpsideDown,.faceDown, .faceUp:
             self.vScreen
           case .landscapeLeft, .landscapeRight:
-            CalcScreenHorizontal(
-              store: self.store.scope(
-                state: \.hScreen,
-                action: CalcScreenFeature.Action.hScreen
-              )
-            )
+            self.hScreen
           case .unknown:
             // TODO: Delete this
             self.vScreen
@@ -99,6 +126,15 @@ struct CalcScreen: View {
       store: self.store.scope(
         state: \.vScreen,
         action: CalcScreenFeature.Action.vScreen
+      )
+    )
+  }
+  
+  var hScreen: some View {
+    CalcScreenHorizontal(
+      store: self.store.scope(
+        state: \.hScreen,
+        action: CalcScreenFeature.Action.hScreen
       )
     )
   }
