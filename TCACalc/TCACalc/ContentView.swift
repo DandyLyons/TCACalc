@@ -11,8 +11,12 @@ import ComposableArchitecture
 
 struct ContentView: View {
   var body: some View {
-    CalcScreenVertical(store: .init(initialState: .init(calcGrid: .init()), reducer: {
-      CalcScreenVerticalFeature()._printChanges()
+    CalcScreen(store: .init(initialState: .init(hScreen: .init(),
+                                                vScreen: .init(calcGrid: .init()),
+                                                currentOrientation: .portrait
+                                               ),
+                            reducer: {
+      CalcScreenFeature()._printChanges()
     }))
   }
 }
