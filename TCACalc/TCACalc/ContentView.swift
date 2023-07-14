@@ -11,7 +11,7 @@ import ComposableArchitecture
 
 struct ContentView: View {
   var body: some View {
-//    CalculatorScreenVertical(store: <#T##StoreOf<AppFeature>#>)
+//    CalcScreenVertical(store: <#T##StoreOf<CalcScreenVerticalFeature>#>)
     Text("Not yet implemented")
   }
 }

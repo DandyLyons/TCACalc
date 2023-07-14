@@ -1,5 +1,5 @@
 //
-//  AppFeature.swift
+//  CalcScreenVerticalFeature.swift
 //  TCACalc
 //
 //  Created by Daniel Lyons on 7/13/23.
@@ -8,7 +8,7 @@
 import Foundation
 import ComposableArchitecture
 
-struct AppFeature: ReducerProtocol {
+struct CalcScreenVerticalFeature: ReducerProtocol {
   struct State: Equatable {
     var currentOrangeButton: CurrentOrangeButton = .none
     enum CurrentOrangeButton {
@@ -55,8 +55,8 @@ struct AppFeature: ReducerProtocol {
 
 import SwiftUI
 
-struct CalculatorScreenVertical: View {
-  let store: StoreOf<AppFeature>
+struct CalcScreenVertical: View {
+  let store: StoreOf<CalcScreenVerticalFeature>
   
   var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
