@@ -14,10 +14,10 @@ public struct CalcGridFeature: ReducerProtocol {
   public init() {}
   
   public struct State: Equatable {
-    var isDivideOn = false
-    var isMultiplyOn = false
-    var isMinusOn = false
-    var isPlusOn = false
+    public var isDivideOn = false
+    public var isMultiplyOn = false
+    public var isMinusOn = false
+    public var isPlusOn = false
     
     public init(isDivideOn: Bool = false, isMultiplyOn: Bool = false, isMinusOn: Bool = false, isPlusOn: Bool = false) {
       self.isDivideOn = isDivideOn
@@ -67,6 +67,10 @@ public struct CalcGridFeature: ReducerProtocol {
       case onTapMinusButton
       case onTapPlusButton
       case onTapEqualButton
+      case onTap(int: Int)
+      case onTapACButton
+      case onTapNegateSignButton
+      case onTapPercentButton
     }
     case delegate(Delegate)
     public enum Delegate: Equatable {
@@ -97,6 +101,14 @@ public struct CalcGridFeature: ReducerProtocol {
               print("Not yet implemented")
               state.turnAllOff()
               return .none
+            case let .onTap(int: int):
+              return .none
+            case .onTapACButton:
+              return .none
+            case .onTapNegateSignButton:
+              return .none
+            case .onTapPercentButton:
+              return .none
           }
           
         case .delegate:
@@ -126,11 +138,11 @@ public struct CalcGrid: View {
       
       Grid(alignment: .center, horizontalSpacing: 10.0, verticalSpacing: 10.0) {
         GridRow {
-          Button("AC") {}
+          Button("AC") { viewStore.send(.view(.onTapACButton)) }
             .buttonStyle(self.grayStyle)
-          Button {} label: { Image(systemName: "plus.forwardslash.minus")}
+          Button { viewStore.send(.view(.onTapNegateSignButton))} label: { Image(systemName: "plus.forwardslash.minus")}
             .buttonStyle(self.grayStyle)
-          Button("%") {}
+          Button("%") { viewStore.send(.view(.onTapPercentButton)) }
             .buttonStyle(self.grayStyle)
           Button { viewStore.send(.view(.onTapDivideButton)) } label: {
             Image(systemName: "divide")
@@ -138,11 +150,11 @@ public struct CalcGrid: View {
           }
         }
         GridRow {
-          Button("7") {}
+          Button("7") { viewStore.send(.view(.onTap(int: 7))) }
             .buttonStyle(self.darkgrayStyle)
-          Button("8") {}
+          Button("8") { viewStore.send(.view(.onTap(int: 8))) }
             .buttonStyle(self.darkgrayStyle)
-          Button("9") {}
+          Button("9") { viewStore.send(.view(.onTap(int: 9))) }
             .buttonStyle(self.darkgrayStyle)
           Button { viewStore.send(.view(.onTapMultiplyButton)) } label: {
             Image(systemName: "multiply")
@@ -150,11 +162,11 @@ public struct CalcGrid: View {
           }
         }
         GridRow {
-          Button("4") {}
+          Button("4") { viewStore.send(.view(.onTap(int: 4))) }
             .buttonStyle(self.darkgrayStyle)
-          Button("5") {}
+          Button("5") { viewStore.send(.view(.onTap(int: 5))) }
             .buttonStyle(self.darkgrayStyle)
-          Button("6") {}
+          Button("6") { viewStore.send(.view(.onTap(int: 6))) }
             .buttonStyle(self.darkgrayStyle)
           
           Button { viewStore.send(.view(.onTapMinusButton)) } label: {
@@ -166,11 +178,11 @@ public struct CalcGrid: View {
           
         }
         GridRow {
-          Button("1") {}
+          Button("1") { viewStore.send(.view(.onTap(int: 1))) }
             .buttonStyle(self.darkgrayStyle)
-          Button("2") {}
+          Button("2") { viewStore.send(.view(.onTap(int: 2))) }
             .buttonStyle(self.darkgrayStyle)
-          Button("3") {}
+          Button("3") { viewStore.send(.view(.onTap(int: 3))) }
             .buttonStyle(self.darkgrayStyle)
           Button { viewStore.send(.view(.onTapPlusButton)) } label: {
             Image(systemName: "plus")
@@ -178,7 +190,7 @@ public struct CalcGrid: View {
           }
         }
         GridRow {
-          Button {} label: { Text("0").foregroundStyle(.white)}
+          Button { viewStore.send(.view(.onTap(int: 0)))} label: { Text("0").foregroundStyle(.white)}
             .gridCellColumns(2)
             .frame(maxWidth: .infinity)
             .frame(maxHeight: .infinity)
@@ -201,22 +213,9 @@ public struct CalcGrid: View {
   }
 }
 
-public struct CircleBackground: ViewModifier {
-  public let foreground: Color
-  public let background: Color
-  
-  public func body(content: Content) -> some View {
-    ZStack {
-      Circle()
-        .foregroundColor(self.background)
-      
-      content
-        .foregroundColor(self.foreground)
-    }
-  }
-}
 
-#Preview {
+
+#Preview("CalcGrid") {
   ZStack {
     Color.black
       .ignoresSafeArea()
