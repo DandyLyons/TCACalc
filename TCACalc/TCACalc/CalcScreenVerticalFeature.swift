@@ -16,6 +16,17 @@ struct CalcScreenVerticalFeature: ReducerProtocol {
     }
     var currentNum: Decimal = 0
     var precedingNum: Decimal = 0
+    var isInBlankState: Bool = true
+    mutating func determineIfBlank () {
+      if self.currentNum == 0,
+         self.precedingNum == 0 {
+        self.isInBlankState = true
+        self.calcGrid.isInBlankState = true
+      } else {
+        self.isInBlankState = false
+        self.calcGrid.isInBlankState = false
+      }
+    }
     
     var displayedNum: Decimal {
       if self.calcGrid.isDivideOn == false,
@@ -83,6 +94,10 @@ struct CalcScreenVerticalFeature: ReducerProtocol {
           }
       }
     }
+    Reduce<State, Action> { state, action in
+      state.determineIfBlank()
+      return .none
+    }
     Scope(state: \.calcGrid, action: /Action.calcGrid) {
       CalcGridFeature()
     }
@@ -100,13 +115,17 @@ struct CalcScreenVertical: View {
       ZStack {
         Color.black
           .ignoresSafeArea()
-        VStack(alignment: .trailing) {
+        
+        VStack(alignment: .trailing, spacing: 0) {
           Spacer()
           
           Text(viewStore.currentNum.formatted())
-            .font(.largeTitle)
+            .font(.system(size: 72))
+//            .truncationMode(.head)
             .foregroundColor(.white)
-            .padding(.horizontal)
+            .padding()
+            
+            
           
           
           CalcGrid(store: self.store.scope(state: \.calcGrid,

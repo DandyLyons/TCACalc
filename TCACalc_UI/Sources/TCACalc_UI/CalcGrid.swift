@@ -18,6 +18,7 @@ public struct CalcGridFeature: ReducerProtocol {
     public var isMultiplyOn = false
     public var isMinusOn = false
     public var isPlusOn = false
+    public var isInBlankState = true
     
     public init(isDivideOn: Bool = false, isMultiplyOn: Bool = false, isMinusOn: Bool = false, isPlusOn: Bool = false) {
       self.isDivideOn = isDivideOn
@@ -140,7 +141,7 @@ public struct CalcGrid: View {
       
       Grid(alignment: .center, horizontalSpacing: 8.0, verticalSpacing: 8.0) {
         GridRow {
-          Button("AC") { viewStore.send(.view(.onTapACButton)) }
+          Button(viewStore.isInBlankState ? "AC" : "C") { viewStore.send(.view(.onTapACButton)) }
             .buttonStyle(self.grayStyle)
           Button { viewStore.send(.view(.onTapNegateSignButton))} label: { Image(systemName: "plus.forwardslash.minus")}
             .buttonStyle(self.grayStyle)
