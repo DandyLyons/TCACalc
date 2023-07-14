@@ -13,7 +13,20 @@
 		80649D3B2A607CC9007CC893 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 80649D3A2A607CC9007CC893 /* Preview Assets.xcassets */; };
 		80649D432A607D32007CC893 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 80649D422A607D32007CC893 /* ComposableArchitecture */; };
 		80936EBA2A607E1100A2939F /* TCACalc_UI in Frameworks */ = {isa = PBXBuildFile; productRef = 80936EB92A607E1100A2939F /* TCACalc_UI */; };
+		80936EBC2A60A8A200A2939F /* AppFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80936EBB2A60A8A200A2939F /* AppFeature.swift */; };
+		80936EBE2A60C75000A2939F /* Decimal+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80936EBD2A60C75000A2939F /* Decimal+.swift */; };
+		80936EC62A60D94C00A2939F /* TCACalcTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80936EC52A60D94C00A2939F /* TCACalcTests.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		80936ECB2A60DBAC00A2939F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 80649D272A607CC7007CC893 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 80649D2E2A607CC7007CC893;
+			remoteInfo = TCACalc;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		80649D2F2A607CC7007CC893 /* TCACalc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TCACalc.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -23,6 +36,10 @@
 		80649D382A607CC9007CC893 /* TCACalc.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TCACalc.entitlements; sourceTree = "<group>"; };
 		80649D3A2A607CC9007CC893 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		80649D442A607D72007CC893 /* TCACalc_UI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = TCACalc_UI; path = ../../TCACalc_UI; sourceTree = "<group>"; };
+		80936EBB2A60A8A200A2939F /* AppFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFeature.swift; sourceTree = "<group>"; };
+		80936EBD2A60C75000A2939F /* Decimal+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Decimal+.swift"; sourceTree = "<group>"; };
+		80936EC32A60D94C00A2939F /* TCACalcTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TCACalcTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		80936EC52A60D94C00A2939F /* TCACalcTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCACalcTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,6 +52,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		80936EC02A60D94C00A2939F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -42,6 +66,7 @@
 			isa = PBXGroup;
 			children = (
 				80649D312A607CC7007CC893 /* TCACalc */,
+				80936EC42A60D94C00A2939F /* TCACalcTests */,
 				80649D302A607CC7007CC893 /* Products */,
 				80936EB82A607E1100A2939F /* Frameworks */,
 			);
@@ -51,6 +76,7 @@
 			isa = PBXGroup;
 			children = (
 				80649D2F2A607CC7007CC893 /* TCACalc.app */,
+				80936EC32A60D94C00A2939F /* TCACalcTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -61,6 +87,8 @@
 				80649D442A607D72007CC893 /* TCACalc_UI */,
 				80649D322A607CC7007CC893 /* TCACalcApp.swift */,
 				80649D342A607CC7007CC893 /* ContentView.swift */,
+				80936EBB2A60A8A200A2939F /* AppFeature.swift */,
+				80936EBD2A60C75000A2939F /* Decimal+.swift */,
 				80649D362A607CC9007CC893 /* Assets.xcassets */,
 				80649D382A607CC9007CC893 /* TCACalc.entitlements */,
 				80649D392A607CC9007CC893 /* Preview Content */,
@@ -81,6 +109,14 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		80936EC42A60D94C00A2939F /* TCACalcTests */ = {
+			isa = PBXGroup;
+			children = (
+				80936EC52A60D94C00A2939F /* TCACalcTests.swift */,
+			);
+			path = TCACalcTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -107,6 +143,24 @@
 			productReference = 80649D2F2A607CC7007CC893 /* TCACalc.app */;
 			productType = "com.apple.product-type.application";
 		};
+		80936EC22A60D94C00A2939F /* TCACalcTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 80936EC72A60D94C00A2939F /* Build configuration list for PBXNativeTarget "TCACalcTests" */;
+			buildPhases = (
+				80936EBF2A60D94C00A2939F /* Sources */,
+				80936EC02A60D94C00A2939F /* Frameworks */,
+				80936EC12A60D94C00A2939F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				80936ECC2A60DBAC00A2939F /* PBXTargetDependency */,
+			);
+			name = TCACalcTests;
+			productName = TCACalcTests;
+			productReference = 80936EC32A60D94C00A2939F /* TCACalcTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -119,6 +173,10 @@
 				TargetAttributes = {
 					80649D2E2A607CC7007CC893 = {
 						CreatedOnToolsVersion = 15.0;
+					};
+					80936EC22A60D94C00A2939F = {
+						CreatedOnToolsVersion = 15.0;
+						TestTargetID = 80649D2E2A607CC7007CC893;
 					};
 				};
 			};
@@ -139,6 +197,7 @@
 			projectRoot = "";
 			targets = (
 				80649D2E2A607CC7007CC893 /* TCACalc */,
+				80936EC22A60D94C00A2939F /* TCACalcTests */,
 			);
 		};
 /* End PBXProject section */
@@ -153,6 +212,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		80936EC12A60D94C00A2939F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -160,12 +226,30 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				80936EBC2A60A8A200A2939F /* AppFeature.swift in Sources */,
 				80649D352A607CC7007CC893 /* ContentView.swift in Sources */,
 				80649D332A607CC7007CC893 /* TCACalcApp.swift in Sources */,
+				80936EBE2A60C75000A2939F /* Decimal+.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		80936EBF2A60D94C00A2939F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				80936EC62A60D94C00A2939F /* TCACalcTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		80936ECC2A60DBAC00A2939F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 80649D2E2A607CC7007CC893 /* TCACalc */;
+			targetProxy = 80936ECB2A60DBAC00A2939F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		80649D3C2A607CC9007CC893 /* Debug */ = {
@@ -362,6 +446,52 @@
 			};
 			name = Release;
 		};
+		80936EC82A60D94C00A2939F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2KMN827G7Y;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dandylyons.TCACalcTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TCACalc.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/TCACalc";
+			};
+			name = Debug;
+		};
+		80936EC92A60D94C00A2939F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2KMN827G7Y;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dandylyons.TCACalcTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TCACalc.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/TCACalc";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -379,6 +509,15 @@
 			buildConfigurations = (
 				80649D3F2A607CC9007CC893 /* Debug */,
 				80649D402A607CC9007CC893 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		80936EC72A60D94C00A2939F /* Build configuration list for PBXNativeTarget "TCACalcTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				80936EC82A60D94C00A2939F /* Debug */,
+				80936EC92A60D94C00A2939F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

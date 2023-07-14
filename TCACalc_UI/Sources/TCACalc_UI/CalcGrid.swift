@@ -8,104 +8,152 @@
 import Foundation
 import SwiftUI
 
+import ComposableArchitecture
+
+public struct CalcGridFeature: ReducerProtocol {
+  public struct State: Equatable {
+    var isDivideOn = false
+    var isMultiplyOn = false
+    var isMinusOn = false
+    var isPlusOn = false
+    
+    
+  }
+  public enum Action: Equatable {
+    //    case internalAction
+    
+    case view(View)
+    public enum View: Equatable {
+      case onTapDivideButton
+      case onTapMultiplyButton
+      case onTapMinusButton
+      case onTapPlusButton
+      case onTapEqualButton
+    }
+    case delegate(Delegate)
+    public enum Delegate: Equatable {
+      
+    }
+    
+    
+  }
+  
+  public var body: some ReducerProtocolOf<Self> {
+    Reduce<State, Action> { state, action in
+      switch action {
+        case let .view(viewAction):
+          switch viewAction {
+            case .onTapDivideButton:
+              state.isDivideOn.toggle()
+              return .none
+            case .onTapMultiplyButton:
+              state.isMultiplyOn.toggle()
+              return .none
+            case .onTapMinusButton:
+              state.isMinusOn.toggle()
+              return .none
+            case .onTapPlusButton:
+              state.isPlusOn.toggle()
+              return .none
+            case .onTapEqualButton:
+              return .none
+          }
+          
+        case .delegate:
+          return .none
+      }
+    }
+  }
+}
+
 public struct CalcGrid: View {
+  let store: StoreOf<CalcGridFeature>
+  
   public let grayStyle = CircleButtonStyle(foregroundIdleColor: .black, backgroundIdleColor: .gray)
   public let darkgrayStyle = CircleButtonStyle(foregroundIdleColor: .white, backgroundIdleColor: .secondary)
   
   public let onOrangeBackground = CircleBackground(foreground: .orange, background: .white)
   public let offOrangeBackground = CircleBackground(foreground: .white, background: .orange)
   
-  @Binding private var isDivideOn: Bool
-  @Binding private var isMultiplyOn: Bool
-  @Binding private var isMinusOn: Bool
-  @Binding private var isPlusOn: Bool
-  @Binding private var isEqualOn: Bool
-  
-  public init(isDivideOn: Binding<Bool>, isMultiplyOn: Binding<Bool>, isMinusOn: Binding<Bool>, isPlusOn: Binding<Bool>, isEqualOn: Binding<Bool>) {
-    self._isDivideOn = isDivideOn
-    self._isMultiplyOn = isMultiplyOn
-    self._isMinusOn = isMinusOn
-    self._isPlusOn = isPlusOn
-    self._isEqualOn = isEqualOn
-  }
-  
-  public var body: some View {
-    Grid(alignment: .center, horizontalSpacing: 10.0, verticalSpacing: 10.0) {
-      GridRow {
-        Button("AC") {}
-          .buttonStyle(self.grayStyle)
-        Button {} label: { Image(systemName: "plus.forwardslash.minus")}
-          .buttonStyle(self.grayStyle)
-        Button("%") {}
-          .buttonStyle(self.grayStyle)
-        Button { self.isDivideOn.toggle() } label: {
-          Image(systemName: "divide")
-            .modifier(self.isDivideOn ? self.onOrangeBackground : self.offOrangeBackground)
-        }
-      }
-      GridRow {
-        Button("7") {}
-          .buttonStyle(self.darkgrayStyle)
-        Button("8") {}
-          .buttonStyle(self.darkgrayStyle)
-        Button("9") {}
-          .buttonStyle(self.darkgrayStyle)
-        Button { self.isMultiplyOn.toggle() } label: {
-          Image(systemName: "multiply")
-            .modifier(self.isMultiplyOn ? self.onOrangeBackground : self.offOrangeBackground)
-        }
-      }
-      GridRow {
-        Button("4") {}
-          .buttonStyle(self.darkgrayStyle)
-        Button("5") {}
-          .buttonStyle(self.darkgrayStyle)
-        Button("6") {}
-          .buttonStyle(self.darkgrayStyle)
-        
-        Button { self.isMinusOn.toggle() } label: {
-          Image(systemName: "minus")
-            .modifier(self.isMinusOn ? self.onOrangeBackground : self.offOrangeBackground)
-        }
-        
-
-        
-      }
-      GridRow {
-        Button("1") {}
-          .buttonStyle(self.darkgrayStyle)
-        Button("2") {}
-          .buttonStyle(self.darkgrayStyle)
-        Button("3") {}
-          .buttonStyle(self.darkgrayStyle)
-        Button { self.isPlusOn.toggle() } label: {
-          Image(systemName: "plus")
-            .modifier(self.isPlusOn ? self.onOrangeBackground : self.offOrangeBackground)
-        }
-      }
-      GridRow {
-//        Button("AC") {}
-//          .buttonStyle(self.grayStyle)
-        Button {} label: { Text("0").foregroundStyle(.white)}
-          .gridCellColumns(2)
-          .frame(maxWidth: .infinity)
-          .frame(maxHeight: .infinity)
-          .background { Capsule().foregroundColor(.secondary) }
-        
-
-        Button(".") {}
-          .buttonStyle(self.darkgrayStyle)
-        Button { self.isEqualOn.toggle() } label: {
-          Image(systemName: "equal")
-            .modifier(self.isEqualOn ? self.onOrangeBackground : self.offOrangeBackground)
-        }
-      }
-      .frame(maxHeight: 90)
-    }
-    .font(.title)
-    .fontWeight(.bold)
-
     
+  public var body: some View {
+    WithViewStore(self.store, observe: { $0 } ) { viewStore in
+      
+      
+      Grid(alignment: .center, horizontalSpacing: 10.0, verticalSpacing: 10.0) {
+        GridRow {
+          Button("AC") {}
+            .buttonStyle(self.grayStyle)
+          Button {} label: { Image(systemName: "plus.forwardslash.minus")}
+            .buttonStyle(self.grayStyle)
+          Button("%") {}
+            .buttonStyle(self.grayStyle)
+          Button { viewStore.send(.view(.onTapDivideButton)) } label: {
+            Image(systemName: "divide")
+              .modifier(viewStore.isDivideOn ? self.onOrangeBackground : self.offOrangeBackground)
+          }
+        }
+        GridRow {
+          Button("7") {}
+            .buttonStyle(self.darkgrayStyle)
+          Button("8") {}
+            .buttonStyle(self.darkgrayStyle)
+          Button("9") {}
+            .buttonStyle(self.darkgrayStyle)
+          Button { viewStore.send(.view(.onTapMultiplyButton)) } label: {
+            Image(systemName: "multiply")
+              .modifier(viewStore.isMultiplyOn ? self.onOrangeBackground : self.offOrangeBackground)
+          }
+        }
+        GridRow {
+          Button("4") {}
+            .buttonStyle(self.darkgrayStyle)
+          Button("5") {}
+            .buttonStyle(self.darkgrayStyle)
+          Button("6") {}
+            .buttonStyle(self.darkgrayStyle)
+          
+          Button { viewStore.send(.view(.onTapMinusButton)) } label: {
+            Image(systemName: "minus")
+              .modifier(viewStore.isMinusOn ? self.onOrangeBackground : self.offOrangeBackground)
+          }
+          
+          
+          
+        }
+        GridRow {
+          Button("1") {}
+            .buttonStyle(self.darkgrayStyle)
+          Button("2") {}
+            .buttonStyle(self.darkgrayStyle)
+          Button("3") {}
+            .buttonStyle(self.darkgrayStyle)
+          Button { viewStore.send(.view(.onTapPlusButton)) } label: {
+            Image(systemName: "plus")
+              .modifier(viewStore.isPlusOn ? self.onOrangeBackground : self.offOrangeBackground)
+          }
+        }
+        GridRow {
+          Button {} label: { Text("0").foregroundStyle(.white)}
+            .gridCellColumns(2)
+            .frame(maxWidth: .infinity)
+            .frame(maxHeight: .infinity)
+            .background { Capsule().foregroundColor(.secondary) }
+          
+          
+          Button(".") {}
+            .buttonStyle(self.darkgrayStyle)
+          Button { viewStore.send(.view(.onTapEqualButton)) } label: {
+            Image(systemName: "equal")
+              .modifier(self.offOrangeBackground)
+          }
+        }
+        .frame(maxHeight: 90)
+      }
+      .font(.title)
+      .fontWeight(.bold)
+      
+    }
   }
 }
 
@@ -125,6 +173,17 @@ public struct CircleBackground: ViewModifier {
 }
 
 #Preview {
-  
+  ZStack {
+    Color.black
+      .ignoresSafeArea()
+    VStack {
+      Spacer()
+      
+      CalcGrid(store: Store(initialState: .init(), reducer: {
+        CalcGridFeature()._printChanges()
+      }))
+    }
+    .padding(.horizontal)
+  }
   
 }
