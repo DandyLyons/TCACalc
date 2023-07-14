@@ -17,7 +17,36 @@ public struct CalcGridFeature: ReducerProtocol {
     var isMinusOn = false
     var isPlusOn = false
     
-    
+    mutating func turnDivideOn() {
+      self.isDivideOn = true
+      self.isMultiplyOn = false
+      self.isMinusOn = false
+      self.isPlusOn = false
+    }
+    mutating func turnMultiplyOn() {
+      self.isDivideOn = false
+      self.isMultiplyOn = true
+      self.isMinusOn = false
+      self.isPlusOn = false
+    }
+    mutating func turnMinusOn() {
+      self.isDivideOn = false
+      self.isMultiplyOn = false
+      self.isMinusOn = true
+      self.isPlusOn = false
+    }
+    mutating func turnPlusOn() {
+      self.isDivideOn = false
+      self.isMultiplyOn = false
+      self.isMinusOn = false
+      self.isPlusOn = true
+    }
+    mutating func turnAllOff() {
+      self.isDivideOn = false
+      self.isMultiplyOn = false
+      self.isMinusOn = false
+      self.isPlusOn = false
+    }
   }
   public enum Action: Equatable {
     //    case internalAction
@@ -44,18 +73,20 @@ public struct CalcGridFeature: ReducerProtocol {
         case let .view(viewAction):
           switch viewAction {
             case .onTapDivideButton:
-              state.isDivideOn.toggle()
+              state.turnDivideOn()
               return .none
             case .onTapMultiplyButton:
-              state.isMultiplyOn.toggle()
+              state.turnMultiplyOn()
               return .none
             case .onTapMinusButton:
-              state.isMinusOn.toggle()
+              state.turnMinusOn()
               return .none
             case .onTapPlusButton:
-              state.isPlusOn.toggle()
+              state.turnPlusOn()
               return .none
             case .onTapEqualButton:
+              print("Not yet implemented")
+              state.turnAllOff()
               return .none
           }
           
