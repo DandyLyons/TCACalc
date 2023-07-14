@@ -11,11 +11,20 @@ import SwiftUI
 import ComposableArchitecture
 
 public struct CalcGridFeature: ReducerProtocol {
+  public init() {}
+  
   public struct State: Equatable {
     var isDivideOn = false
     var isMultiplyOn = false
     var isMinusOn = false
     var isPlusOn = false
+    
+    public init(isDivideOn: Bool = false, isMultiplyOn: Bool = false, isMinusOn: Bool = false, isPlusOn: Bool = false) {
+      self.isDivideOn = isDivideOn
+      self.isMultiplyOn = isMultiplyOn
+      self.isMinusOn = isMinusOn
+      self.isPlusOn = isPlusOn
+    }
     
     mutating func turnDivideOn() {
       self.isDivideOn = true
@@ -99,6 +108,10 @@ public struct CalcGridFeature: ReducerProtocol {
 
 public struct CalcGrid: View {
   let store: StoreOf<CalcGridFeature>
+  
+  public init(store: StoreOf<CalcGridFeature>) {
+    self.store = store
+  }
   
   public let grayStyle = CircleButtonStyle(foregroundIdleColor: .black, backgroundIdleColor: .gray)
   public let darkgrayStyle = CircleButtonStyle(foregroundIdleColor: .white, backgroundIdleColor: .secondary)

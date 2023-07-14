@@ -11,8 +11,9 @@ import ComposableArchitecture
 
 struct ContentView: View {
   var body: some View {
-//    CalcScreenVertical(store: <#T##StoreOf<CalcScreenVerticalFeature>#>)
-    Text("Not yet implemented")
+    CalcScreenVertical(store: .init(initialState: .init(), reducer: {
+      CalcScreenVerticalFeature()
+    }))
   }
 }
 

@@ -54,6 +54,7 @@ struct CalcScreenVerticalFeature: ReducerProtocol {
 }
 
 import SwiftUI
+import TCACalc_UI
 
 struct CalcScreenVertical: View {
   let store: StoreOf<CalcScreenVerticalFeature>
@@ -71,7 +72,9 @@ struct CalcScreenVertical: View {
             .foregroundColor(.white)
             .padding(.horizontal)
           
-//          CalcGrid(isDivideOn: .constant(false), isMultiplyOn: .constant(true), isMinusOn: .constant(false), isPlusOn: .constant(false), isEqualOn: .constant(false))
+          CalcGrid(store: .init(initialState: .init(),
+                                reducer: CalcGridFeature())
+          )
         }
         .padding(.horizontal)
       }
