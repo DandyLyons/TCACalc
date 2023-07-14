@@ -131,12 +131,14 @@ public struct CalcGrid: View {
   public let onOrangeBackground = CircleBackground(foreground: .orange, background: .white)
   public let offOrangeBackground = CircleBackground(foreground: .white, background: .orange)
   
+  
+  
     
   public var body: some View {
     WithViewStore(self.store, observe: { $0 } ) { viewStore in
       
       
-      Grid(alignment: .center, horizontalSpacing: 10.0, verticalSpacing: 10.0) {
+      Grid(alignment: .center, horizontalSpacing: 8.0, verticalSpacing: 8.0) {
         GridRow {
           Button("AC") { viewStore.send(.view(.onTapACButton)) }
             .buttonStyle(self.grayStyle)
@@ -173,9 +175,6 @@ public struct CalcGrid: View {
             Image(systemName: "minus")
               .modifier(viewStore.isMinusOn ? self.onOrangeBackground : self.offOrangeBackground)
           }
-          
-          
-          
         }
         GridRow {
           Button("1") { viewStore.send(.view(.onTap(int: 1))) }
@@ -191,9 +190,10 @@ public struct CalcGrid: View {
         }
         GridRow {
           Button { viewStore.send(.view(.onTap(int: 0)))} label: { Text("0").foregroundStyle(.white)}
-            .gridCellColumns(2)
-            .frame(maxWidth: .infinity)
             .frame(maxHeight: .infinity)
+            .gridCellColumns(2)
+            .gridCellUnsizedAxes(.vertical)
+            .frame(maxWidth: .infinity)
             .background { Capsule().foregroundColor(.secondary) }
           
           
@@ -204,7 +204,7 @@ public struct CalcGrid: View {
               .modifier(self.offOrangeBackground)
           }
         }
-        .frame(maxHeight: 90)
+        
       }
       .font(.title)
       .fontWeight(.bold)
@@ -215,7 +215,9 @@ public struct CalcGrid: View {
 
 
 
-#Preview("CalcGrid") {
+#Preview("CalcGrid"
+//        , traits: .none
+) {
   ZStack {
     Color.black
       .ignoresSafeArea()
