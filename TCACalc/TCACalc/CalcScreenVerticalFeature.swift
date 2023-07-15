@@ -69,6 +69,8 @@ import TCACalc_UI
 struct CalcScreenVertical: View {
   let store: StoreOf<CalcScreenVerticalFeature>
   
+  @State private var countsDown = false
+  
   var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       ZStack {
@@ -76,16 +78,15 @@ struct CalcScreenVertical: View {
           .ignoresSafeArea()
         
         VStack(alignment: .trailing, spacing: 0) {
+          Toggle("Counts Down", isOn: $countsDown)
           Spacer()
           
           Text(viewStore.currentNum.formatted())
             .font(.system(size: 72))
-//            .truncationMode(.head)
             .foregroundColor(.white)
             .padding()
-            
-            
-          
+            .contentTransition(.numericText(countsDown: false))
+            .animation(.snappy, value: viewStore.currentNum)
           
           CalcGrid(store: self.store.scope(state: \.calcGrid,
                                            action: CalcScreenVerticalFeature.Action.calcGrid)
