@@ -67,6 +67,10 @@ struct CalcScreenHorizontal: View {
             Text(viewStore.currentNum.formatted())
               .font(.largeTitle)
               .foregroundStyle(.white)
+              .padding()
+              .contentTransition(.numericText(countsDown: false))
+              .animation(.snappy, value: viewStore.currentNum)
+            
           }
           
           CalcGridH(store: self.store.scope(state: \.calcGridH,
