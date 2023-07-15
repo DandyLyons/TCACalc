@@ -132,7 +132,8 @@ public struct CalcGridH: View {
   public let darkgrayStyle = CapsuleButtonStyle(foregroundIdleColor: .white, backgroundIdleColor: .secondary)
   public let orangeStyle = CapsuleButtonStyle(foregroundIdleColor: .white, backgroundIdleColor: .orange)
   
-  
+  public let onOrangeBackground = CircleBackground(foreground: .orange, background: .white)
+  public let offOrangeBackground = CircleBackground(foreground: .white, background: .orange)
   
   
   public var body: some View {
@@ -172,19 +173,19 @@ public struct CalcGridH: View {
       }
       .buttonStyle(self.darkgrayStyle)
       Group {
-        Button {} label: { Text("AC") }
-        Button {} label: {Image(systemName: "plus.forwardslash.minus") }
-        Button {} label: { Text("%") }
+        Button {viewStore.send(.view(.onTapACButton))} label: { Text("AC") }
+        Button { viewStore.send(.view(.onTapNegateSignButton))} label: {Image(systemName: "plus.forwardslash.minus") }
+        Button {viewStore.send(.view(.onTapPercentButton))} label: { Text("%") }
       }.buttonStyle(self.grayStyle)
-      Button {} label: { Image(systemName: "divide") }
-        .buttonStyle(self.orangeStyle)
+      Button {viewStore.send(.view(.onTapDivideButton))} label: { Image(systemName: "divide") }
+        .modifier(viewStore.isDivideOn ? self.onOrangeBackground : self.offOrangeBackground)
     }
   }
   
   func row2(_ viewStore: ViewStoreOf<CalcGridHFeature>) -> some View {
     GridRow {
       Group {
-        Button {} label: { Text("2nd") }
+        Button {} label: { Text("2") + Text("nd".attributed().superscripted()) }
         Button {} label: { Text("x".attributed() + "2".attributed().superscripted()) }
         Button {} label: { Text("x".attributed() + "3".attributed().superscripted()) }
         Button {} label: { Text("x".attributed() + "y".attributed().superscripted()) }
@@ -197,18 +198,18 @@ public struct CalcGridH: View {
         Button { viewStore.send(.view(.onTap(int: 8)))} label: { Text("8") }
         Button { viewStore.send(.view(.onTap(int: 9)))} label: { Text("9") }
       }.buttonStyle(self.midgrayStyle)
-      Button {} label: { Text("9") }
-        .buttonStyle(self.orangeStyle)
+      Button { viewStore.send(.view(.onTapMultiplyButton))} label: { Image(systemName: "multiply") }
+        .modifier(viewStore.isMultiplyOn ? self.onOrangeBackground : self.offOrangeBackground)
     }
   }
   
   func row3(_ viewStore: ViewStoreOf<CalcGridHFeature>) -> some View {
     GridRow {
       Group {
-        Button {} label: { Text("1/x") }
-        Button {} label: { Text(Image(systemName: "x.squareroot")) }
-        Button {} label: { Text(Image(systemName: "x.squareroot")) }
-        Button {} label: { Text(Image(systemName: "x.squareroot")) }
+        Button { } label: { Text("1/x") }
+        Button {} label: { Text("2".attributed().superscripted()) + Text(Image(systemName: "x.squareroot")) }
+        Button {} label: { Text("3".attributed().superscripted()) + Text(Image(systemName: "x.squareroot")) }
+        Button {} label: { Text("y".attributed().superscripted()) + Text(Image(systemName: "x.squareroot")) }
         Button {} label: { Text("ln") }
         Button {} label: { Text("log") + Text("10".attributed().subscripted()) }
       }
@@ -218,8 +219,8 @@ public struct CalcGridH: View {
         Button { viewStore.send(.view(.onTap(int: 5)))} label: { Text("5") }
         Button { viewStore.send(.view(.onTap(int: 6)))} label: { Text("6") }
       }.buttonStyle(self.midgrayStyle)
-      Button {} label: { Text("9") }
-        .buttonStyle(self.orangeStyle)
+      Button {viewStore.send(.view(.onTapMinusButton))} label: { Image(systemName: "minus") }
+        .modifier(viewStore.isMinusOn ? self.onOrangeBackground : self.offOrangeBackground)
     }
   }
   
@@ -239,8 +240,8 @@ public struct CalcGridH: View {
         Button { viewStore.send(.view(.onTap(int: 2)))} label: { Text("2") }
         Button { viewStore.send(.view(.onTap(int: 3)))} label: { Text("3") }
       }.buttonStyle(self.midgrayStyle)
-      Button {} label: { Text("9") }
-        .buttonStyle(self.orangeStyle)
+      Button {viewStore.send(.view(.onTapPlusButton))} label: { Image(systemName: "plus")}
+        .modifier(viewStore.isPlusOn ? self.onOrangeBackground : self.offOrangeBackground)
     }
   }
   
@@ -261,8 +262,8 @@ public struct CalcGridH: View {
         
         Button {} label: { Text(".") }
       }.buttonStyle(self.midgrayStyle)
-      Button {} label: { Text("9") }
-        .buttonStyle(self.orangeStyle)
+      Button {viewStore.send(.view(.onTapEqualButton))} label: { Image(systemName: "equal") }
+        .modifier(self.offOrangeBackground)
     }
   }
   
