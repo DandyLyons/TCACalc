@@ -15,38 +15,15 @@ struct CalcScreenVerticalFeature: ReducerProtocol {
       case divide, multiply, minus, plus, equal, none
     }
     var currentNum: Decimal = 0
-    var precedingNum: Decimal = 0
-    var isInBlankState: Bool = true
-    mutating func determineIfBlank () {
-      if self.currentNum == 0,
-         self.precedingNum == 0 {
-        self.isInBlankState = true
-        self.calcGrid.isInBlankState = true
-      } else {
-        self.isInBlankState = false
-        self.calcGrid.isInBlankState = false
-      }
-    }
     
-    var displayedNum: Decimal {
-      if self.calcGrid.isDivideOn == false,
-         self.calcGrid.isMultiplyOn == false,
-         self.calcGrid.isMinusOn == false,
-         self.calcGrid.isPlusOn == false {
-        return self.currentNum
-      } else {
-        return self.precedingNum
-      }
-    }
-    
-    var calcGrid: CalcGridFeature.State
+    var calcGrid: CalcGridVFeature.State
     
   }
   enum Action: Equatable {
     //    case internalAction
     
     // SUBVIEWS
-    case calcGrid(CalcGridFeature.Action)
+    case calcGrid(CalcGridVFeature.Action)
     
     case view(View)
     enum View: Equatable {
@@ -75,31 +52,13 @@ struct CalcScreenVerticalFeature: ReducerProtocol {
           return .none
           
           // SPYING ON SUBVIEWS
-        case let .calcGrid(calcGridAction):
-          switch calcGridAction {
-            case .view(.onTap(int: let int)):
-              state.currentNum.append(int)
-              return .none
-            case .view(.onTapACButton):
-              state.currentNum = 0
-              return .none
-            case .view(.onTapPercentButton):
-              state.currentNum /= 100
-              return .none
-            case .view(.onTapNegateSignButton):
-              state.currentNum *= -1
-              return .none
-            default:
-              return .none
-          }
+        case .calcGrid:
+          return .none
       }
     }
-    Reduce<State, Action> { state, action in
-      state.determineIfBlank()
-      return .none
-    }
+    
     Scope(state: \.calcGrid, action: /Action.calcGrid) {
-      CalcGridFeature()
+      CalcGridVFeature()
     }
   }
 }
@@ -121,14 +80,12 @@ struct CalcScreenVertical: View {
           
           Text(viewStore.currentNum.formatted())
             .font(.system(size: 72))
-//            .truncationMode(.head)
             .foregroundColor(.white)
             .padding()
-            
-            
+            .contentTransition(.numericText(countsDown: false))
+            .animation(.snappy, value: viewStore.currentNum)
           
-          
-          CalcGrid(store: self.store.scope(state: \.calcGrid,
+          CalcGridV(store: self.store.scope(state: \.calcGrid,
                                            action: CalcScreenVerticalFeature.Action.calcGrid)
           )
         }
@@ -138,13 +95,19 @@ struct CalcScreenVertical: View {
   }
 }
 
-//#Preview {
-//  Text("Hello")
+//#Preview("CalcScreenVertical") {
+//  CalcScreenVertical(store: .init(initialState: .init(calcGrid: .init()), reducer: {
+//    CalcScreenVerticalFeature()._printChanges()
+//  }))
 //}
-//
-#Preview("CalcScreenVertical") {
-  CalcScreenVertical(store: .init(initialState: .init(calcGrid: .init()), reducer: {
-    CalcScreenVerticalFeature()._printChanges()
+
+#Preview("CalcScreenVertical (in CalcScreen)") {
+  CalcScreen(store: .init(initialState: .init(hScreen: .init(calcGridH: .init()),
+                                              vScreen: .init(calcGrid: .init()),
+                                              currentOrientation: .portrait
+                                             ),
+                          reducer: {
+    CalcScreenFeature()._printChanges()
   }))
 }
 

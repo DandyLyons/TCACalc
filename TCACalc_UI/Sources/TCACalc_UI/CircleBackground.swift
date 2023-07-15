@@ -22,3 +22,8 @@ public struct CircleBackground: ViewModifier {
     }
   }
 }
+
+#Preview("CircleBackground modifier") {
+  Button("Button") {}
+    .modifier(CircleBackground(foreground: .white, background: .black))
+}
