@@ -15,29 +15,6 @@ struct CalcScreenVerticalFeature: ReducerProtocol {
       case divide, multiply, minus, plus, equal, none
     }
     var currentNum: Decimal = 0
-    var precedingNum: Decimal = 0
-    var isInBlankState: Bool = true
-    mutating func determineIfBlank () {
-      if self.currentNum == 0,
-         self.precedingNum == 0 {
-        self.isInBlankState = true
-        self.calcGrid.isInBlankState = true
-      } else {
-        self.isInBlankState = false
-        self.calcGrid.isInBlankState = false
-      }
-    }
-    
-    var displayedNum: Decimal {
-      if self.calcGrid.isDivideOn == false,
-         self.calcGrid.isMultiplyOn == false,
-         self.calcGrid.isMinusOn == false,
-         self.calcGrid.isPlusOn == false {
-        return self.currentNum
-      } else {
-        return self.precedingNum
-      }
-    }
     
     var calcGrid: CalcGridFeature.State
     
@@ -79,10 +56,7 @@ struct CalcScreenVerticalFeature: ReducerProtocol {
           return .none
       }
     }
-    Reduce<State, Action> { state, action in
-      state.determineIfBlank()
-      return .none
-    }
+    
     Scope(state: \.calcGrid, action: /Action.calcGrid) {
       CalcGridFeature()
     }
@@ -123,13 +97,19 @@ struct CalcScreenVertical: View {
   }
 }
 
-//#Preview {
-//  Text("Hello")
+//#Preview("CalcScreenVertical") {
+//  CalcScreenVertical(store: .init(initialState: .init(calcGrid: .init()), reducer: {
+//    CalcScreenVerticalFeature()._printChanges()
+//  }))
 //}
-//
-#Preview("CalcScreenVertical") {
-  CalcScreenVertical(store: .init(initialState: .init(calcGrid: .init()), reducer: {
-    CalcScreenVerticalFeature()._printChanges()
+
+#Preview("CalcScreenVertical (in CalcScreen)") {
+  CalcScreen(store: .init(initialState: .init(hScreen: .init(),
+                                              vScreen: .init(calcGrid: .init()),
+                                              currentOrientation: .portrait
+                                             ),
+                          reducer: {
+    CalcScreenFeature()._printChanges()
   }))
 }
 

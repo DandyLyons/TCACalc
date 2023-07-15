@@ -18,16 +18,30 @@ struct CalcScreenFeature: ReducerProtocol {
     /// to mutate `currentNum` use `updateCurrentNum(byPerforming: )`
     private(set) var currentNum: Decimal = 0
     
+    
     mutating func updateCurrentNum(byPerforming mutation: (inout Decimal) -> Void) {
       mutation(&self.currentNum)
       mutation(&self.hScreen.currentNum)
       mutation(&self.vScreen.currentNum)
     }
     
-//    mutating func currentNumDidUpdate(to newValue: Decimal) {
-//      self.hScreen.currentNum = newValue
-//      self.vScreen.currentNum = newValue
-//    }
+    var previousNum: Decimal = 0
+    private(set) var isInBlankState: Bool = true
+    
+    mutating func determineIfBlank () {
+      if self.currentNum == 0,
+         self.previousNum == 0 {
+        self.updateIsInBlankState(byPerforming: { $0 = true})
+      } else {
+        self.updateIsInBlankState(byPerforming: { $0 = false})
+      }
+    }
+    
+    mutating func updateIsInBlankState(byPerforming mutation: (inout Bool) -> Void) {
+      mutation(&self.isInBlankState)
+      mutation(&self.vScreen.calcGrid.isInBlankState)
+    }
+
   }
   enum Action: Equatable {
     //    case internalAction
@@ -79,6 +93,11 @@ struct CalcScreenFeature: ReducerProtocol {
           return .none
       }
     }
+    Reduce<State, Action> { state, action in
+      state.determineIfBlank()
+      return .none
+    }
+    
     Scope(state: \.hScreen, action: /Action.hScreen) {
       CalcScreenHorizontalFeature()
     }
@@ -147,6 +166,6 @@ struct CalcScreen: View {
                                               currentOrientation: .portrait
                                              ),
                           reducer: {
-    CalcScreenFeature()
+    CalcScreenFeature()._printChanges()
   }))
 }
