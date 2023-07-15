@@ -1,9 +1,6 @@
-// The Swift Programming Language
-// https://docs.swift.org/swift-book
-
 import SwiftUI
 
-public struct CircleButtonStyle: ButtonStyle {
+public struct CapsuleButtonStyle: ButtonStyle {
   public let foregroundIdleColor: Color
   public let backgroundIdleColor: Color
   public let foregroundPressedColor: Color
@@ -26,31 +23,33 @@ public struct CircleButtonStyle: ButtonStyle {
   public func makeBody(configuration: Configuration) -> some View {
     if configuration.isPressed {
       ZStack {
-        Circle()
+        Capsule()
           .foregroundColor(self.backgroundPressedColor)
-
+        
         configuration.label
           .foregroundColor(self.foregroundPressedColor)
-          
-          
+        
+        
       }
     } else {
       ZStack {
-        Circle()
+        Capsule()
           .foregroundColor(self.backgroundIdleColor)
         
         configuration.label
           .foregroundColor(self.foregroundIdleColor)
-          
+        
       }
     }
   }
 }
 
-#Preview("CircleButtonStyle") {
+#Preview("CapsuleButtonStyle"
+//         , traits: .landscapeLeft
+) {
   Button("9") {}
     .buttonStyle(
-      CircleButtonStyle(
+      CapsuleButtonStyle(
         foregroundIdleColor: .white,
         backgroundIdleColor: .orange
       )
