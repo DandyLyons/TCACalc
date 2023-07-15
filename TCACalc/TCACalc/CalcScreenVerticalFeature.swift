@@ -16,14 +16,14 @@ struct CalcScreenVerticalFeature: ReducerProtocol {
     }
     var currentNum: Decimal = 0
     
-    var calcGrid: CalcGridFeature.State
+    var calcGrid: CalcGridVFeature.State
     
   }
   enum Action: Equatable {
     //    case internalAction
     
     // SUBVIEWS
-    case calcGrid(CalcGridFeature.Action)
+    case calcGrid(CalcGridVFeature.Action)
     
     case view(View)
     enum View: Equatable {
@@ -58,7 +58,7 @@ struct CalcScreenVerticalFeature: ReducerProtocol {
     }
     
     Scope(state: \.calcGrid, action: /Action.calcGrid) {
-      CalcGridFeature()
+      CalcGridVFeature()
     }
   }
 }
@@ -69,8 +69,6 @@ import TCACalc_UI
 struct CalcScreenVertical: View {
   let store: StoreOf<CalcScreenVerticalFeature>
   
-  @State private var countsDown = false
-  
   var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       ZStack {
@@ -78,7 +76,6 @@ struct CalcScreenVertical: View {
           .ignoresSafeArea()
         
         VStack(alignment: .trailing, spacing: 0) {
-          Toggle("Counts Down", isOn: $countsDown)
           Spacer()
           
           Text(viewStore.currentNum.formatted())
@@ -88,7 +85,7 @@ struct CalcScreenVertical: View {
             .contentTransition(.numericText(countsDown: false))
             .animation(.snappy, value: viewStore.currentNum)
           
-          CalcGrid(store: self.store.scope(state: \.calcGrid,
+          CalcGridV(store: self.store.scope(state: \.calcGrid,
                                            action: CalcScreenVerticalFeature.Action.calcGrid)
           )
         }

@@ -18,14 +18,14 @@ struct P_NumericTextAnimationFeature: ReducerProtocol {
     var currentNum: Decimal = 0
     var numBuffer: Decimal = 0
     
-    var calcGrid: CalcGridFeature.State
+    var calcGrid: CalcGridVFeature.State
     
   }
   enum Action: Equatable {
     //    case internalAction
     
     // SUBVIEWS
-    case calcGrid(CalcGridFeature.Action)
+    case calcGrid(CalcGridVFeature.Action)
     
     case view(View)
     enum View: Equatable {
@@ -72,7 +72,7 @@ struct P_NumericTextAnimationFeature: ReducerProtocol {
     }
     
     Scope(state: \.calcGrid, action: /Action.calcGrid) {
-      CalcGridFeature()
+      CalcGridVFeature()
     }
   }
 }
@@ -104,7 +104,7 @@ struct P_NumericTextAnimation: View {
             .animation(.snappy, value: viewStore.currentNum)
             .contentTransition(.numericText())
           
-          CalcGrid(store: self.store.scope(state: \.calcGrid,
+          CalcGridV(store: self.store.scope(state: \.calcGrid,
                                            action: P_NumericTextAnimationFeature.Action.calcGrid)
           )
         }

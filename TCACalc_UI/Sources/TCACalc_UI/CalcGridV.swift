@@ -1,6 +1,6 @@
 //
-//  File.swift
-//  
+//  CalcGridV.swift
+//
 //
 //  Created by Daniel Lyons on 7/13/23.
 //
@@ -10,7 +10,7 @@ import SwiftUI
 
 import ComposableArchitecture
 
-public struct CalcGridFeature: ReducerProtocol {
+public struct CalcGridVFeature: ReducerProtocol {
   public init() {}
   
   public struct State: Equatable {
@@ -119,10 +119,10 @@ public struct CalcGridFeature: ReducerProtocol {
   }
 }
 
-public struct CalcGrid: View {
-  let store: StoreOf<CalcGridFeature>
+public struct CalcGridV: View {
+  let store: StoreOf<CalcGridVFeature>
   
-  public init(store: StoreOf<CalcGridFeature>) {
+  public init(store: StoreOf<CalcGridVFeature>) {
     self.store = store
   }
   
@@ -216,7 +216,7 @@ public struct CalcGrid: View {
 
 
 
-#Preview("CalcGrid"
+#Preview("CalcGridV"
 //        , traits: .none
 ) {
   ZStack {
@@ -225,8 +225,8 @@ public struct CalcGrid: View {
     VStack {
       Spacer()
       
-      CalcGrid(store: Store(initialState: .init(), reducer: {
-        CalcGridFeature()._printChanges()
+      CalcGridV(store: Store(initialState: .init(), reducer: {
+        CalcGridVFeature()._printChanges()
       }))
     }
     .padding(.horizontal)
