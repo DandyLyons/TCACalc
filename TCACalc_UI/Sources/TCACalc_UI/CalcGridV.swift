@@ -190,12 +190,14 @@ public struct CalcGridV: View {
           }
         }
         GridRow {
-          Button { viewStore.send(.view(.onTap(int: 0)))} label: { Text("0").foregroundStyle(.white)}
-            .frame(maxHeight: .infinity)
+          Button {
+            viewStore.send(.view(.onTap(int: 0)))
+          } label: {
+            Text("0")
+          }
             .gridCellColumns(2)
-            .gridCellUnsizedAxes(.vertical)
-            .frame(maxWidth: .infinity)
-            .background { Capsule().foregroundColor(.secondary) }
+            .gridCellUnsizedAxes([.vertical, .horizontal])
+            .buttonStyle(CapsuleButtonStyle(foregroundIdleColor: .white, backgroundIdleColor: .secondary))
           
           
           Button(".") {}
@@ -205,6 +207,7 @@ public struct CalcGridV: View {
               .modifier(self.offOrangeBackground)
           }
         }
+        
         
       }
       .font(.title)
