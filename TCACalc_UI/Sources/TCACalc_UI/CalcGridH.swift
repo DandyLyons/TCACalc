@@ -140,12 +140,12 @@ public struct CalcGridH: View {
       
       
       Grid(alignment: .center, horizontalSpacing: 8.0, verticalSpacing: 8.0) {
-        HStack {
-          Spacer()
-          Text("Hello world")
-            .font(.system(size: 36))
-            .foregroundStyle(.white)
-        }
+//        HStack {
+//          Spacer()
+//          Text(viewStore.displayedNum)
+//            .font(.system(size: 36))
+//            .foregroundStyle(.white)
+//        }
         
         self.row1(viewStore)
         self.row2(viewStore)
@@ -194,9 +194,9 @@ public struct CalcGridH: View {
       }
       .buttonStyle(self.darkgrayStyle)
       Group {
-        Button {} label: { Text("7") }
-        Button {} label: { Text("8") }
-        Button {} label: { Text("9") }
+        Button { viewStore.send(.view(.onTap(int: 7)))} label: { Text("7") }
+        Button { viewStore.send(.view(.onTap(int: 8)))} label: { Text("8") }
+        Button { viewStore.send(.view(.onTap(int: 9)))} label: { Text("9") }
       }.buttonStyle(self.midgrayStyle)
       Button {} label: { Text("9") }
         .buttonStyle(self.orangeStyle)
@@ -215,9 +215,9 @@ public struct CalcGridH: View {
       }
       .buttonStyle(self.darkgrayStyle)
       Group {
-        Button { } label: { Text("4") }
-        Button {} label: { Text("5") }
-        Button {} label: { Text("6") }
+        Button { viewStore.send(.view(.onTap(int: 4)))} label: { Text("4") }
+        Button { viewStore.send(.view(.onTap(int: 5)))} label: { Text("5") }
+        Button { viewStore.send(.view(.onTap(int: 6)))} label: { Text("6") }
       }.buttonStyle(self.midgrayStyle)
       Button {} label: { Text("9") }
         .buttonStyle(self.orangeStyle)
@@ -236,9 +236,9 @@ public struct CalcGridH: View {
       }
       .buttonStyle(self.darkgrayStyle)
       Group {
-        Button {} label: { Text("1") }
-        Button {} label: { Text("2") }
-        Button {} label: { Text("3") }
+        Button { viewStore.send(.view(.onTap(int: 1)))} label: { Text("1") }
+        Button { viewStore.send(.view(.onTap(int: 2)))} label: { Text("2") }
+        Button { viewStore.send(.view(.onTap(int: 3)))} label: { Text("3") }
       }.buttonStyle(self.midgrayStyle)
       Button {} label: { Text("9") }
         .buttonStyle(self.orangeStyle)
@@ -257,7 +257,7 @@ public struct CalcGridH: View {
       }
       .buttonStyle(self.darkgrayStyle)
       Group {
-        Button {} label: { Text("0") }
+        Button { viewStore.send(.view(.onTap(int: 0)))} label: { Text("0") }
           .gridCellColumns(2)
         
         Button {} label: { Text(".") }

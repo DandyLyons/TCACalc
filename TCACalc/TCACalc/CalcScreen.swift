@@ -89,8 +89,24 @@ struct CalcScreenFeature: ReducerProtocol {
               return .none
           }
           
-        case let .hScreen(hScreenAction):
-          return .none
+        case let .hScreen(.calcGridH(hCalcGridAction)):
+          switch hCalcGridAction {
+            case .view(.onTap(int: let int)):
+              state.updateCurrentNum(byPerforming: { $0.append(int)})
+              return .none
+            case .view(.onTapACButton):
+              state.updateCurrentNum(byPerforming: { $0 = 0})
+              return .none
+            case .view(.onTapPercentButton):
+              state.updateCurrentNum(byPerforming: { $0 /= 100 })
+              return .none
+            case .view(.onTapNegateSignButton):
+              state.updateCurrentNum(byPerforming: { $0 *= -1 })
+              return .none
+            default:
+              return .none
+              
+          }
       }
     }
     Reduce<State, Action> { state, action in
@@ -160,8 +176,21 @@ struct CalcScreen: View {
   
 }
 
-#Preview("CalcScreen") {
-  CalcScreen(store: .init(initialState: .init(hScreen: .init(),
+#Preview("CalcScreen H"
+         , traits: .landscapeLeft
+) {
+  CalcScreen(store: .init(initialState: .init(hScreen: .init(calcGridH: .init()),
+                                              vScreen: .init(calcGrid: .init()),
+                                              currentOrientation: .landscapeLeft
+                                             ),
+                          reducer: {
+    CalcScreenFeature()._printChanges()
+  }))
+}
+
+#Preview("CalcScreen V"
+) {
+  CalcScreen(store: .init(initialState: .init(hScreen: .init(calcGridH: .init()),
                                               vScreen: .init(calcGrid: .init()),
                                               currentOrientation: .portrait
                                              ),

@@ -7,13 +7,18 @@
 
 import Foundation
 import ComposableArchitecture
+import TCACalc_UI
 
 struct CalcScreenHorizontalFeature: ReducerProtocol {
   struct State: Equatable {
     var currentNum: Decimal = 0
+    var calcGridH: CalcGridHFeature.State
   }
   enum Action: Equatable {
     //    case internalAction
+    
+    // SUBVIEWS
+    case calcGridH(CalcGridHFeature.Action)
     
     case view(View)
     enum View: Equatable {
@@ -31,8 +36,15 @@ struct CalcScreenHorizontalFeature: ReducerProtocol {
     Reduce<State, Action> { state, action in
       switch action {
           
+          // SPYING ON SUBVIEWS
+        case .calcGridH:
+          return .none
       }
     }
+    Scope(state: \.calcGridH, action: /Action.calcGridH) {
+      CalcGridHFeature()
+    }
+    
   }
 }
 
@@ -43,13 +55,33 @@ struct CalcScreenHorizontal: View {
   
   var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      Text(viewStore.currentNum.formatted())
+      
+      ZStack {
+        Color.black
+          .ignoresSafeArea()
+        
+        VStack {
+          HStack {
+            Spacer()
+            
+            Text(viewStore.currentNum.formatted())
+              .font(.largeTitle)
+              .foregroundStyle(.white)
+          }
+          
+          CalcGridH(store: self.store.scope(state: \.calcGridH,
+                                            action: CalcScreenHorizontalFeature.Action.calcGridH)
+          )
+        }
+        .padding(.horizontal)
+      }
+
     }
   }
 }
 
 #Preview("CalcScreenHorizontal", traits: .landscapeLeft) {
-  CalcScreenHorizontal(store: .init(initialState: .init(), reducer: {
+  CalcScreenHorizontal(store: .init(initialState: .init(calcGridH: .init()), reducer: {
     CalcScreenHorizontalFeature()
   }))
 }

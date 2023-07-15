@@ -102,7 +102,7 @@ struct CalcScreenVertical: View {
 //}
 
 #Preview("CalcScreenVertical (in CalcScreen)") {
-  CalcScreen(store: .init(initialState: .init(hScreen: .init(),
+  CalcScreen(store: .init(initialState: .init(hScreen: .init(calcGridH: .init()),
                                               vScreen: .init(calcGrid: .init()),
                                               currentOrientation: .portrait
                                              ),
