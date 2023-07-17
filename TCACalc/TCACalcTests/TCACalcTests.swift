@@ -25,8 +25,12 @@ final class TCACalcTests: XCTestCase {
       $0.updateCurrentNum { $0 = 1 }
       $0.updateIsInBlankState(byPerforming: { $0 = false })
     }
-    await store.send(.vScreen(.calcGridV(.view(.onTap(int: 2))))) {
-      $0.updateCurrentNum { $0 = 12 }
+    await store.send(.hScreen(.calcGridH(.view(.onTap(int: 2))))) {
+      $0.updateCurrentNum { $0 = 12}
+    }
+    
+    await store.send(.vScreen(.calcGridV(.view(.onTap(int: 3))))) {
+      $0.updateCurrentNum { $0 = 123 }
     }
   }
   
