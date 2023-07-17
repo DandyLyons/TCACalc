@@ -129,9 +129,13 @@ struct CalcScreenFeature: ReducerProtocol {
             case .view(.onTap(int: let int)):
               if state.isInBlankState {
                 state.updateCurrentNum(byPerforming: { $0.append(int)})
-              } else {
-                state.previousNum = state.currentNum
-                state.updateCurrentNum(byPerforming: { $0 = Decimal(int) })
+              } else if !state.isInBlankState {
+                if state.activeOperation == nil {
+                  state.updateCurrentNum(byPerforming: { $0.append(int)})
+                } else {                
+                  state.previousNum = state.currentNum
+                  state.updateCurrentNum(byPerforming: { $0 = Decimal(int) })
+                }
               }
               return .none
             case .view(.onTapACButton):
