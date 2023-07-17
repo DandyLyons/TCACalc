@@ -23,7 +23,7 @@ struct CalcScreenVFeature: ReducerProtocol {
     //    case internalAction
     
     // SUBVIEWS
-    case calcGrid(CalcGridVFeature.Action)
+    case calcGridV(CalcGridVFeature.Action)
     
     case view(View)
     enum View: Equatable {
@@ -52,12 +52,12 @@ struct CalcScreenVFeature: ReducerProtocol {
           return .none
           
           // SPYING ON SUBVIEWS
-        case .calcGrid:
+        case .calcGridV:
           return .none
       }
     }
     
-    Scope(state: \.calcGridV, action: /Action.calcGrid) {
+    Scope(state: \.calcGridV, action: /Action.calcGridV) {
       CalcGridVFeature()
     }
   }
@@ -86,7 +86,7 @@ struct CalcScreenVertical: View {
             .animation(.snappy, value: viewStore.currentNum)
           
           CalcGridV(store: self.store.scope(state: \.calcGridV,
-                                           action: CalcScreenVFeature.Action.calcGrid)
+                                           action: CalcScreenVFeature.Action.calcGridV)
           )
         }
         .padding(.horizontal)
@@ -96,7 +96,7 @@ struct CalcScreenVertical: View {
 }
 
 //#Preview("CalcScreenVertical") {
-//  CalcScreenVertical(store: .init(initialState: .init(calcGrid: .init()), reducer: {
+//  CalcScreenVertical(store: .init(initialState: .init(calcGridV: .init()), reducer: {
 //    CalcScreenVFeature()._printChanges()
 //  }))
 //}

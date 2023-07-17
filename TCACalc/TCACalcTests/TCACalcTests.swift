@@ -46,11 +46,7 @@ final class TCACalcTests: XCTestCase {
     await store.send(.currentOrientationChangedTo(.portrait)) {
       $0.currentOrientation = .portrait
     }
-<<<<<<< Updated upstream
-    await store.send(.vScreen(.calcGrid(.view(.onTapPlusButton)))) {
-=======
     await store.send(.vScreen(.calcGridV(.view(.onTapPlusButton)))) {
->>>>>>> Stashed changes
       $0.updateActiveOperation(to: .plus)
     }
     await store.send(.vScreen(.calcGridV(.view(.onTap(int: 1))))) {
