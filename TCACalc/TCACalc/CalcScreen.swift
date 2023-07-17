@@ -21,6 +21,50 @@ struct CalcScreenFeature: ReducerProtocol {
     /// to mutate `currentNum` use `updateCurrentNum(byPerforming: )`
     private(set) var currentNum: Decimal = 0
     
+    mutating func onTap(int: Int) {
+      if self.isInBlankState {
+        self.updateCurrentNum(byPerforming: { $0.append(int)})
+      } else if !self.isInBlankState {
+        if self.activeOperation == nil {
+          self.updateCurrentNum(byPerforming: { $0.append(int)})
+        } else {
+          self.previousNum = self.currentNum
+          self.updateCurrentNum(byPerforming: { $0 = Decimal(int) })
+        }
+      }
+    }
+    
+    mutating func onTapACButton() {
+      self.updateCurrentNum(byPerforming: { $0 = 0})
+      self.previousNum = nil
+      self.updateIsInBlankState(byPerforming: { $0 = true })
+    }
+    
+    mutating func onTapPercentButton() {
+      self.updateCurrentNum(byPerforming: { $0 /= 100 })
+    }
+    
+    mutating func onTapNegateSignButton() {
+      self.updateCurrentNum(byPerforming: { $0 *= -1 })
+    }
+    mutating func onTapDivideButton() {
+      self.updateActiveOperation(to: .divide)
+    }
+    mutating func onTapMultiplyButton() {
+      self.updateActiveOperation(to: .multiply)
+    }
+    mutating func onTapMinusButton() {
+      self.updateActiveOperation(to: .minus)
+    }
+    mutating func onTapPlusButton() {
+      self.updateActiveOperation(to: .plus)
+    }
+    mutating func onTapEqualButton() {
+      self._performArithmetic()
+      self.updateActiveOperation(to: nil)
+    }
+    
+    
     
     mutating func updateCurrentNum(byPerforming mutation: (inout Decimal) -> Void) {
       mutation(&self.currentNum)
@@ -116,6 +160,8 @@ struct CalcScreenFeature: ReducerProtocol {
     
   }
   
+  
+  
   var body: some ReducerProtocolOf<Self> {
     Reduce<State, Action> { state, action in
       switch action {
@@ -127,45 +173,33 @@ struct CalcScreenFeature: ReducerProtocol {
         case let .vScreen(.calcGridV(vCalcGridAction)):
           switch vCalcGridAction {
             case .view(.onTap(int: let int)):
-              if state.isInBlankState {
-                state.updateCurrentNum(byPerforming: { $0.append(int)})
-              } else if !state.isInBlankState {
-                if state.activeOperation == nil {
-                  state.updateCurrentNum(byPerforming: { $0.append(int)})
-                } else {                
-                  state.previousNum = state.currentNum
-                  state.updateCurrentNum(byPerforming: { $0 = Decimal(int) })
-                }
-              }
+              state.onTap(int: int)
               return .none
             case .view(.onTapACButton):
-              state.updateCurrentNum(byPerforming: { $0 = 0})
-              state.previousNum = nil
-              state.updateIsInBlankState(byPerforming: { $0 = true })
+              state.onTapACButton()
               return .none
             case .view(.onTapPercentButton):
-              state.updateCurrentNum(byPerforming: { $0 /= 100 })
+              state.onTapPercentButton()
               return .none
             case .view(.onTapNegateSignButton):
-              state.updateCurrentNum(byPerforming: { $0 *= -1 })
+              state.onTapNegateSignButton()
               return .none
               
             case .view(.onTapDivideButton):
-              state.updateActiveOperation(to: .divide)
+              state.onTapDivideButton()
               return .none
             case .view(.onTapMultiplyButton):
-              state.updateActiveOperation(to: .multiply)
+              state.onTapMultiplyButton()
               return .none
             case .view(.onTapMinusButton):
-              state.updateActiveOperation(to: .minus)
+              state.onTapMinusButton()
               return .none
             case .view(.onTapPlusButton):
-              state.updateActiveOperation(to: .plus)
+              state.onTapPlusButton()
               return .none
               
             case .view(.onTapEqualButton):
-              state._performArithmetic()
-              state.updateActiveOperation(to: nil)
+              state.onTapEqualButton()
               return .none
             default:
               return .none
@@ -174,45 +208,33 @@ struct CalcScreenFeature: ReducerProtocol {
         case let .hScreen(.calcGridH(hCalcGridAction)):
           switch hCalcGridAction {
             case .view(.onTap(int: let int)):
-              if state.isInBlankState {
-                state.updateCurrentNum(byPerforming: { $0.append(int)})
-              } else if !state.isInBlankState {
-                if state.activeOperation == nil {
-                  state.updateCurrentNum(byPerforming: { $0.append(int)})
-                } else {
-                  state.previousNum = state.currentNum
-                  state.updateCurrentNum(byPerforming: { $0 = Decimal(int) })
-                }
-              }
+              state.onTap(int: int)
               return .none
             case .view(.onTapACButton):
-              state.updateCurrentNum(byPerforming: { $0 = 0})
-              state.previousNum = nil
-              state.updateIsInBlankState(byPerforming: { $0 = true })
+              state.onTapACButton()
               return .none
             case .view(.onTapPercentButton):
-              state.updateCurrentNum(byPerforming: { $0 /= 100 })
+              state.onTapPercentButton()
               return .none
             case .view(.onTapNegateSignButton):
-              state.updateCurrentNum(byPerforming: { $0 *= -1 })
+              state.onTapNegateSignButton()
               return .none
               
             case .view(.onTapDivideButton):
-              state.updateActiveOperation(to: .divide)
+              state.onTapDivideButton()
               return .none
             case .view(.onTapMultiplyButton):
-              state.updateActiveOperation(to: .multiply)
+              state.onTapMultiplyButton()
               return .none
             case .view(.onTapMinusButton):
-              state.updateActiveOperation(to: .minus)
+              state.onTapMinusButton()
               return .none
             case .view(.onTapPlusButton):
-              state.updateActiveOperation(to: .plus)
+              state.onTapPlusButton()
               return .none
               
             case .view(.onTapEqualButton):
-              state._performArithmetic()
-              state.updateActiveOperation(to: nil)
+              state.onTapEqualButton()
               return .none
             default:
               return .none

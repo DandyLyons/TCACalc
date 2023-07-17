@@ -69,4 +69,37 @@ final class TCACalcTests: XCTestCase {
     }
   }
 
+  func testNegate() async {
+    let store = TestStore(
+      initialState: CalcScreenFeature.State(
+        hScreen: .init(calcGridH: .init()),
+        vScreen: .init(calcGridV: .init())
+      ),
+      reducer: CalcScreenFeature()
+    )
+    await store.send(.vScreen(.calcGridV(.view(.onTap(int: 3))))) {
+      $0.updateIsInBlankState(to: false)
+      $0.updateCurrentNum { $0 = 3 }
+    }
+    await store.send(.hScreen(.calcGridH(.view(.onTapNegateSignButton)))) {
+      $0.updateCurrentNum(byPerforming: { $0 = -3 })
+    }
+  }
+  
+  func testPercentButton() async {
+    let store = TestStore(
+      initialState: CalcScreenFeature.State(
+        hScreen: .init(calcGridH: .init()),
+        vScreen: .init(calcGridV: .init())
+      ),
+      reducer: CalcScreenFeature()
+    )
+    await store.send(.hScreen(.calcGridH(.view(.onTap(int: 9))))) {
+      $0.updateCurrentNum(byPerforming: { $0 = 9 })
+      $0.updateIsInBlankState(to: false)
+    }
+    await store.send(.vScreen(.calcGridV(.view(.onTapPercentButton)))) {
+      $0.updateCurrentNum(byPerforming: { $0 = 0.09 })
+    }
+  }
 }
