@@ -9,7 +9,7 @@ import Foundation
 import ComposableArchitecture
 import TCACalc_UI
 
-struct CalcScreenHorizontalFeature: ReducerProtocol {
+struct CalcScreenHFeature: ReducerProtocol {
   struct State: Equatable {
     var currentNum: Decimal = 0
     var calcGridH: CalcGridHFeature.State
@@ -51,7 +51,7 @@ struct CalcScreenHorizontalFeature: ReducerProtocol {
 import SwiftUI
 
 struct CalcScreenHorizontal: View {
-  let store: StoreOf<CalcScreenHorizontalFeature>
+  let store: StoreOf<CalcScreenHFeature>
   
   var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
@@ -74,7 +74,7 @@ struct CalcScreenHorizontal: View {
           }
           
           CalcGridH(store: self.store.scope(state: \.calcGridH,
-                                            action: CalcScreenHorizontalFeature.Action.calcGridH)
+                                            action: CalcScreenHFeature.Action.calcGridH)
           )
         }
         .padding(.horizontal)
@@ -86,6 +86,6 @@ struct CalcScreenHorizontal: View {
 
 #Preview("CalcScreenHorizontal", traits: .landscapeLeft) {
   CalcScreenHorizontal(store: .init(initialState: .init(calcGridH: .init()), reducer: {
-    CalcScreenHorizontalFeature()
+    CalcScreenHFeature()
   }))
 }

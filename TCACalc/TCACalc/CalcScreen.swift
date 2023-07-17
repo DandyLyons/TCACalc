@@ -10,8 +10,8 @@ import ComposableArchitecture
 
 struct CalcScreenFeature: ReducerProtocol {
   struct State: Equatable {
-    var hScreen: CalcScreenHorizontalFeature.State
-    var vScreen: CalcScreenVerticalFeature.State
+    var hScreen: CalcScreenHFeature.State
+    var vScreen: CalcScreenVFeature.State
     
     var currentOrientation = UIDeviceOrientation.portrait
     
@@ -32,19 +32,19 @@ struct CalcScreenFeature: ReducerProtocol {
       switch newValue {
         case .divide:
           self.hScreen.calcGridH.turnDivideOn()
-          self.vScreen.calcGrid.turnDivideOn()
+          self.vScreen.calcGridV.turnDivideOn()
         case .multiply:
           self.hScreen.calcGridH.turnMultiplyOn()
-          self.vScreen.calcGrid.turnMultiplyOn()
+          self.vScreen.calcGridV.turnMultiplyOn()
         case .minus:
           self.hScreen.calcGridH.turnMinusOn()
-          self.vScreen.calcGrid.turnMinusOn()
+          self.vScreen.calcGridV.turnMinusOn()
         case .plus:
           self.hScreen.calcGridH.turnPlusOn()
-          self.vScreen.calcGrid.turnPlusOn()
+          self.vScreen.calcGridV.turnPlusOn()
         case nil:
           self.hScreen.calcGridH.turnAllOff()
-          self.vScreen.calcGrid.turnAllOff()
+          self.vScreen.calcGridV.turnAllOff()
       }
       self.activeOperation = newValue
     }
@@ -85,13 +85,13 @@ struct CalcScreenFeature: ReducerProtocol {
     
     mutating func updateIsInBlankState(byPerforming mutation: (inout Bool) -> Void) {
       mutation(&self.isInBlankState)
-      mutation(&self.vScreen.calcGrid.isInBlankState)
+      mutation(&self.vScreen.calcGridV.isInBlankState)
       mutation(&self.hScreen.calcGridH.isInBlankState)
     }
     
     mutating func updateIsInBlankState(to newValue: Bool) {
       self.isInBlankState = newValue
-      self.vScreen.calcGrid.isInBlankState = newValue
+      self.vScreen.calcGridV.isInBlankState = newValue
       self.hScreen.calcGridH.isInBlankState = newValue
     }
 
@@ -99,8 +99,8 @@ struct CalcScreenFeature: ReducerProtocol {
   enum Action: Equatable {
     //    case internalAction
     
-    case hScreen(CalcScreenHorizontalFeature.Action)
-    case vScreen(CalcScreenVerticalFeature.Action)
+    case hScreen(CalcScreenHFeature.Action)
+    case vScreen(CalcScreenVFeature.Action)
     
     case currentOrientationChangedTo(UIDeviceOrientation)
     
@@ -217,10 +217,10 @@ struct CalcScreenFeature: ReducerProtocol {
     }
     
     Scope(state: \.hScreen, action: /Action.hScreen) {
-      CalcScreenHorizontalFeature()
+      CalcScreenHFeature()
     }
     Scope(state: \.vScreen, action: /Action.vScreen) {
-      CalcScreenVerticalFeature()
+      CalcScreenVFeature()
     }
   }
 }
@@ -282,7 +282,7 @@ struct CalcScreen: View {
 //         , traits: .landscapeLeft
 //) {
 //  CalcScreen(store: .init(initialState: .init(hScreen: .init(calcGridH: .init()),
-//                                              vScreen: .init(calcGrid: .init()),
+//                                              vScreen: .init(calcGridV: .init()),
 //                                              currentOrientation: .landscapeLeft
 //                                             ),
 //                          reducer: {
@@ -293,7 +293,7 @@ struct CalcScreen: View {
 #Preview("CalcScreen V"
 ) {
   CalcScreen(store: .init(initialState: .init(hScreen: .init(calcGridH: .init()),
-                                              vScreen: .init(calcGrid: .init()),
+                                              vScreen: .init(calcGridV: .init()),
                                               currentOrientation: .portrait
                                              ),
                           reducer: {

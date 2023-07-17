@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		801FFAB02A62FF7500F84FC1 /* P_NumericTextAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801FFAAF2A62FF7400F84FC1 /* P_NumericTextAnimation.swift */; };
 		8043A4562A61FA90006AB0DA /* CalcScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8043A4552A61FA90006AB0DA /* CalcScreen.swift */; };
-		8043A4582A61FAA1006AB0DA /* CalcScreenHorizontal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8043A4572A61FAA1006AB0DA /* CalcScreenHorizontal.swift */; };
+		8043A4582A61FAA1006AB0DA /* CalcScreenH.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8043A4572A61FAA1006AB0DA /* CalcScreenH.swift */; };
 		80649D332A607CC7007CC893 /* TCACalcApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80649D322A607CC7007CC893 /* TCACalcApp.swift */; };
 		80649D352A607CC7007CC893 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80649D342A607CC7007CC893 /* ContentView.swift */; };
 		80649D372A607CC9007CC893 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 80649D362A607CC9007CC893 /* Assets.xcassets */; };
@@ -17,7 +17,7 @@
 		80649D432A607D32007CC893 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 80649D422A607D32007CC893 /* ComposableArchitecture */; };
 		808EAFDE2A659245008F2368 /* Decimal+Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808EAFDD2A659245008F2368 /* Decimal+Tests.swift */; };
 		80936EBA2A607E1100A2939F /* TCACalc_UI in Frameworks */ = {isa = PBXBuildFile; productRef = 80936EB92A607E1100A2939F /* TCACalc_UI */; };
-		80936EBC2A60A8A200A2939F /* CalcScreenVerticalFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80936EBB2A60A8A200A2939F /* CalcScreenVerticalFeature.swift */; };
+		80936EBC2A60A8A200A2939F /* CalcScreenV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80936EBB2A60A8A200A2939F /* CalcScreenV.swift */; };
 		80936EBE2A60C75000A2939F /* Decimal+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80936EBD2A60C75000A2939F /* Decimal+.swift */; };
 		80936EC62A60D94C00A2939F /* TCACalcTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80936EC52A60D94C00A2939F /* TCACalcTests.swift */; };
 /* End PBXBuildFile section */
@@ -35,7 +35,7 @@
 /* Begin PBXFileReference section */
 		801FFAAF2A62FF7400F84FC1 /* P_NumericTextAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P_NumericTextAnimation.swift; sourceTree = "<group>"; };
 		8043A4552A61FA90006AB0DA /* CalcScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalcScreen.swift; sourceTree = "<group>"; };
-		8043A4572A61FAA1006AB0DA /* CalcScreenHorizontal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalcScreenHorizontal.swift; sourceTree = "<group>"; };
+		8043A4572A61FAA1006AB0DA /* CalcScreenH.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalcScreenH.swift; sourceTree = "<group>"; };
 		80649D2F2A607CC7007CC893 /* TCACalc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TCACalc.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		80649D322A607CC7007CC893 /* TCACalcApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCACalcApp.swift; sourceTree = "<group>"; };
 		80649D342A607CC7007CC893 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -44,7 +44,7 @@
 		80649D3A2A607CC9007CC893 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		80649D442A607D72007CC893 /* TCACalc_UI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = TCACalc_UI; path = ../../TCACalc_UI; sourceTree = "<group>"; };
 		808EAFDD2A659245008F2368 /* Decimal+Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Decimal+Tests.swift"; sourceTree = "<group>"; };
-		80936EBB2A60A8A200A2939F /* CalcScreenVerticalFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalcScreenVerticalFeature.swift; sourceTree = "<group>"; };
+		80936EBB2A60A8A200A2939F /* CalcScreenV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalcScreenV.swift; sourceTree = "<group>"; };
 		80936EBD2A60C75000A2939F /* Decimal+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Decimal+.swift"; sourceTree = "<group>"; };
 		80936EC32A60D94C00A2939F /* TCACalcTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TCACalcTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		80936EC52A60D94C00A2939F /* TCACalcTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCACalcTests.swift; sourceTree = "<group>"; };
@@ -104,9 +104,9 @@
 				80649D442A607D72007CC893 /* TCACalc_UI */,
 				80649D322A607CC7007CC893 /* TCACalcApp.swift */,
 				80649D342A607CC7007CC893 /* ContentView.swift */,
-				80936EBB2A60A8A200A2939F /* CalcScreenVerticalFeature.swift */,
 				8043A4552A61FA90006AB0DA /* CalcScreen.swift */,
-				8043A4572A61FAA1006AB0DA /* CalcScreenHorizontal.swift */,
+				80936EBB2A60A8A200A2939F /* CalcScreenV.swift */,
+				8043A4572A61FAA1006AB0DA /* CalcScreenH.swift */,
 				80936EBD2A60C75000A2939F /* Decimal+.swift */,
 				80649D362A607CC9007CC893 /* Assets.xcassets */,
 				80649D382A607CC9007CC893 /* TCACalc.entitlements */,
@@ -246,8 +246,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8043A4582A61FAA1006AB0DA /* CalcScreenHorizontal.swift in Sources */,
-				80936EBC2A60A8A200A2939F /* CalcScreenVerticalFeature.swift in Sources */,
+				8043A4582A61FAA1006AB0DA /* CalcScreenH.swift in Sources */,
+				80936EBC2A60A8A200A2939F /* CalcScreenV.swift in Sources */,
 				801FFAB02A62FF7500F84FC1 /* P_NumericTextAnimation.swift in Sources */,
 				80649D352A607CC7007CC893 /* ContentView.swift in Sources */,
 				80649D332A607CC7007CC893 /* TCACalcApp.swift in Sources */,

@@ -1,5 +1,5 @@
 //
-//  CalcScreenVerticalFeature.swift
+//  CalcScreenVFeature.swift
 //  TCACalc
 //
 //  Created by Daniel Lyons on 7/13/23.
@@ -8,7 +8,7 @@
 import Foundation
 import ComposableArchitecture
 
-struct CalcScreenVerticalFeature: ReducerProtocol {
+struct CalcScreenVFeature: ReducerProtocol {
   struct State: Equatable {
     var currentOrangeButton: CurrentOrangeButton = .none
     enum CurrentOrangeButton {
@@ -16,7 +16,7 @@ struct CalcScreenVerticalFeature: ReducerProtocol {
     }
     var currentNum: Decimal = 0
     
-    var calcGrid: CalcGridVFeature.State
+    var calcGridV: CalcGridVFeature.State
     
   }
   enum Action: Equatable {
@@ -57,7 +57,7 @@ struct CalcScreenVerticalFeature: ReducerProtocol {
       }
     }
     
-    Scope(state: \.calcGrid, action: /Action.calcGrid) {
+    Scope(state: \.calcGridV, action: /Action.calcGrid) {
       CalcGridVFeature()
     }
   }
@@ -67,7 +67,7 @@ import SwiftUI
 import TCACalc_UI
 
 struct CalcScreenVertical: View {
-  let store: StoreOf<CalcScreenVerticalFeature>
+  let store: StoreOf<CalcScreenVFeature>
   
   var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
@@ -85,8 +85,8 @@ struct CalcScreenVertical: View {
             .contentTransition(.numericText(countsDown: false))
             .animation(.snappy, value: viewStore.currentNum)
           
-          CalcGridV(store: self.store.scope(state: \.calcGrid,
-                                           action: CalcScreenVerticalFeature.Action.calcGrid)
+          CalcGridV(store: self.store.scope(state: \.calcGridV,
+                                           action: CalcScreenVFeature.Action.calcGrid)
           )
         }
         .padding(.horizontal)
@@ -97,13 +97,13 @@ struct CalcScreenVertical: View {
 
 //#Preview("CalcScreenVertical") {
 //  CalcScreenVertical(store: .init(initialState: .init(calcGrid: .init()), reducer: {
-//    CalcScreenVerticalFeature()._printChanges()
+//    CalcScreenVFeature()._printChanges()
 //  }))
 //}
 
 #Preview("CalcScreenVertical (in CalcScreen)") {
   CalcScreen(store: .init(initialState: .init(hScreen: .init(calcGridH: .init()),
-                                              vScreen: .init(calcGrid: .init()),
+                                              vScreen: .init(calcGridV: .init()),
                                               currentOrientation: .portrait
                                              ),
                           reducer: {
