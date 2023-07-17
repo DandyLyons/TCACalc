@@ -15,6 +15,9 @@ struct CalcScreenFeature: ReducerProtocol {
     
     var currentOrientation = UIDeviceOrientation.portrait
     
+    private(set) var activeOperation: ActiveOperation? = nil
+    enum ActiveOperation { case divide, multiply, minus, plus }
+    
     /// to mutate `currentNum` use `updateCurrentNum(byPerforming: )`
     private(set) var currentNum: Decimal = 0
     
@@ -25,15 +28,58 @@ struct CalcScreenFeature: ReducerProtocol {
       mutation(&self.vScreen.currentNum)
     }
     
-    var previousNum: Decimal = 0
+    mutating func updateActiveOperation(to newValue: ActiveOperation?) {
+      self.activeOperation = newValue
+      switch newValue {
+        case .divide:
+          self.hScreen.calcGridH.turnDivideOn()
+          self.vScreen.calcGrid.turnDivideOn()
+        case .multiply:
+          self.hScreen.calcGridH.turnMultiplyOn()
+          self.vScreen.calcGrid.turnMultiplyOn()
+        case .minus:
+          self.hScreen.calcGridH.turnMinusOn()
+          self.vScreen.calcGrid.turnMinusOn()
+        case .plus:
+          self.hScreen.calcGridH.turnPlusOn()
+          self.vScreen.calcGrid.turnPlusOn()
+        case nil:
+          self.hScreen.calcGridH.turnAllOff()
+          self.vScreen.calcGrid.turnAllOff()
+      }
+    }
+    
+    mutating func _performArithmetic() {
+      guard let activeOperation,
+            let previousNum else {
+        return
+      }
+      let result: Decimal
+      
+      switch activeOperation {
+          
+        case .divide:
+          result = previousNum / self.currentNum
+        case .multiply:
+          result = previousNum * self.currentNum
+        case .minus:
+          result = previousNum - self.currentNum
+        case .plus:
+          result = previousNum + self.currentNum
+      }
+      self.previousNum = self.currentNum
+      self.updateCurrentNum(byPerforming: { $0 = result})
+    }
+    
+    var previousNum: Decimal? = nil
     private(set) var isInBlankState: Bool = true
     
-    mutating func determineIfBlank () {
+    mutating func determineIfInBlankState () {
       if self.currentNum == 0,
-         self.previousNum == 0 {
-        self.updateIsInBlankState(byPerforming: { $0 = true})
+         self.previousNum == nil {
+        self.updateIsInBlankState(byPerforming: { $0 = true })
       } else {
-        self.updateIsInBlankState(byPerforming: { $0 = false})
+        self.updateIsInBlankState(byPerforming: { $0 = false })
       }
     }
     
@@ -74,16 +120,40 @@ struct CalcScreenFeature: ReducerProtocol {
         case let .vScreen(.calcGrid(calcGridAction)):
           switch calcGridAction {
             case .view(.onTap(int: let int)):
-              state.updateCurrentNum(byPerforming: { $0.append(int)})
+              if state.isInBlankState {
+                state.updateCurrentNum(byPerforming: { $0.append(int)})
+              } else {
+                state.previousNum = state.currentNum
+                state.updateCurrentNum(byPerforming: { $0 = Decimal(int) })
+              }
               return .none
             case .view(.onTapACButton):
               state.updateCurrentNum(byPerforming: { $0 = 0})
+              state.previousNum = nil
+              state.updateIsInBlankState(byPerforming: { $0 = true })
               return .none
             case .view(.onTapPercentButton):
               state.updateCurrentNum(byPerforming: { $0 /= 100 })
               return .none
             case .view(.onTapNegateSignButton):
               state.updateCurrentNum(byPerforming: { $0 *= -1 })
+              return .none
+              
+            case .view(.onTapDivideButton):
+              state.updateActiveOperation(to: .divide)
+              return .none
+            case .view(.onTapMultiplyButton):
+              state.updateActiveOperation(to: .multiply)
+              return .none
+            case .view(.onTapMinusButton):
+              state.updateActiveOperation(to: .minus)
+              return .none
+            case .view(.onTapPlusButton):
+              state.updateActiveOperation(to: .plus)
+              return .none
+              
+            case .view(.onTapEqualButton):
+              state._performArithmetic()
               return .none
             default:
               return .none
@@ -92,7 +162,9 @@ struct CalcScreenFeature: ReducerProtocol {
         case let .hScreen(.calcGridH(hCalcGridAction)):
           switch hCalcGridAction {
             case .view(.onTap(int: let int)):
-              state.updateCurrentNum(byPerforming: { $0.append(int)})
+              if state.isInBlankState {
+                state.updateCurrentNum(byPerforming: { $0.append(int)})
+              }
               return .none
             case .view(.onTapACButton):
               state.updateCurrentNum(byPerforming: { $0 = 0})
@@ -103,6 +175,9 @@ struct CalcScreenFeature: ReducerProtocol {
             case .view(.onTapNegateSignButton):
               state.updateCurrentNum(byPerforming: { $0 *= -1 })
               return .none
+            case .view(.onTapEqualButton):
+              state._performArithmetic()
+              return .none
             default:
               return .none
               
@@ -110,7 +185,7 @@ struct CalcScreenFeature: ReducerProtocol {
       }
     }
     Reduce<State, Action> { state, action in
-      state.determineIfBlank()
+      state.determineIfInBlankState()
       return .none
     }
     
@@ -176,17 +251,17 @@ struct CalcScreen: View {
   
 }
 
-#Preview("CalcScreen H"
-         , traits: .landscapeLeft
-) {
-  CalcScreen(store: .init(initialState: .init(hScreen: .init(calcGridH: .init()),
-                                              vScreen: .init(calcGrid: .init()),
-                                              currentOrientation: .landscapeLeft
-                                             ),
-                          reducer: {
-    CalcScreenFeature()._printChanges()
-  }))
-}
+//#Preview("CalcScreen H"
+//         , traits: .landscapeLeft
+//) {
+//  CalcScreen(store: .init(initialState: .init(hScreen: .init(calcGridH: .init()),
+//                                              vScreen: .init(calcGrid: .init()),
+//                                              currentOrientation: .landscapeLeft
+//                                             ),
+//                          reducer: {
+//    CalcScreenFeature()._printChanges()
+//  }))
+//}
 
 #Preview("CalcScreen V"
 ) {

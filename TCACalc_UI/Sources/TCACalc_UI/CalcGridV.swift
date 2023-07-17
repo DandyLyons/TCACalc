@@ -27,31 +27,31 @@ public struct CalcGridVFeature: ReducerProtocol {
       self.isPlusOn = isPlusOn
     }
     
-    mutating func turnDivideOn() {
+    public mutating func turnDivideOn() {
       self.isDivideOn = true
       self.isMultiplyOn = false
       self.isMinusOn = false
       self.isPlusOn = false
     }
-    mutating func turnMultiplyOn() {
+    public mutating func turnMultiplyOn() {
       self.isDivideOn = false
       self.isMultiplyOn = true
       self.isMinusOn = false
       self.isPlusOn = false
     }
-    mutating func turnMinusOn() {
+    public mutating func turnMinusOn() {
       self.isDivideOn = false
       self.isMultiplyOn = false
       self.isMinusOn = true
       self.isPlusOn = false
     }
-    mutating func turnPlusOn() {
+    public mutating func turnPlusOn() {
       self.isDivideOn = false
       self.isMultiplyOn = false
       self.isMinusOn = false
       self.isPlusOn = true
     }
-    mutating func turnAllOff() {
+    public mutating func turnAllOff() {
       self.isDivideOn = false
       self.isMultiplyOn = false
       self.isMinusOn = false
@@ -72,6 +72,7 @@ public struct CalcGridVFeature: ReducerProtocol {
       case onTapACButton
       case onTapNegateSignButton
       case onTapPercentButton
+      case onTapDecimalButton
     }
     case delegate(Delegate)
     public enum Delegate: Equatable {
@@ -109,6 +110,8 @@ public struct CalcGridVFeature: ReducerProtocol {
             case .onTapNegateSignButton:
               return .none
             case .onTapPercentButton:
+              return .none
+            case .onTapDecimalButton:
               return .none
           }
           
@@ -200,7 +203,7 @@ public struct CalcGridV: View {
             .buttonStyle(CapsuleButtonStyle(foregroundIdleColor: .white, backgroundIdleColor: .secondary))
           
           
-          Button(".") {}
+          Button(".") { viewStore.send(.view(.onTapDecimalButton))}
             .buttonStyle(self.darkgrayStyle)
           Button { viewStore.send(.view(.onTapEqualButton)) } label: {
             Image(systemName: "equal")

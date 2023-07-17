@@ -28,31 +28,31 @@ public struct CalcGridHFeature: ReducerProtocol {
       self.isPlusOn = isPlusOn
     }
     
-    mutating func turnDivideOn() {
+    public mutating func turnDivideOn() {
       self.isDivideOn = true
       self.isMultiplyOn = false
       self.isMinusOn = false
       self.isPlusOn = false
     }
-    mutating func turnMultiplyOn() {
+    public mutating func turnMultiplyOn() {
       self.isDivideOn = false
       self.isMultiplyOn = true
       self.isMinusOn = false
       self.isPlusOn = false
     }
-    mutating func turnMinusOn() {
+    public mutating func turnMinusOn() {
       self.isDivideOn = false
       self.isMultiplyOn = false
       self.isMinusOn = true
       self.isPlusOn = false
     }
-    mutating func turnPlusOn() {
+    public mutating func turnPlusOn() {
       self.isDivideOn = false
       self.isMultiplyOn = false
       self.isMinusOn = false
       self.isPlusOn = true
     }
-    mutating func turnAllOff() {
+    public mutating func turnAllOff() {
       self.isDivideOn = false
       self.isMultiplyOn = false
       self.isMinusOn = false
@@ -73,6 +73,7 @@ public struct CalcGridHFeature: ReducerProtocol {
       case onTapACButton
       case onTapNegateSignButton
       case onTapPercentButton
+      case onTapDecimalButton
     }
     case delegate(Delegate)
     public enum Delegate: Equatable {
@@ -111,6 +112,8 @@ public struct CalcGridHFeature: ReducerProtocol {
               return .none
             case .onTapPercentButton:
               return .none
+            case .onTapDecimalButton:
+              return .none
           }
           
         case .delegate:
@@ -141,12 +144,6 @@ public struct CalcGridH: View {
       
       
       Grid(alignment: .center, horizontalSpacing: 8.0, verticalSpacing: 8.0) {
-//        HStack {
-//          Spacer()
-//          Text(viewStore.displayedNum)
-//            .font(.system(size: 36))
-//            .foregroundStyle(.white)
-//        }
         
         self.row1(viewStore)
         self.row2(viewStore)
@@ -260,7 +257,7 @@ public struct CalcGridH: View {
         Button { viewStore.send(.view(.onTap(int: 0)))} label: { Text("0") }
           .gridCellColumns(2)
         
-        Button {} label: { Text(".") }
+        Button(".") { viewStore.send(.view(.onTapDecimalButton)) }
       }.buttonStyle(self.midgrayStyle)
       Button {viewStore.send(.view(.onTapEqualButton))} label: { Image(systemName: "equal") }
         .modifier(self.offOrangeBackground)
