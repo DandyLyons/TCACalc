@@ -122,7 +122,7 @@ struct P_NumericTextAnimation: View {
 
 //#Preview("P_NumericTextAnimation") {
 //  P_NumericTextAnimation(store: .init(initialState: .init(hScreen: .init(),
-//                                              vScreen: .init(calcGrid: .init()),
+//                                              vScreen: .init(calcGridV: .init()),
 //                                              currentOrientation: .portrait
 //                                             ),
 //                          reducer: {

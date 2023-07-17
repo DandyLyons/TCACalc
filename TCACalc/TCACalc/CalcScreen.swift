@@ -124,7 +124,7 @@ struct CalcScreenFeature: ReducerProtocol {
           return .none
           
           // SPYING ON SUBVIEWS
-        case let .vScreen(.calcGrid(vCalcGridAction)):
+        case let .vScreen(.calcGridV(vCalcGridAction)):
           switch vCalcGridAction {
             case .view(.onTap(int: let int)):
               if state.isInBlankState {
