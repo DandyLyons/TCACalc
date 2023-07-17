@@ -15,6 +15,7 @@
 		80649D372A607CC9007CC893 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 80649D362A607CC9007CC893 /* Assets.xcassets */; };
 		80649D3B2A607CC9007CC893 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 80649D3A2A607CC9007CC893 /* Preview Assets.xcassets */; };
 		80649D432A607D32007CC893 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 80649D422A607D32007CC893 /* ComposableArchitecture */; };
+		808EAFDE2A659245008F2368 /* Decimal+Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808EAFDD2A659245008F2368 /* Decimal+Tests.swift */; };
 		80936EBA2A607E1100A2939F /* TCACalc_UI in Frameworks */ = {isa = PBXBuildFile; productRef = 80936EB92A607E1100A2939F /* TCACalc_UI */; };
 		80936EBC2A60A8A200A2939F /* CalcScreenVerticalFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80936EBB2A60A8A200A2939F /* CalcScreenVerticalFeature.swift */; };
 		80936EBE2A60C75000A2939F /* Decimal+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80936EBD2A60C75000A2939F /* Decimal+.swift */; };
@@ -42,6 +43,7 @@
 		80649D382A607CC9007CC893 /* TCACalc.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TCACalc.entitlements; sourceTree = "<group>"; };
 		80649D3A2A607CC9007CC893 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		80649D442A607D72007CC893 /* TCACalc_UI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = TCACalc_UI; path = ../../TCACalc_UI; sourceTree = "<group>"; };
+		808EAFDD2A659245008F2368 /* Decimal+Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Decimal+Tests.swift"; sourceTree = "<group>"; };
 		80936EBB2A60A8A200A2939F /* CalcScreenVerticalFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalcScreenVerticalFeature.swift; sourceTree = "<group>"; };
 		80936EBD2A60C75000A2939F /* Decimal+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Decimal+.swift"; sourceTree = "<group>"; };
 		80936EC32A60D94C00A2939F /* TCACalcTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TCACalcTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -132,6 +134,7 @@
 			isa = PBXGroup;
 			children = (
 				80936EC52A60D94C00A2939F /* TCACalcTests.swift */,
+				808EAFDD2A659245008F2368 /* Decimal+Tests.swift */,
 			);
 			path = TCACalcTests;
 			sourceTree = "<group>";
@@ -258,6 +261,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				80936EC62A60D94C00A2939F /* TCACalcTests.swift in Sources */,
+				808EAFDE2A659245008F2368 /* Decimal+Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

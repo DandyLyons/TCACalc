@@ -7,32 +7,50 @@
 
 import XCTest
 @testable import TCACalc
+import ComposableArchitecture
 
+@MainActor
+struct Testables {
+  static let blankCalcScreenStore = TestStore(
+    initialState: CalcScreenFeature.State(
+      hScreen: .init(calcGridH: .init()),
+      vScreen: .init(calcGrid: .init())
+    ),
+    reducer: CalcScreenFeature()
+  )
+}
+
+@MainActor
 final class TCACalcTests: XCTestCase {
-  func testDecimalToTheNthPower() throws {
-    var base = 3
-    var power = 3
-    XCTAssertEqual(Decimal(base).toTheNthPower(power), 27)
-    base = 10
-    power = -4
-    XCTAssertEqual(Decimal(base).toTheNthPower(power), 0.0001)
-    power = 4
-    XCTAssertEqual(Decimal(base).toTheNthPower(power), 10_000)
-    
-  }
+//  func testTypingNumbers() async {
+//    let store = Testables.blankCalcScreenStore
+//    await store.send(.vScreen(.calcGrid(.view(.onTap(int: 1))))) {
+//      $0.updateCurrentNum { $0 = 1 }
+//      $0.updateIsInBlankState(byPerforming: { $0 = false })
+//    }
+//    await store.send(.vScreen(.calcGrid(.view(.onTap(int: 2))))) {
+//      $0.updateCurrentNum { $0 = 12 }
+//    }
+//  }
   
-  func testDecimalAppend() throws {
-    var base: Decimal = 1
-    base.append(1)
-    XCTAssertEqual(base, 11)
-    base.append(4)
-    XCTAssertEqual(base, 114)
+  func test1Plus1() async {
+    let store = Testables.blankCalcScreenStore
     
-    base = 0.1
-    base.append(2)
-    XCTAssertEqual(base, 0.12)
-    base.append(9)
-    XCTAssertEqual(base, 0.129)
+    await store.send(.hScreen(.calcGridH(.view(.onTap(int: 1))))) {
+      $0.updateCurrentNum(byPerforming: { $0 = 1 })
+      $0.updateIsInBlankState(byPerforming: { $0 = false })
+    }
+    await store.send(.vScreen(.calcGrid(.view(.onTapPlusButton)))) {
+      $0.updateActiveOperation(to: .plus)
+    }
+    await store.send(.vScreen(.calcGrid(.view(.onTap(int: 1))))) {
+      $0.updateCurrentNum(byPerforming: { $0 = 1 })
+      $0.previousNum = 1
+    }
+    await store.send(.hScreen(.calcGridH(.view(.onTapEqualButton)))) {
+      $0.updateCurrentNum(byPerforming: { $0 = 2 })
+      $0.updateActiveOperation(to: nil)
+    }
   }
 
 }

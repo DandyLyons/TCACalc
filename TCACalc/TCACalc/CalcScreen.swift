@@ -29,7 +29,6 @@ struct CalcScreenFeature: ReducerProtocol {
     }
     
     mutating func updateActiveOperation(to newValue: ActiveOperation?) {
-      self.activeOperation = newValue
       switch newValue {
         case .divide:
           self.hScreen.calcGridH.turnDivideOn()
@@ -47,6 +46,7 @@ struct CalcScreenFeature: ReducerProtocol {
           self.hScreen.calcGridH.turnAllOff()
           self.vScreen.calcGrid.turnAllOff()
       }
+      self.activeOperation = newValue
     }
     
     mutating func _performArithmetic() {
@@ -86,6 +86,13 @@ struct CalcScreenFeature: ReducerProtocol {
     mutating func updateIsInBlankState(byPerforming mutation: (inout Bool) -> Void) {
       mutation(&self.isInBlankState)
       mutation(&self.vScreen.calcGrid.isInBlankState)
+      mutation(&self.hScreen.calcGridH.isInBlankState)
+    }
+    
+    mutating func updateIsInBlankState(to newValue: Bool) {
+      self.isInBlankState = newValue
+      self.vScreen.calcGrid.isInBlankState = newValue
+      self.hScreen.calcGridH.isInBlankState = newValue
     }
 
   }
@@ -117,8 +124,8 @@ struct CalcScreenFeature: ReducerProtocol {
           return .none
           
           // SPYING ON SUBVIEWS
-        case let .vScreen(.calcGrid(calcGridAction)):
-          switch calcGridAction {
+        case let .vScreen(.calcGrid(vCalcGridAction)):
+          switch vCalcGridAction {
             case .view(.onTap(int: let int)):
               if state.isInBlankState {
                 state.updateCurrentNum(byPerforming: { $0.append(int)})
@@ -154,6 +161,7 @@ struct CalcScreenFeature: ReducerProtocol {
               
             case .view(.onTapEqualButton):
               state._performArithmetic()
+              state.updateActiveOperation(to: nil)
               return .none
             default:
               return .none
@@ -164,10 +172,15 @@ struct CalcScreenFeature: ReducerProtocol {
             case .view(.onTap(int: let int)):
               if state.isInBlankState {
                 state.updateCurrentNum(byPerforming: { $0.append(int)})
+              } else {
+                state.previousNum = state.currentNum
+                state.updateCurrentNum(byPerforming: { $0 = Decimal(int) })
               }
               return .none
             case .view(.onTapACButton):
               state.updateCurrentNum(byPerforming: { $0 = 0})
+              state.previousNum = nil
+              state.updateIsInBlankState(byPerforming: { $0 = true })
               return .none
             case .view(.onTapPercentButton):
               state.updateCurrentNum(byPerforming: { $0 /= 100 })
@@ -175,12 +188,26 @@ struct CalcScreenFeature: ReducerProtocol {
             case .view(.onTapNegateSignButton):
               state.updateCurrentNum(byPerforming: { $0 *= -1 })
               return .none
+              
+            case .view(.onTapDivideButton):
+              state.updateActiveOperation(to: .divide)
+              return .none
+            case .view(.onTapMultiplyButton):
+              state.updateActiveOperation(to: .multiply)
+              return .none
+            case .view(.onTapMinusButton):
+              state.updateActiveOperation(to: .minus)
+              return .none
+            case .view(.onTapPlusButton):
+              state.updateActiveOperation(to: .plus)
+              return .none
+              
             case .view(.onTapEqualButton):
               state._performArithmetic()
+              state.updateActiveOperation(to: nil)
               return .none
             default:
               return .none
-              
           }
       }
     }
