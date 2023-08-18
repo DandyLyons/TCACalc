@@ -8,7 +8,7 @@
 import Foundation
 import ComposableArchitecture
 
-struct CalcScreenFeature: ReducerProtocol {
+struct CalcScreenFeature: Reducer {
   struct State: Equatable {
     var hScreen: CalcScreenHFeature.State
     var vScreen: CalcScreenVFeature.State
@@ -162,7 +162,7 @@ struct CalcScreenFeature: ReducerProtocol {
   
   
   
-  var body: some ReducerProtocolOf<Self> {
+  var body: some ReducerOf<Self> {
     Reduce<State, Action> { state, action in
       switch action {
         case let .currentOrientationChangedTo(newOrientation):
@@ -259,10 +259,22 @@ import SwiftUI
 
 struct CalcScreen: View {
   let store: StoreOf<CalcScreenFeature>
-  @State private var currentOrientation: UIDeviceOrientation = UIDevice.current.orientation
+//  @State private var currentOrientation: UIDeviceOrientation = UIDevice.current.orientation
+  
+  struct ViewState: Equatable {
+    #if os(iOS)
+    let currentOrientation: UIDeviceOrientation
+    #endif
+    
+    init(state: CalcScreenFeature.State) {
+      #if os(iOS)
+      self.currentOrientation = state.currentOrientation
+      #endif
+    }
+  }
   
   var body: some View {
-    WithViewStore(store, observe: { $0 }) { viewStore in
+    WithViewStore(store, observe: ViewState.init) { viewStore in
       Group {
         switch viewStore.currentOrientation {
           case .portrait, .portraitUpsideDown,.faceDown, .faceUp:

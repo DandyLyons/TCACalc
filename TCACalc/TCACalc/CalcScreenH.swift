@@ -9,7 +9,7 @@ import Foundation
 import ComposableArchitecture
 import TCACalc_UI
 
-struct CalcScreenHFeature: ReducerProtocol {
+struct CalcScreenHFeature: Reducer {
   struct State: Equatable {
     var currentNum: Decimal = 0
     var calcGridH: CalcGridHFeature.State
@@ -32,7 +32,7 @@ struct CalcScreenHFeature: ReducerProtocol {
     
   }
   
-  var body: some ReducerProtocolOf<Self> {
+  var body: some ReducerOf<Self> {
     Reduce<State, Action> { state, action in
       switch action {
           
@@ -53,8 +53,16 @@ import SwiftUI
 struct CalcScreenHorizontal: View {
   let store: StoreOf<CalcScreenHFeature>
   
+  struct ViewState: Equatable {
+    let currentNum: Decimal
+    
+    init(state: CalcScreenHFeature.State) {
+      self.currentNum = state.currentNum
+    }
+  }
+  
   var body: some View {
-    WithViewStore(store, observe: { $0 }) { viewStore in
+    WithViewStore(store, observe: ViewState.init) { viewStore in
       
       ZStack {
         Color.black

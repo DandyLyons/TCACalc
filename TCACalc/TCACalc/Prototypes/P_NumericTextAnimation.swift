@@ -9,7 +9,7 @@
 import Foundation
 import ComposableArchitecture
 
-struct P_NumericTextAnimationFeature: ReducerProtocol {
+struct P_NumericTextAnimationFeature: Reducer {
   struct State: Equatable {
     var currentOrangeButton: CurrentOrangeButton = .none
     enum CurrentOrangeButton {
@@ -39,7 +39,7 @@ struct P_NumericTextAnimationFeature: ReducerProtocol {
     }
   }
   
-  var body: some ReducerProtocolOf<Self> {
+  var body: some ReducerOf<Self> {
     Reduce<State, Action> { state, action in
       switch action {
         case let .view(viewAction):

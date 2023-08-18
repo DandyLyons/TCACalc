@@ -11,7 +11,7 @@ import SwiftUI
 
 import ComposableArchitecture
 
-public struct CalcGridHFeature: ReducerProtocol {
+public struct CalcGridHFeature: Reducer {
   public init() {}
   
   public struct State: Equatable {
@@ -83,7 +83,7 @@ public struct CalcGridHFeature: ReducerProtocol {
     
   }
   
-  public var body: some ReducerProtocolOf<Self> {
+  public var body: some ReducerOf<Self> {
     Reduce<State, Action> { state, action in
       switch action {
         case let .view(viewAction):
@@ -138,9 +138,24 @@ public struct CalcGridH: View {
   public let onOrangeBackground = CircleBackground(foreground: .orange, background: .white)
   public let offOrangeBackground = CircleBackground(foreground: .white, background: .orange)
   
+  struct ViewState: Equatable {
+    let isDivideOn: Bool
+    let isMultiplyOn: Bool
+    let isMinusOn: Bool
+    let isPlusOn: Bool
+    let isInBlankState: Bool
+    
+    init(state: CalcGridHFeature.State) {
+      self.isDivideOn = state.isDivideOn
+      self.isMultiplyOn = state.isMultiplyOn
+      self.isMinusOn = state.isMinusOn
+      self.isPlusOn = state.isPlusOn
+      self.isInBlankState = state.isInBlankState
+    }
+  }
   
   public var body: some View {
-    WithViewStore(self.store, observe: { $0 } ) { viewStore in
+    WithViewStore(self.store, observe: ViewState.init ) { viewStore in
       
       
       Grid(alignment: .center, horizontalSpacing: 8.0, verticalSpacing: 8.0) {
@@ -158,7 +173,7 @@ public struct CalcGridH: View {
   }
   
   
-  func row1(_ viewStore: ViewStoreOf<CalcGridHFeature>) -> some View {
+  func row1(_ viewStore: ViewStore<CalcGridH.ViewState, CalcGridHFeature.Action>) -> some View {
     GridRow {
       Group {
         Button {} label: { Text("(") }
@@ -179,7 +194,7 @@ public struct CalcGridH: View {
     }
   }
   
-  func row2(_ viewStore: ViewStoreOf<CalcGridHFeature>) -> some View {
+  func row2(_ viewStore: ViewStore<CalcGridH.ViewState, CalcGridHFeature.Action>) -> some View {
     GridRow {
       Group {
         Button {} label: { Text("2") + Text("nd".attributed().superscripted()) }
@@ -200,7 +215,7 @@ public struct CalcGridH: View {
     }
   }
   
-  func row3(_ viewStore: ViewStoreOf<CalcGridHFeature>) -> some View {
+  func row3(_ viewStore: ViewStore<CalcGridH.ViewState, CalcGridHFeature.Action>) -> some View {
     GridRow {
       Group {
         Button { } label: { Text("1/x") }
@@ -221,7 +236,7 @@ public struct CalcGridH: View {
     }
   }
   
-  func row4(_ viewStore: ViewStoreOf<CalcGridHFeature>) -> some View {
+  func row4(_ viewStore: ViewStore<CalcGridH.ViewState, CalcGridHFeature.Action>) -> some View {
     GridRow {
       Group {
         Button {} label: { Text("x!") }
@@ -242,7 +257,7 @@ public struct CalcGridH: View {
     }
   }
   
-  func row5(_ viewStore: ViewStoreOf<CalcGridHFeature>) -> some View {
+  func row5(_ viewStore: ViewStore<CalcGridH.ViewState, CalcGridHFeature.Action>) -> some View {
     GridRow {
       Group {
         Button {} label: { Text("Rad") }

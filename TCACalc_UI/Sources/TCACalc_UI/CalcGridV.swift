@@ -10,7 +10,7 @@ import SwiftUI
 
 import ComposableArchitecture
 
-public struct CalcGridVFeature: ReducerProtocol {
+public struct CalcGridVFeature: Reducer {
   public init() {}
   
   public struct State: Equatable {
@@ -82,7 +82,7 @@ public struct CalcGridVFeature: ReducerProtocol {
     
   }
   
-  public var body: some ReducerProtocolOf<Self> {
+  public var body: some ReducerOf<Self> {
     Reduce<State, Action> { state, action in
       switch action {
         case let .view(viewAction):
@@ -135,11 +135,25 @@ public struct CalcGridV: View {
   public let onOrangeBackground = CircleBackground(foreground: .orange, background: .white)
   public let offOrangeBackground = CircleBackground(foreground: .white, background: .orange)
   
-  
+  struct ViewState: Equatable {
+    let isDivideOn: Bool
+    let isMultiplyOn: Bool
+    let isMinusOn: Bool
+    let isPlusOn: Bool
+    let isInBlankState: Bool
+    
+    init(state: CalcGridVFeature.State) {
+      self.isDivideOn = state.isDivideOn
+      self.isMultiplyOn = state.isMultiplyOn
+      self.isMinusOn = state.isMinusOn
+      self.isPlusOn = state.isPlusOn
+      self.isInBlankState = state.isInBlankState
+    }
+  }
   
     
   public var body: some View {
-    WithViewStore(self.store, observe: { $0 } ) { viewStore in
+    WithViewStore(self.store, observe: ViewState.init ) { viewStore in
       
       
       Grid(alignment: .center, horizontalSpacing: 8.0, verticalSpacing: 8.0) {

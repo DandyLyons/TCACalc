@@ -8,7 +8,7 @@
 import Foundation
 import ComposableArchitecture
 
-struct CalcScreenVFeature: ReducerProtocol {
+struct CalcScreenVFeature: Reducer {
   struct State: Equatable {
     var currentOrangeButton: CurrentOrangeButton = .none
     enum CurrentOrangeButton {
@@ -37,7 +37,7 @@ struct CalcScreenVFeature: ReducerProtocol {
     }
   }
   
-  var body: some ReducerProtocolOf<Self> {
+  var body: some ReducerOf<Self> {
     Reduce<State, Action> { state, action in
       switch action {
         case let .view(viewAction):
@@ -69,8 +69,16 @@ import TCACalc_UI
 struct CalcScreenVertical: View {
   let store: StoreOf<CalcScreenVFeature>
   
+  struct ViewState: Equatable {
+    let currentNum: Decimal
+    
+    init(state: CalcScreenVFeature.State) {
+      self.currentNum = state.currentNum
+    }
+  }
+  
   var body: some View {
-    WithViewStore(store, observe: { $0 }) { viewStore in
+    WithViewStore(store, observe: ViewState.init) { viewStore in
       ZStack {
         Color.black
           .ignoresSafeArea()
