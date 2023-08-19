@@ -388,6 +388,7 @@ extension UIDeviceOrientation: CustomDebugStringConvertible {
   }
 }
 
+// MARK: View
 import SwiftUI
 
 struct CalcScreen: View {
@@ -406,6 +407,7 @@ struct CalcScreen: View {
     let previousNum: Decimal?
     let isInBlankState: Bool
     let activeOperation: CalcScreenFeature.State.ActiveOperation?
+    let currentTintColor: Color
     
     init(state: CalcScreenFeature.State) {
       #if os(iOS)
@@ -417,7 +419,7 @@ struct CalcScreen: View {
       self.previousNum = state.previousNum
       self.isInBlankState = state.isInBlankState
       self.activeOperation = state.activeOperation
-      
+      self.currentTintColor = state.userSettings.accentColor
     }
   }
   
@@ -431,6 +433,7 @@ struct CalcScreen: View {
       Text("Current orientation: \(viewStore.currentOrientation.debugDescription)")
     }
   }
+  
   
   var body: some View {
     WithViewStore(store, observe: ViewState.init) { viewStore in
@@ -453,13 +456,17 @@ struct CalcScreen: View {
               .onAppear { print("Something is broken") }
         }
       }
+      // MARK: View Events
       .onAppear {
         viewStore.send(.currentOrientationChangedTo(UIDeviceOrientation.portrait))
       }
       .onRotate { newOrientation in
         viewStore.send(.currentOrientationChangedTo(newOrientation))
       }
+      
+      // MARK: View Styling
       .preferredColorScheme(viewStore.colorSchemeMode.resolvedColorScheme)
+      .tint(viewStore.currentTintColor)
       
       // MARK: View Presentation
       .sheet(

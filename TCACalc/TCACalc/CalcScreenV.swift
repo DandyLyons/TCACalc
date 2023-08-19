@@ -11,8 +11,8 @@ import ComposableArchitecture
 struct CalcScreenVFeature: Reducer {
   struct State: Equatable {
     
-    var currentOrangeButton: CurrentOrangeButton = .none
-    enum CurrentOrangeButton {
+    var currentOperationButton: OperationButton = .none
+    enum OperationButton {
       case divide, multiply, minus, plus, equal, none
     }
     var currentNum: Decimal = 0
@@ -29,9 +29,7 @@ struct CalcScreenVFeature: Reducer {
     case view(View)
     enum View: Equatable {
       case onTapSettingsButton
-      
-      
-    }
+      }
     case delegate(Delegate)
     enum Delegate: Equatable {
       case presentSettingsView

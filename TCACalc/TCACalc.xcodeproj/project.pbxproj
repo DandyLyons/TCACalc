@@ -17,6 +17,8 @@
 		80649D372A607CC9007CC893 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 80649D362A607CC9007CC893 /* Assets.xcassets */; };
 		80649D3B2A607CC9007CC893 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 80649D3A2A607CC9007CC893 /* Preview Assets.xcassets */; };
 		806BC16A2A902AEE00B252F9 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806BC1692A902AEE00B252F9 /* UserSettings.swift */; };
+		807F40642A911DE2009A8FD7 /* Color+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807F40632A911DE2009A8FD7 /* Color+Codable.swift */; };
+		807F40662A913106009A8FD7 /* ColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807F40652A913106009A8FD7 /* ColorView.swift */; };
 		808EAFDE2A659245008F2368 /* Decimal+Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808EAFDD2A659245008F2368 /* Decimal+Tests.swift */; };
 		80936EBA2A607E1100A2939F /* TCACalc_UI in Frameworks */ = {isa = PBXBuildFile; productRef = 80936EB92A607E1100A2939F /* TCACalc_UI */; };
 		80936EBC2A60A8A200A2939F /* CalcScreenV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80936EBB2A60A8A200A2939F /* CalcScreenV.swift */; };
@@ -48,6 +50,8 @@
 		80649D3A2A607CC9007CC893 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		80649D442A607D72007CC893 /* TCACalc_UI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = TCACalc_UI; path = ../../TCACalc_UI; sourceTree = "<group>"; };
 		806BC1692A902AEE00B252F9 /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
+		807F40632A911DE2009A8FD7 /* Color+Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Codable.swift"; sourceTree = "<group>"; };
+		807F40652A913106009A8FD7 /* ColorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorView.swift; sourceTree = "<group>"; };
 		808EAFDD2A659245008F2368 /* Decimal+Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Decimal+Tests.swift"; sourceTree = "<group>"; };
 		80936EBB2A60A8A200A2939F /* CalcScreenV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalcScreenV.swift; sourceTree = "<group>"; };
 		80936EBD2A60C75000A2939F /* Decimal+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Decimal+.swift"; sourceTree = "<group>"; };
@@ -78,6 +82,7 @@
 			isa = PBXGroup;
 			children = (
 				801FFAAF2A62FF7400F84FC1 /* P_NumericTextAnimation.swift */,
+				807F40652A913106009A8FD7 /* ColorView.swift */,
 			);
 			path = Prototypes;
 			sourceTree = "<group>";
@@ -104,6 +109,7 @@
 		80649D312A607CC7007CC893 /* TCACalc */ = {
 			isa = PBXGroup;
 			children = (
+				807F40622A911DA8009A8FD7 /* Utils */,
 				801FFAB12A63046100F84FC1 /* Prototypes */,
 				80649D442A607D72007CC893 /* TCACalc_UI */,
 				80649D322A607CC7007CC893 /* TCACalcApp.swift */,
@@ -113,7 +119,6 @@
 				8043A4572A61FAA1006AB0DA /* CalcScreenH.swift */,
 				803ED6662A8EF15100A1486C /* Settings.swift */,
 				803ED6682A8EF3C800A1486C /* ColorSchemeMode.swift */,
-				80936EBD2A60C75000A2939F /* Decimal+.swift */,
 				806BC1682A902AE000B252F9 /* Model */,
 				80649D362A607CC9007CC893 /* Assets.xcassets */,
 				80649D382A607CC9007CC893 /* TCACalc.entitlements */,
@@ -136,6 +141,15 @@
 				806BC1692A902AEE00B252F9 /* UserSettings.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		807F40622A911DA8009A8FD7 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				80936EBD2A60C75000A2939F /* Decimal+.swift */,
+				807F40632A911DE2009A8FD7 /* Color+Codable.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		80936EB82A607E1100A2939F /* Frameworks */ = {
@@ -259,6 +273,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				807F40662A913106009A8FD7 /* ColorView.swift in Sources */,
 				8043A4582A61FAA1006AB0DA /* CalcScreenH.swift in Sources */,
 				80936EBC2A60A8A200A2939F /* CalcScreenV.swift in Sources */,
 				803ED6672A8EF15100A1486C /* Settings.swift in Sources */,
@@ -268,6 +283,7 @@
 				80649D352A607CC7007CC893 /* ContentView.swift in Sources */,
 				80649D332A607CC7007CC893 /* TCACalcApp.swift in Sources */,
 				8043A4562A61FA90006AB0DA /* CalcScreen.swift in Sources */,
+				807F40642A911DE2009A8FD7 /* Color+Codable.swift in Sources */,
 				80936EBE2A60C75000A2939F /* Decimal+.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
