@@ -22,11 +22,11 @@ struct CalcScreenHFeature: Reducer {
     
     case view(View)
     enum View: Equatable {
-      //      case viewAction
+      case onTapSettingsButton
     }
     case delegate(Delegate)
     enum Delegate: Equatable {
-      //      case delegateAction
+      case presentSettingsView
     }
     
     
@@ -35,6 +35,16 @@ struct CalcScreenHFeature: Reducer {
   var body: some ReducerOf<Self> {
     Reduce<State, Action> { state, action in
       switch action {
+        case let .view(viewAction):
+          switch viewAction {
+            case .onTapSettingsButton:
+              return .run{ send in
+                await send(.delegate(.presentSettingsView))
+              }
+          }
+          
+          // Reducers should not be responding to their own delegate calls
+        case .delegate: return .none
           
           // SPYING ON SUBVIEWS
         case .calcGridH:
@@ -52,6 +62,7 @@ import SwiftUI
 
 struct CalcScreenHorizontal: View {
   let store: StoreOf<CalcScreenHFeature>
+  @Environment(\.colorScheme) var colorScheme
   
   struct ViewState: Equatable {
     let currentNum: Decimal
@@ -65,7 +76,7 @@ struct CalcScreenHorizontal: View {
     WithViewStore(store, observe: ViewState.init) { viewStore in
       
       ZStack {
-        Color.black
+        self.view(for: colorScheme, light: { Color.white }, dark: { Color.black })
           .ignoresSafeArea()
         
         VStack {
@@ -73,10 +84,13 @@ struct CalcScreenHorizontal: View {
             Spacer()
             
             Text(viewStore.currentNum.formatted())
-              .font(.largeTitle)
+              .font(.system(size: 50, weight: .semibold, design: .default))
+              .monospacedDigit()
               .foregroundStyle(.white)
+              .preferredColorScheme(colorScheme.opposite)
+              .textSelection(.enabled)
               .padding()
-              .contentTransition(.numericText(countsDown: false))
+              .contentTransition(.numericText(countsDown: true)) // feature idea: set countsdown to match if the number is increasing/decreasing
               .animation(.snappy, value: viewStore.currentNum)
             
           }
@@ -86,6 +100,19 @@ struct CalcScreenHorizontal: View {
           )
         }
         .padding(.horizontal)
+        
+        
+        .overlay(alignment: .topLeading) {
+          
+          Button { viewStore.send(.view(.onTapSettingsButton))} label: {
+            Image(systemName: "gear.circle.fill")
+              .resizable()
+              .frame(width: 40, height: 40)
+              .padding(.top)
+          }
+          .padding([.leading])
+          
+        }
       }
 
     }

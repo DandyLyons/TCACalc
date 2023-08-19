@@ -169,6 +169,7 @@ public struct CalcGridH: View {
       }
       .fontWeight(.bold)
       
+      
     }
   }
   

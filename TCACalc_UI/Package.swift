@@ -15,7 +15,8 @@ let package = Package(
             targets: ["TCACalc_UI"]),
     ],
     dependencies: [
-      .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", from: "1.1.0")
+      .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", from: "1.1.0"),
+      .package(url: "https://github.com/tgrapperon/swift-dependencies-additions", from: "1.0.0")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -24,6 +25,7 @@ let package = Package(
             name: "TCACalc_UI",
             dependencies: [
               .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+              .product(name: "DependenciesAdditions", package: "swift-dependencies-additions")
             ]
         ),
         .testTarget(
