@@ -21,6 +21,8 @@ public struct CalcGridHFeature: Reducer {
     public var isPlusOn = false
     public var isInBlankState = true
     
+    public var userSelectedColor: Color = .green
+    
     public init(isDivideOn: Bool = false, isMultiplyOn: Bool = false, isMinusOn: Bool = false, isPlusOn: Bool = false) {
       self.isDivideOn = isDivideOn
       self.isMultiplyOn = isMultiplyOn
@@ -135,6 +137,24 @@ public struct CalcGridH: View {
   public let darkgrayStyle = CapsuleButtonStyle(foregroundIdleColor: .white, backgroundIdleColor: .secondary)
   public let orangeStyle = CapsuleButtonStyle(foregroundIdleColor: .white, backgroundIdleColor: .orange)
   
+  @ViewBuilder
+  func withCircleBackground(bool: Bool, color: Color, _ content: () -> some View) -> some View {
+    content()
+      .if(bool) {
+        $0.modifier(self.onTintBackground(color))
+      } else: {
+        $0.modifier(self.offTintBackground(color))
+      }
+  }
+  
+  public func onTintBackground(_ color: Color) -> CircleBackground {
+    CircleBackground(foreground: color, background: .white)
+  }
+  
+  public func offTintBackground(_ color: Color) -> CircleBackground {
+    .init(foreground: .white, background: color)
+  }
+  
   public let onOrangeBackground = CircleBackground(foreground: .orange, background: .white)
   public let offOrangeBackground = CircleBackground(foreground: .white, background: .orange)
   
@@ -145,12 +165,15 @@ public struct CalcGridH: View {
     let isPlusOn: Bool
     let isInBlankState: Bool
     
+    let userSelectedColor: Color
+    
     init(state: CalcGridHFeature.State) {
       self.isDivideOn = state.isDivideOn
       self.isMultiplyOn = state.isMultiplyOn
       self.isMinusOn = state.isMinusOn
       self.isPlusOn = state.isPlusOn
       self.isInBlankState = state.isInBlankState
+      self.userSelectedColor = state.userSelectedColor
     }
   }
   
@@ -190,8 +213,10 @@ public struct CalcGridH: View {
         Button { viewStore.send(.view(.onTapNegateSignButton))} label: {Image(systemName: "plus.forwardslash.minus") }
         Button {viewStore.send(.view(.onTapPercentButton))} label: { Text("%") }
       }.buttonStyle(self.grayStyle)
-      Button {viewStore.send(.view(.onTapDivideButton))} label: { Image(systemName: "divide") }
-        .modifier(viewStore.isDivideOn ? self.onOrangeBackground : self.offOrangeBackground)
+      Button {viewStore.send(.view(.onTapDivideButton))} label: { 
+        self.withCircleBackground(bool: viewStore.isDivideOn, color: viewStore.userSelectedColor) {
+          Image(systemName: "divide") }
+        }
     }
   }
   
@@ -211,8 +236,10 @@ public struct CalcGridH: View {
         Button { viewStore.send(.view(.onTap(int: 8)))} label: { Text("8") }
         Button { viewStore.send(.view(.onTap(int: 9)))} label: { Text("9") }
       }.buttonStyle(self.midgrayStyle)
-      Button { viewStore.send(.view(.onTapMultiplyButton))} label: { Image(systemName: "multiply") }
-        .modifier(viewStore.isMultiplyOn ? self.onOrangeBackground : self.offOrangeBackground)
+      Button { viewStore.send(.view(.onTapMultiplyButton))} label: { 
+        self.withCircleBackground(bool: viewStore.isMultiplyOn, color: viewStore.userSelectedColor) {
+          Image(systemName: "multiply") }
+      }
     }
   }
   
@@ -232,8 +259,10 @@ public struct CalcGridH: View {
         Button { viewStore.send(.view(.onTap(int: 5)))} label: { Text("5") }
         Button { viewStore.send(.view(.onTap(int: 6)))} label: { Text("6") }
       }.buttonStyle(self.midgrayStyle)
-      Button {viewStore.send(.view(.onTapMinusButton))} label: { Image(systemName: "minus") }
-        .modifier(viewStore.isMinusOn ? self.onOrangeBackground : self.offOrangeBackground)
+      Button {viewStore.send(.view(.onTapMinusButton))} label: { 
+        self.withCircleBackground(bool: viewStore.isMinusOn, color: viewStore.userSelectedColor) {
+          Image(systemName: "minus") }
+      }
     }
   }
   
@@ -253,8 +282,10 @@ public struct CalcGridH: View {
         Button { viewStore.send(.view(.onTap(int: 2)))} label: { Text("2") }
         Button { viewStore.send(.view(.onTap(int: 3)))} label: { Text("3") }
       }.buttonStyle(self.midgrayStyle)
-      Button {viewStore.send(.view(.onTapPlusButton))} label: { Image(systemName: "plus")}
-        .modifier(viewStore.isPlusOn ? self.onOrangeBackground : self.offOrangeBackground)
+      Button {viewStore.send(.view(.onTapPlusButton))} label: { 
+        self.withCircleBackground(bool: viewStore.isPlusOn, color: viewStore.userSelectedColor) {
+          Image(systemName: "plus") }
+      }
     }
   }
   
@@ -275,8 +306,9 @@ public struct CalcGridH: View {
         
         Button(".") { viewStore.send(.view(.onTapDecimalButton)) }
       }.buttonStyle(self.midgrayStyle)
-      Button {viewStore.send(.view(.onTapEqualButton))} label: { Image(systemName: "equal") }
-        .modifier(self.offOrangeBackground)
+      Button {viewStore.send(.view(.onTapEqualButton))} label: { 
+        Image(systemName: "equal") }
+          .modifier(self.offTintBackground(viewStore.userSelectedColor))
     }
   }
   

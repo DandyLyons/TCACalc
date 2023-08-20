@@ -332,6 +332,11 @@ struct CalcScreenFeature: Reducer {
                     case .isDebugModeOnChanged(let newValue):
                       state.userSettings.isDebugModeOn = newValue
                       return .none
+                    case .accentColorChanged(let newValue):
+                      state.userSettings.accentColor = newValue
+                      state.hScreen.calcGridH.userSelectedColor = newValue
+                      state.vScreen.calcGridV.userSelectedColor = newValue
+                      return .none
                   }
               }
           }

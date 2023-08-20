@@ -20,6 +20,8 @@ public struct CalcGridVFeature: Reducer {
     public var isPlusOn = false
     public var isInBlankState = true
     
+    public var userSelectedColor: Color = .green
+    
     public init(isDivideOn: Bool = false, isMultiplyOn: Bool = false, isMinusOn: Bool = false, isPlusOn: Bool = false) {
       self.isDivideOn = isDivideOn
       self.isMultiplyOn = isMultiplyOn
@@ -132,9 +134,27 @@ public struct CalcGridV: View {
   public let grayStyle = CircleButtonStyle(foregroundIdleColor: .black, backgroundIdleColor: .gray)
   public let darkgrayStyle = CircleButtonStyle(foregroundIdleColor: .white, backgroundIdleColor: .secondary)
   
+  @ViewBuilder
+  func withCircleBackground(bool: Bool, color: Color, _ content: () -> some View) -> some View {
+    content()
+      .if(bool) {
+        $0.modifier(self.onTintBackground(color))
+      } else: {
+        $0.modifier(self.offTintBackground(color))
+      }
+  }
+  
+  public func onTintBackground(_ color: Color) -> CircleBackground {
+    CircleBackground(foreground: color, background: .white)
+  }
+  
+  public func offTintBackground(_ color: Color) -> CircleBackground {
+    .init(foreground: .white, background: color)
+  }
+  
   public let onOrangeBackground = CircleBackground(foreground: .orange, background: .white)
   public let offOrangeBackground = CircleBackground(foreground: .white, background: .orange)
-  
+    
   struct ViewState: Equatable {
     let isDivideOn: Bool
     let isMultiplyOn: Bool
@@ -142,12 +162,16 @@ public struct CalcGridV: View {
     let isPlusOn: Bool
     let isInBlankState: Bool
     
+    let userSelectedColor: Color
+    
     init(state: CalcGridVFeature.State) {
       self.isDivideOn = state.isDivideOn
       self.isMultiplyOn = state.isMultiplyOn
       self.isMinusOn = state.isMinusOn
       self.isPlusOn = state.isPlusOn
       self.isInBlankState = state.isInBlankState
+      
+      self.userSelectedColor = state.userSelectedColor
     }
   }
   
@@ -165,8 +189,9 @@ public struct CalcGridV: View {
           Button("%") { viewStore.send(.view(.onTapPercentButton)) }
             .buttonStyle(self.grayStyle)
           Button { viewStore.send(.view(.onTapDivideButton)) } label: {
-            Image(systemName: "divide")
-              .modifier(viewStore.isDivideOn ? self.onOrangeBackground : self.offOrangeBackground)
+            self.withCircleBackground(bool: viewStore.isDivideOn, color: viewStore.userSelectedColor) {
+              Image(systemName: "divide")
+            }
           }
         }
         GridRow {
@@ -177,8 +202,10 @@ public struct CalcGridV: View {
           Button("9") { viewStore.send(.view(.onTap(int: 9))) }
             .buttonStyle(self.darkgrayStyle)
           Button { viewStore.send(.view(.onTapMultiplyButton)) } label: {
-            Image(systemName: "multiply")
-              .modifier(viewStore.isMultiplyOn ? self.onOrangeBackground : self.offOrangeBackground)
+            self.withCircleBackground(bool: viewStore.isMultiplyOn, color: viewStore.userSelectedColor) {
+              Image(systemName: "multiply")
+              
+            }
           }
         }
         GridRow {
@@ -190,8 +217,10 @@ public struct CalcGridV: View {
             .buttonStyle(self.darkgrayStyle)
           
           Button { viewStore.send(.view(.onTapMinusButton)) } label: {
-            Image(systemName: "minus")
-              .modifier(viewStore.isMinusOn ? self.onOrangeBackground : self.offOrangeBackground)
+            self.withCircleBackground(bool: viewStore.isMinusOn, color: viewStore.userSelectedColor) {
+              Image(systemName: "minus")
+              
+            }
           }
         }
         GridRow {
@@ -202,8 +231,18 @@ public struct CalcGridV: View {
           Button("3") { viewStore.send(.view(.onTap(int: 3))) }
             .buttonStyle(self.darkgrayStyle)
           Button { viewStore.send(.view(.onTapPlusButton)) } label: {
-            Image(systemName: "plus")
-              .modifier(viewStore.isPlusOn ? self.onOrangeBackground : self.offOrangeBackground)
+            self.withCircleBackground(bool: viewStore.isPlusOn, color: viewStore.userSelectedColor) {
+              Image(systemName: "plus")
+              
+            }
+            
+//              .modifier(viewStore.isPlusOn ? self.onOrangeBackground : self.offOrangeBackground)
+            
+//              .if(viewStore.isPlusOn) {
+//                $0.modifier(self.onTintBackground(viewStore.userSelectedColor))
+//              } else: {
+//                $0.modifier(self.offTintBackground(viewStore.userSelectedColor))
+//              }
           }
         }
         GridRow {
@@ -221,15 +260,36 @@ public struct CalcGridV: View {
             .buttonStyle(self.darkgrayStyle)
           Button { viewStore.send(.view(.onTapEqualButton)) } label: {
             Image(systemName: "equal")
-              .modifier(self.offOrangeBackground)
+              .modifier(self.offTintBackground(viewStore.userSelectedColor))
           }
         }
-        
-        
       }
       .font(.title)
       .fontWeight(.bold)
       
+    }
+  }
+}
+
+extension View {
+  /// Applies the given transform if the given condition evaluates to `true`.
+  /// - Parameters:
+  ///   - condition: The condition to evaluate.
+  ///   - transform: The transform to apply to the source `View`.
+  /// - Returns: Either the original `View` or the modified `View` if the condition is `true`.
+  @ViewBuilder func `if`<Content: View>(
+    _ condition: Bool,
+    then thenTransform: (Self) -> Content,
+    else elseTransform: ((Self) -> Content)?
+  ) -> some View {
+    if condition {
+      thenTransform(self)
+    } else {
+      if let elseTransform {
+        elseTransform(self)
+      } else {
+        self
+      }
     }
   }
 }

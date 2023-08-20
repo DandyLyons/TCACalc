@@ -43,6 +43,7 @@ struct SettingsReducer: Reducer {
     enum DelegateAction: Equatable {
       case colorSchemeModeChanged(ColorSchemeMode)
       case isDebugModeOnChanged(Bool)
+      case accentColorChanged(Color)
     }
     enum InternalAction: Equatable {
       
@@ -87,6 +88,11 @@ struct SettingsReducer: Reducer {
           return .send(.delegate(.isDebugModeOnChanged(newValue)))
         }
       }
+      .onChange(of: \.userSettings.accentColor) { oldValue, newValue in
+        Reduce { state, action in
+          return .send(.delegate(.accentColorChanged(newValue)))
+        }
+      }
   }
 }
 
@@ -116,6 +122,8 @@ struct SettingsView: View {
                 .tag(colorSchemeMode.id)
             }
           }
+          
+          ColorPicker("Accent Color", selection: viewStore.$userSettings.accentColor)
         }
         Section("🪲 Debugging") {
           Toggle("Debug Mode", isOn: viewStore.$userSettings.isDebugModeOn)

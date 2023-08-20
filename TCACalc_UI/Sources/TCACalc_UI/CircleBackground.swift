@@ -11,14 +11,20 @@ import SwiftUI
 public struct CircleBackground: ViewModifier {
   public let foreground: Color
   public let background: Color
+  public let inverted: Bool = false
+  
+  @Environment(\.colorScheme) var colorScheme
+  
+  var _foreground: Color { inverted ? background : foreground }
+  var _background: Color { inverted ? foreground : background }
   
   public func body(content: Content) -> some View {
     ZStack {
       Circle()
-        .foregroundColor(self.background)
+        .foregroundColor(self._background)
       
       content
-        .foregroundColor(self.foreground)
+        .foregroundColor(self._foreground)
     }
   }
 }
@@ -27,3 +33,5 @@ public struct CircleBackground: ViewModifier {
   Button("Button") {}
     .modifier(CircleBackground(foreground: .white, background: .black))
 }
+
+
