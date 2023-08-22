@@ -8,22 +8,12 @@
 import Foundation
 import ComposableArchitecture
 
-struct Presentation: Reducer {
-  enum State: Equatable {
-    case settings(SettingsReducer.State)
-  }
-  enum Action: Equatable {
-    case settings(SettingsReducer.Action)
-  }
-  var body: some ReducerOf<Self> {
-    Scope(state: /State.settings, action: /Action.settings) {
-      SettingsReducer()
-    }
-  }
-}
+
 
 struct CalcScreenFeature: Reducer {
   struct State: Equatable {
+    var calculation: CalculationReducer.State
+    
     var hScreen: CalcScreenHFeature.State
     var vScreen: CalcScreenVFeature.State
     @PresentationState var presentation: Presentation.State?
@@ -60,6 +50,7 @@ struct CalcScreenFeature: Reducer {
       previousNum: Decimal? = nil,
       isInBlankState: Bool = true
     ) {
+      self.calculation = .init()
       self.hScreen = hScreen
       self.vScreen = vScreen
       self.presentation = presentation
@@ -194,6 +185,7 @@ struct CalcScreenFeature: Reducer {
     
   }
   enum Action: Equatable {
+    case calculation(CalculationReducer.Action)
     //    case internalAction
     
     case hScreen(CalcScreenHFeature.Action)
@@ -218,6 +210,8 @@ struct CalcScreenFeature: Reducer {
   var body: some ReducerOf<Self> {
     Reduce<State, Action> { state, action in
       switch action {
+        case .calculation: return .none
+          
         case let .currentOrientationChangedTo(newOrientation):
           state.currentOrientation = newOrientation
           return .none
@@ -352,8 +346,9 @@ struct CalcScreenFeature: Reducer {
     .ifLet(\.$presentation, action: /Action.presentation) {
       Self.Presentation()
     }
-    
-    
+    Scope(state: \.calculation, action: /Action.calculation) {
+      CalculationReducer()
+    }
     Scope(state: \.hScreen, action: /Action.hScreen) {
       CalcScreenHFeature()
     }
@@ -508,6 +503,20 @@ struct CalcScreen: View {
     )
   }
   
+}
+
+struct Presentation: Reducer {
+  enum State: Equatable {
+    case settings(SettingsReducer.State)
+  }
+  enum Action: Equatable {
+    case settings(SettingsReducer.Action)
+  }
+  var body: some ReducerOf<Self> {
+    Scope(state: /State.settings, action: /Action.settings) {
+      SettingsReducer()
+    }
+  }
 }
 
 //#Preview("CalcScreen H"
