@@ -21,11 +21,11 @@ struct CalcScreenFeature: Reducer {
     var currentOrientation: UIDeviceOrientation
     var userSettings: UserSettings
     
-    private(set) var activeOperation: ActiveOperation? = nil
-    enum ActiveOperation: String { case divide, multiply, minus, plus }
+//    private(set) var activeOperation: ActiveOperation? = nil
+//    enum ActiveOperation: String { case divide, multiply, minus, plus }
     
     /// to mutate `currentNum` use `updateCurrentNum(byPerforming: )`
-    private(set) var currentNum: Decimal = 0
+//    private(set) var currentNum: Decimal = 0
     
     // MARK: CalcScreenFeature.init
     /// Creates new State for CalcScreenFeature
@@ -45,7 +45,7 @@ struct CalcScreenFeature: Reducer {
       presentation: Presentation.State? = nil,
       currentOrientation: UIDeviceOrientation,
       userSettings: UserSettings,
-      activeOperation: ActiveOperation? = nil,
+//      activeOperation: ActiveOperation? = nil,
       currentNum: Decimal = 0,
       previousNum: Decimal? = nil,
       isInBlankState: Bool = true
@@ -56,132 +56,137 @@ struct CalcScreenFeature: Reducer {
       self.presentation = presentation
       self.currentOrientation = currentOrientation
       self.userSettings = userSettings
-      self.activeOperation = activeOperation
-      self.currentNum = currentNum
-      self.previousNum = previousNum
-      self.isInBlankState = isInBlankState
+//      self.activeOperation = activeOperation
+//      self.currentNum = currentNum
+//      self.previousNum = previousNum
+//      self.isInBlankState = isInBlankState
+    }
+    
+    mutating func calculationReducerDidUpdate() {
+      self.hScreen.currentNum = self.calculation.displayString
+      self.vScreen.currentNum = self.calculation.displayString
     }
     
     // TODO: Fix this
-    mutating func onTap(int: Int) {
-      switch (self.isInBlankState, self.activeOperation) {
-        case (true, .some):
-          self.updateCurrentNum(byPerforming: { $0.append(int)})
-        case (false, .some):
-          self.previousNum = self.currentNum
-          self.updateCurrentNum(byPerforming: { $0 = Decimal(int) })
-        case (true, .none):
-          self.updateCurrentNum(byPerforming: { $0.append(int)})
-        case (false, .none):
-          self.updateCurrentNum(byPerforming: { $0.append(int)})
-      }
-    }
+//    mutating func onTap(int: Int) {
+//      switch (self.isInBlankState, self.activeOperation) {
+//        case (true, .some):
+//          self.updateCurrentNum(byPerforming: { $0.append(int)})
+//        case (false, .some):
+//          self.previousNum = self.currentNum
+//          self.updateCurrentNum(byPerforming: { $0 = Decimal(int) })
+//        case (true, .none):
+//          self.updateCurrentNum(byPerforming: { $0.append(int)})
+//        case (false, .none):
+//          self.updateCurrentNum(byPerforming: { $0.append(int)})
+//      }
+//    }
     
-    mutating func onTapACButton() {
-      self.updateCurrentNum(byPerforming: { $0 = 0})
-      self.previousNum = nil
-      self.updateIsInBlankState(byPerforming: { $0 = true })
-      self.updateActiveOperation(to: nil)
-    }
+//    mutating func onTapACButton() {
+//      self.updateCurrentNum(byPerforming: { $0 = 0})
+//      self.previousNum = nil
+//      self.updateIsInBlankState(byPerforming: { $0 = true })
+//      self.updateActiveOperation(to: nil)
+//    }
     
     mutating func onTapPercentButton() {
-      self.updateCurrentNum(byPerforming: { $0 /= 100 })
+//      self.updateCurrentNum(byPerforming: { $0 /= 100 })
     }
     
     mutating func onTapNegateSignButton() {
-      self.updateCurrentNum(byPerforming: { $0 *= -1 })
+//      self.updateCurrentNum(byPerforming: { $0 *= -1 })
     }
-    mutating func onTapDivideButton() {
-      self.updateActiveOperation(to: .divide)
-    }
-    mutating func onTapMultiplyButton() {
-      self.updateActiveOperation(to: .multiply)
-    }
-    mutating func onTapMinusButton() {
-      self.updateActiveOperation(to: .minus)
-    }
-    mutating func onTapPlusButton() {
-      self.updateActiveOperation(to: .plus)
-    }
-    mutating func onTapEqualButton() {
-      self._performArithmetic()
-      self.updateActiveOperation(to: nil)
-    }
+//    mutating func onTapDivideButton() {
+//      self.updateActiveOperation(to: .divide)
+//    }
+//    mutating func onTapMultiplyButton() {
+//      self.updateActiveOperation(to: .multiply)
+//    }
+//    mutating func onTapMinusButton() {
+//      self.updateActiveOperation(to: .minus)
+//    }
+//    mutating func onTapPlusButton() {
+//      self.updateActiveOperation(to: .plus)
+//    }
+//    mutating func onTapEqualButton() {
+//      self._performArithmetic()
+//      self.updateActiveOperation(to: nil)
+//    }
     
     
     
-    mutating func updateCurrentNum(byPerforming mutation: (inout Decimal) -> Void) {
-      mutation(&self.currentNum)
-      mutation(&self.hScreen.currentNum)
-      mutation(&self.vScreen.currentNum)
-    }
+//    mutating func updateCurrentNum(byPerforming mutation: (inout Decimal) -> Void) {
+//      mutation(&self.currentNum)
+//      mutation(&self.hScreen.currentNum)
+//      mutation(&self.vScreen.currentNum)
+//    }
     
-    mutating func updateActiveOperation(to newValue: ActiveOperation?) {
-      switch newValue {
-        case .divide:
-          self.hScreen.calcGridH.turnDivideOn()
-          self.vScreen.calcGridV.turnDivideOn()
-        case .multiply:
-          self.hScreen.calcGridH.turnMultiplyOn()
-          self.vScreen.calcGridV.turnMultiplyOn()
-        case .minus:
-          self.hScreen.calcGridH.turnMinusOn()
-          self.vScreen.calcGridV.turnMinusOn()
-        case .plus:
-          self.hScreen.calcGridH.turnPlusOn()
-          self.vScreen.calcGridV.turnPlusOn()
-        case nil:
-          self.hScreen.calcGridH.turnAllOff()
-          self.vScreen.calcGridV.turnAllOff()
-      }
-      self.activeOperation = newValue
-    }
+//    mutating func updateActiveOperation(to newValue: ActiveOperation?) {
+//      switch newValue {
+//        case .divide:
+//          self.hScreen.calcGridH.turnDivideOn()
+//          self.vScreen.calcGridV.turnDivideOn()
+//        case .multiply:
+//          self.hScreen.calcGridH.turnMultiplyOn()
+//          self.vScreen.calcGridV.turnMultiplyOn()
+//        case .minus:
+//          self.hScreen.calcGridH.turnMinusOn()
+//          self.vScreen.calcGridV.turnMinusOn()
+//        case .plus:
+//          self.hScreen.calcGridH.turnPlusOn()
+//          self.vScreen.calcGridV.turnPlusOn()
+//        case nil:
+//          self.hScreen.calcGridH.turnAllOff()
+//          self.vScreen.calcGridV.turnAllOff()
+//      }
+//      self.activeOperation = newValue
+//    }
     
-    mutating func _performArithmetic() {
-      guard let activeOperation,
-            let previousNum else {
-        return
-      }
-      let result: Decimal
-      
-      switch activeOperation {
-          
-        case .divide:
-          result = previousNum / self.currentNum
-        case .multiply:
-          result = previousNum * self.currentNum
-        case .minus:
-          result = previousNum - self.currentNum
-        case .plus:
-          result = previousNum + self.currentNum
-      }
-      self.previousNum = self.currentNum
-      self.updateCurrentNum(byPerforming: { $0 = result})
-    }
+//    mutating func _performArithmetic() {
+//      guard let activeOperation,
+//            let previousNum else {
+//        return
+//      }
+//      let result: Decimal
+//      
+//      switch activeOperation {
+//          
+//        case .divide:
+//          result = previousNum / self.currentNum
+//        case .multiply:
+//          result = previousNum * self.currentNum
+//        case .minus:
+//          result = previousNum - self.currentNum
+//        case .plus:
+//          result = previousNum + self.currentNum
+//      }
+//      self.previousNum = self.currentNum
+//      self.updateCurrentNum(byPerforming: { $0 = result})
+//    }
     
-    var previousNum: Decimal? = nil
-    private(set) var isInBlankState: Bool = true
+//    var previousNum: Decimal? = nil
+//    private(set) var isInBlankState: Bool = true
+//    
+//    mutating func determineIfInBlankState () {
+//      if self.currentNum == 0,
+//         self.previousNum == nil {
+//        self.updateIsInBlankState(byPerforming: { $0 = true })
+//      } else {
+//        self.updateIsInBlankState(byPerforming: { $0 = false })
+//      }
+//    }
     
-    mutating func determineIfInBlankState () {
-      if self.currentNum == 0,
-         self.previousNum == nil {
-        self.updateIsInBlankState(byPerforming: { $0 = true })
-      } else {
-        self.updateIsInBlankState(byPerforming: { $0 = false })
-      }
-    }
+//    mutating func updateIsInBlankState(byPerforming mutation: (inout Bool) -> Void) {
+//      mutation(&self.isInBlankState)
+//      mutation(&self.vScreen.calcGridV.isInBlankState)
+//      mutation(&self.hScreen.calcGridH.isInBlankState)
+//    }
     
-    mutating func updateIsInBlankState(byPerforming mutation: (inout Bool) -> Void) {
-      mutation(&self.isInBlankState)
-      mutation(&self.vScreen.calcGridV.isInBlankState)
-      mutation(&self.hScreen.calcGridH.isInBlankState)
-    }
-    
-    mutating func updateIsInBlankState(to newValue: Bool) {
-      self.isInBlankState = newValue
-      self.vScreen.calcGridV.isInBlankState = newValue
-      self.hScreen.calcGridH.isInBlankState = newValue
-    }
+//    mutating func updateIsInBlankState(to newValue: Bool) {
+//      self.isInBlankState = newValue
+//      self.vScreen.calcGridV.isInBlankState = newValue
+//      self.hScreen.calcGridH.isInBlankState = newValue
+//    }
     
   }
   enum Action: Equatable {
@@ -210,6 +215,12 @@ struct CalcScreenFeature: Reducer {
   var body: some ReducerOf<Self> {
     Reduce<State, Action> { state, action in
       switch action {
+        case .calculation(.delegate(let calculationDelegateAction)):
+          switch calculationDelegateAction {
+            case .didFinishCalculating:
+              state.calculationReducerDidUpdate()
+              return .none
+          }
         case .calculation: return .none
           
         case let .currentOrientationChangedTo(newOrientation):
@@ -230,34 +241,34 @@ struct CalcScreenFeature: Reducer {
             case .calcGridV(let vCalcGridAction):
               switch vCalcGridAction {
                 case .view(.onTap(int: let int)):
-                  state.onTap(int: int)
-                  return .none
+//                  state.onTap(int: int)
+                  return .run { await $0(.calculation(.input(.int(int))))}
                 case .view(.onTapACButton):
-                  state.onTapACButton()
-                  return .none
+//                  state.onTapACButton()
+                  return .run { await $0(.calculation(.input(.reset))) }
                 case .view(.onTapPercentButton):
-                  state.onTapPercentButton()
+//                  state.onTapPercentButton()
                   return .none
                 case .view(.onTapNegateSignButton):
-                  state.onTapNegateSignButton()
+//                  state.onTapNegateSignButton()
                   return .none
                   
                 case .view(.onTapDivideButton):
-                  state.onTapDivideButton()
-                  return .none
+//                  state.onTapDivideButton()
+                  return .run { await $0(.calculation(.input(.operation(.divide)))) }
                 case .view(.onTapMultiplyButton):
-                  state.onTapMultiplyButton()
-                  return .none
+//                  state.onTapMultiplyButton()
+                  return .run { await $0(.calculation(.input(.operation(.multiply)))) }
                 case .view(.onTapMinusButton):
-                  state.onTapMinusButton()
-                  return .none
+//                  state.onTapMinusButton()
+                  return .run { await $0(.calculation(.input(.operation(.minus)))) }
                 case .view(.onTapPlusButton):
-                  state.onTapPlusButton()
-                  return .none
+//                  state.onTapPlusButton()
+                  return .run { await $0(.calculation(.input(.operation(.plus)))) }
                   
                 case .view(.onTapEqualButton):
-                  state.onTapEqualButton()
-                  return .none
+//                  state.onTapEqualButton()
+                  return .run { await $0(.calculation(.input(.equals))) }
                 case .view(.onTapDecimalButton):
                   return .none
               }
@@ -270,37 +281,37 @@ struct CalcScreenFeature: Reducer {
             case .calcGridH(let hCalcGridAction):
               switch hCalcGridAction {
                 case .view(.onTap(int: let int)):
-                  state.onTap(int: int)
-                  return .none
+//                  state.onTap(int: int)
+                  return .run { await $0(.calculation(.input(.int(int)))) }
                 case .view(.onTapACButton):
-                  state.onTapACButton()
-                  return .none
+                  return .run { await $0(.calculation(.input(.reset))) }
+                  
                 case .view(.onTapPercentButton):
-                  state.onTapPercentButton()
+//                  state.onTapPercentButton()
                   return .none
                 case .view(.onTapNegateSignButton):
-                  state.onTapNegateSignButton()
+//                  state.onTapNegateSignButton()
                   return .none
                   
                 case .view(.onTapDivideButton):
-                  state.onTapDivideButton()
-                  return .none
+                  return .run { await $0(.calculation(.input(.operation(.divide)))) }
+                  
                 case .view(.onTapMultiplyButton):
-                  state.onTapMultiplyButton()
-                  return .none
+//                  state.onTapMultiplyButton()
+                  return .run { await $0(.calculation(.input(.operation(.multiply)))) }
                 case .view(.onTapMinusButton):
-                  state.onTapMinusButton()
-                  return .none
+//                  state.onTapMinusButton()
+                  return .run { await $0(.calculation(.input(.operation(.minus)))) }
                 case .view(.onTapPlusButton):
-                  state.onTapPlusButton()
-                  return .none
+//                  state.onTapPlusButton()
+                  return .run { await $0(.calculation(.input(.operation(.plus)))) }
                   
                 case .view(.onTapEqualButton):
-                  state.onTapEqualButton()
-                  return .none
+//                  state.onTapEqualButton()
+                  return .run { await $0(.calculation(.input(.equals))) }
                   
                 case .view(.onTapDecimalButton):
-                  return .none
+                  return .run { await $0(.calculation(.input(.decimal))) }
               }
             case .delegate(let hCalcGridDelegateAction):
               switch hCalcGridDelegateAction {
@@ -337,17 +348,19 @@ struct CalcScreenFeature: Reducer {
           
         case .presentation(.dismiss):
           return .none
+        
       }
     }
-    Reduce<State, Action> { state, action in
-      state.determineIfInBlankState()
-      return .none
-    }
+//    Reduce<State, Action> { state, action in
+//      state.determineIfInBlankState()
+//      return .none
+//    }
     .ifLet(\.$presentation, action: /Action.presentation) {
       Self.Presentation()
     }
     Scope(state: \.calculation, action: /Action.calculation) {
       CalculationReducer()
+        ._printChanges()
     }
     Scope(state: \.hScreen, action: /Action.hScreen) {
       CalcScreenHFeature()
@@ -404,21 +417,22 @@ struct CalcScreen: View {
     
     let colorSchemeMode: ColorSchemeMode
     let isDebugModeOn: Bool
-    let previousNum: Decimal?
     let isInBlankState: Bool
-    let activeOperation: CalcScreenFeature.State.ActiveOperation?
+    
     let currentTintColor: Color
+    let calculationState: CalculationReducer.State
     
     init(state: CalcScreenFeature.State) {
       #if os(iOS)
       self.currentOrientation = state.currentOrientation
       #endif
       
+      self.calculationState = state.calculation
+      
       self.colorSchemeMode = state.userSettings.colorSchemeMode
       self.isDebugModeOn = state.userSettings.isDebugModeOn
-      self.previousNum = state.previousNum
-      self.isInBlankState = state.isInBlankState
-      self.activeOperation = state.activeOperation
+
+      self.isInBlankState = state.calculation.status == .initial
       self.currentTintColor = state.userSettings.accentColor
     }
   }
@@ -426,11 +440,12 @@ struct CalcScreen: View {
   @ViewBuilder
   func vDebugView(_ viewStore: ViewStoreOf_CalcScreen) -> some View {
     VStack(alignment: .trailing) {
-      Text("Prev num: \(viewStore.previousNum?.customDumpDescription ?? "none")")
       Text("isInBlankState: \(viewStore.isInBlankState.description)")
-      Text("Active Operation: \(viewStore.activeOperation?.rawValue ?? "none")")
       Divider()
       Text("Current orientation: \(viewStore.currentOrientation.debugDescription)")
+      Divider()
+      Text("Calculation State: \(viewStore.calculationState.debugDescription)")
+      Text("State: \(viewStore.calculationState.status.rawValue)")
     }
   }
   

@@ -15,7 +15,7 @@ struct CalcScreenVFeature: Reducer {
     enum OperationButton {
       case divide, multiply, minus, plus, equal, none
     }
-    var currentNum: Decimal = 0
+    var currentNum: String = "Not initialized"
     
     var calcGridV: CalcGridVFeature.State
     
@@ -75,7 +75,7 @@ struct CalcScreenVertical: View {
   @Environment(\.colorScheme) var colorScheme
   
   struct ViewState: Equatable {
-    let currentNum: Decimal
+    let currentNum: String
     
     init(state: CalcScreenVFeature.State) {
       self.currentNum = state.currentNum
@@ -91,7 +91,7 @@ struct CalcScreenVertical: View {
         VStack(alignment: .trailing, spacing: 0) {
           Spacer()
           
-          Text(viewStore.currentNum.formatted())
+          Text(viewStore.currentNum)
             .font(.system(size: 60, weight: .semibold, design: .default))
             .monospacedDigit()
             

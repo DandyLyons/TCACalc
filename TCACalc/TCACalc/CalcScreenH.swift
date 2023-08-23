@@ -11,7 +11,7 @@ import TCACalc_UI
 
 struct CalcScreenHFeature: Reducer {
   struct State: Equatable {
-    var currentNum: Decimal = 0
+    var currentNum: String = "Not initialized"
     var calcGridH: CalcGridHFeature.State
   }
   enum Action: Equatable {
@@ -65,7 +65,7 @@ struct CalcScreenHorizontal: View {
   @Environment(\.colorScheme) var colorScheme
   
   struct ViewState: Equatable {
-    let currentNum: Decimal
+    let currentNum: String
     
     init(state: CalcScreenHFeature.State) {
       self.currentNum = state.currentNum
@@ -83,7 +83,7 @@ struct CalcScreenHorizontal: View {
           HStack {
             Spacer()
             
-            Text(viewStore.currentNum.formatted())
+            Text(viewStore.currentNum)
               .font(.system(size: 50, weight: .semibold, design: .default))
               .monospacedDigit()
               .foregroundStyle(.white)

@@ -8,6 +8,12 @@
 import Foundation
 import ComposableArchitecture
 
+extension CalculationReducer.State: CustomDebugStringConvertible {
+  var debugDescription: String {
+    "CustomDebugStringConvertible not yet implemented"
+  }
+}
+
 struct CalculationReducer: Reducer {
   enum Operation: Equatable {
     case plus, minus, multiply, divide
@@ -45,7 +51,7 @@ struct CalculationReducer: Reducer {
     }
     
     var status: Status = .initial
-    enum Status: Equatable {
+    enum Status: String, Equatable {
       case initial
       case t_from_initial
       case transition
@@ -113,7 +119,8 @@ struct CalculationReducer: Reducer {
       case operation(Operation)
     }
     
-    
+    case delegate(DelegateAction)
+    enum DelegateAction: Equatable { case didFinishCalculating }
     
     
   }
@@ -128,29 +135,34 @@ struct CalculationReducer: Reducer {
   
   var body: some ReducerOf<Self> {
     Reduce<State, Action> { state, action in
-      switch state.status {
+      switch action {
+        case .delegate: return .none
+        case .input:
+          switch state.status {
+              
+            case .initial:
+              state.process_initial(action: action)
+              return .run { await $0(.delegate(.didFinishCalculating))}
+            case .t_from_initial:
+              state.process_t_from_initial(action: action)
+              return .run { await $0(.delegate(.didFinishCalculating))}
+            case .transition:
+              state.process_transition(action: action)
+              return .run { await $0(.delegate(.didFinishCalculating))}
+            case .t_from_transition:
+              state.process_t_from_transition(action: action)
+              return .run { await $0(.delegate(.didFinishCalculating))}
+            case .trailing:
+              state.process_trailing(action: action)
+              return .run { await $0(.delegate(.didFinishCalculating))}
+            case .t_from_trailing:
+              state.process_t_from_trailing(action: action)
+              return .run { await $0(.delegate(.didFinishCalculating))}
+            case .equal:
+              state.process_equal(action: action)
+              return .run { await $0(.delegate(.didFinishCalculating))}
+          }
           
-        case .initial:
-          state.process_initial(action: action)
-          return .none
-        case .t_from_initial:
-          state.process_t_from_initial(action: action)
-          return .none
-        case .transition:
-          state.process_transition(action: action)
-          return .none
-        case .t_from_transition:
-          state.process_t_from_transition(action: action)
-          return .none
-        case .trailing:
-          state.process_trailing(action: action)
-          return .none
-        case .t_from_trailing:
-          state.process_t_from_trailing(action: action)
-          return .none
-        case .equal:
-          state.process_equal(action: action)
-          return .none
       }
     }
   }
@@ -172,6 +184,7 @@ extension CalculationReducer.State {
   
   mutating func process_initial(action: Action)  {
     switch action {
+      case .delegate: return
       case .input(let input):
         switch input {
           case .int(let int):
@@ -208,6 +221,7 @@ extension CalculationReducer.State {
   
   mutating func process_t_from_initial(action: Action)  {
     switch action {
+      case .delegate: return
       case .input(let input):
         switch input {
           case .int(let int):
@@ -236,6 +250,7 @@ extension CalculationReducer.State {
   
   mutating func process_transition(action: Action)  {
     switch action {
+      case .delegate: return
       case .input(let input):
         switch input {
           case.reset:
@@ -266,6 +281,7 @@ extension CalculationReducer.State {
   
   mutating func process_t_from_transition(action: Action)  {
     switch action {
+      case .delegate: return
       case .input(let input):
         switch input {
           case.reset:
@@ -312,6 +328,7 @@ extension CalculationReducer.State {
   mutating func process_trailing(action: Action)  {
     // NOTE in this state op1 should always be .AS and op2 should always be .MD
     switch action {
+      case .delegate: return
       case .input(let input):
         switch input {
           case.reset:
@@ -347,6 +364,7 @@ extension CalculationReducer.State {
   
   mutating func process_t_from_trailing(action: Action)  {
     switch action {
+      case .delegate: return
       case .input(let input):
         switch input {
           case.reset:
@@ -386,6 +404,7 @@ extension CalculationReducer.State {
   
   mutating func process_equal(action: Action)  {
     switch action {
+      case .delegate: return
       case .input(let input):
         switch input {
           case.reset:
