@@ -26,13 +26,15 @@ struct CalcScreenVFeature: Reducer {
     // SUBVIEWS
     case calcGridV(CalcGridVFeature.Action)
     
-    case view(View)
-    enum View: Equatable {
+    case view(ViewAction)
+    enum ViewAction: Equatable {
       case onTapSettingsButton
+      case onTapNumDisplay
       }
     case delegate(Delegate)
     enum Delegate: Equatable {
       case presentSettingsView
+      case forceResetCalculation
     }
   }
   
@@ -44,6 +46,10 @@ struct CalcScreenVFeature: Reducer {
             case .onTapSettingsButton:
               return .run { send in
                 await send(.delegate(.presentSettingsView))
+              }
+            case .onTapNumDisplay:
+              return .run { send in
+                await send(.delegate(.forceResetCalculation))
               }
           }
           
@@ -100,6 +106,8 @@ struct CalcScreenVertical: View {
             .padding()
             .contentTransition(.numericText(countsDown: true)) // feature idea: set countsdown to match if the number is increasing/decreasing
             .animation(.snappy, value: viewStore.currentNum)
+          
+            .onTapGesture { viewStore.send(.view(.onTapNumDisplay)) }
           
           CalcGridV(store: self.store.scope(state: \.calcGridV,
                                            action: CalcScreenVFeature.Action.calcGridV)

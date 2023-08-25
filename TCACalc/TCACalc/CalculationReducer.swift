@@ -15,7 +15,7 @@ extension CalculationReducer.State: CustomDebugStringConvertible {
 }
 
 struct CalculationReducer: Reducer {
-  enum Operation: Equatable {
+  enum Operation: String, Equatable {
     case plus, minus, multiply, divide
     
     /// The Order of Operations according to PEMDAS
@@ -39,7 +39,7 @@ struct CalculationReducer: Reducer {
   struct State: Equatable {
     
     init() {
-      self.status = .initial
+      self._status = .initial
       self.num1 = 0
       self.op1 = nil
       self.num2 = 0
@@ -50,7 +50,12 @@ struct CalculationReducer: Reducer {
       self.decimalFormatStyle = .number
     }
     
-    var status: Status = .initial
+    /// This should never be called except from one of the `transitionTo` functions
+    private var _status: Status
+    var status: Status {
+      get { self._status }
+      set { self.transition(to: newValue) }
+    }
     enum Status: String, Equatable {
       case initial
       case t_from_initial
@@ -68,6 +73,22 @@ struct CalculationReducer: Reducer {
     var num3: Decimal = 0
     var isDecimalOn = false
     
+    var op_resolved: Operation? {
+//      switch status, op1, op2 {
+////        case (_ , .none, .none):
+////          return nil
+//        case (.)
+//      }
+      switch status {
+        case .initial: return nil
+        case .t_from_initial: return nil
+        case .transition: return self.op1
+        case .t_from_transition: return nil
+        case .trailing: return self.op2
+        case .t_from_trailing: return nil
+        case .equal: return nil
+      }
+    }
     
     var display: Display
     enum Display: Equatable { case num1, num2, num3, error }
@@ -171,15 +192,45 @@ struct CalculationReducer: Reducer {
 extension CalculationReducer.State {
   typealias Action = CalculationReducer.Action
   
-  mutating func transitionTo_initial() {
-    self.status = .initial
-    self.num1 = 0
-    self.op1 = nil
-    self.num2 = 0
-    self.op2 = nil
-    self.num3 = 0
-    self.display = .num1
-    self.isDecimalOn = false
+  
+  mutating private func transition(to newStatus: Self.Status) {
+    self._status = newStatus
+    switch newStatus {
+      case .initial:
+        self.num1 = 0
+        self.op1 = nil
+        self.num2 = 0
+        self.op2 = nil
+        self.num3 = 0
+        self.display = .num1
+        self.isDecimalOn = false
+      case .t_from_initial:
+        self.display = .num1
+      case .transition:
+        self.display = .num1
+      case .t_from_transition:
+        self.display = .num2
+      case .trailing:
+        self.display = .num2
+      case .t_from_trailing:
+        self.display = .num3
+      case .equal:
+        self.display = .num1
+    }
+  }
+  
+  /// Note: This function does not have any side effects, and cannot.
+  mutating func evaluate(_ aNumber: Decimal, _ operation: CalculationReducer.Operation, _ anotherNumber: Decimal) -> Decimal {
+    switch operation {
+      case .plus:
+        aNumber + anotherNumber
+      case .minus:
+        aNumber - anotherNumber
+      case .multiply:
+        aNumber * anotherNumber
+      case .divide:
+        aNumber / anotherNumber
+    }
   }
   
   mutating func process_initial(action: Action)  {
@@ -201,23 +252,12 @@ extension CalculationReducer.State {
             self.status = .transition
             self.op1 = op
           case .reset:
-            self.transitionTo_initial()
+            self.status = .initial
         }
     }
   }
   
-  mutating func evaluate(_ aNumber: Decimal, _ operation: CalculationReducer.Operation, _ anotherNumber: Decimal) -> Decimal {
-    switch operation {
-      case .plus:
-        aNumber + anotherNumber
-      case .minus:
-        aNumber - anotherNumber
-      case .multiply:
-        aNumber * anotherNumber
-      case .divide:
-        aNumber / anotherNumber
-    }
-  }
+  
   
   mutating func process_t_from_initial(action: Action)  {
     switch action {
@@ -241,8 +281,8 @@ extension CalculationReducer.State {
             if self.num1 != 0 {
               self.num1 = 0
               self.status = .t_from_initial
-            } else {
-              self.transitionTo_initial()
+            } else if self.num1 == 0 {
+              self.status = .initial
             }
         }
     }
@@ -259,11 +299,10 @@ extension CalculationReducer.State {
           case .int(let int):
             self.num2 = Decimal(int)
             self.status = .t_from_transition
-            self.display = .num2
           case .decimal:
             self.isDecimalOn = true
             self.display = .num2
-            self.transitionTo_t_from_transition()
+            self.status = .t_from_transition
           case .equals:
             self.num1 = self.evaluate(num1, op1!, num2)
             self.status = .equal
@@ -274,10 +313,7 @@ extension CalculationReducer.State {
     }
   }
   
-  mutating func transitionTo_t_from_transition() {
-    self.status = .t_from_transition
-    self.display = .num2
-  }
+  
   
   mutating func process_t_from_transition(action: Action)  {
     switch action {
@@ -288,11 +324,11 @@ extension CalculationReducer.State {
             if self.num2 != 0 {
               self.status = .t_from_transition
             } else {
-              self.transitionTo_initial()
+              self.status = .initial
             }
           case .int(let int):
             self.status = .t_from_transition
-            self.num1.append(int)
+            self.num2.append(int)
           case .decimal:
             self.status = .t_from_transition
             self.isDecimalOn = true
@@ -317,6 +353,7 @@ extension CalculationReducer.State {
                 } else if self.op1?.orderStep == .AS {
                   self.op2 = op
                   self.num3 = self.num2
+                  self.status = .trailing
                 }
             }
         }
@@ -369,7 +406,7 @@ extension CalculationReducer.State {
         switch input {
           case.reset:
             if self.num3 == 0 {
-              self.transitionTo_initial()
+              self.status = .initial
             } else if self.num3 != 0 {
               self.num3 = 0
               self.status = .t_from_trailing

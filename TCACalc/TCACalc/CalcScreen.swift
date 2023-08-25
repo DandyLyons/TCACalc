@@ -65,6 +65,19 @@ struct CalcScreenFeature: Reducer {
     mutating func calculationReducerDidUpdate() {
       self.hScreen.currentNum = self.calculation.displayString
       self.vScreen.currentNum = self.calculation.displayString
+      switch self.calculation.op_resolved {
+        case .plus:
+          self.vScreen.calcGridV.currentOperation = .plus
+        case .minus:
+          self.vScreen.calcGridV.currentOperation = .minus
+        case .multiply:
+          self.vScreen.calcGridV.currentOperation = .multiply
+        case .divide:
+          self.vScreen.calcGridV.currentOperation = .divide
+        case .none:
+          self.vScreen.calcGridV.currentOperation = .none
+      }
+      
     }
     
     // TODO: Fix this
@@ -235,6 +248,11 @@ struct CalcScreenFeature: Reducer {
               switch vScreenDelegateAction {
                 case .presentSettingsView:
                   state.presentation = .settings(.init(state.userSettings))
+                  return .none
+                case .forceResetCalculation:
+                  if state.userSettings.isDebugModeOn {
+                    state.calculation = .init()
+                  }
                   return .none
               }
               
@@ -445,7 +463,14 @@ struct CalcScreen: View {
       Text("Current orientation: \(viewStore.currentOrientation.debugDescription)")
       Divider()
       Text("Calculation State: \(viewStore.calculationState.debugDescription)")
-      Text("State: \(viewStore.calculationState.status.rawValue)")
+      VStack(alignment: .leading) {
+        Text("State: \(viewStore.calculationState.status.rawValue)")
+        Text("num1: \(viewStore.calculationState.num1.formatted())")
+        Text("op1: \(viewStore.calculationState.op1?.rawValue ?? "")")
+        Text("num2: \(viewStore.calculationState.num2.formatted())")
+        Text("op2: \(viewStore.calculationState.op2?.rawValue ?? "")")
+        Text("num3: \(viewStore.calculationState.num3.formatted())")
+      }.frame(maxWidth: .infinity, alignment: .leading)
     }
   }
   

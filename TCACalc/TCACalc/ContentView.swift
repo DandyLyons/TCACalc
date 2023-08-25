@@ -14,10 +14,10 @@ struct ContentView: View {
     CalcScreen(
       store: .init(
         initialState: .init(
-          hScreen: .init(calcGridH: .init()),
-          vScreen: .init(calcGridV: .init()),
+          hScreen: .init(currentNum: "0", calcGridH: .init()),
+          vScreen: .init(currentNum: "0", calcGridV: .init()),
           currentOrientation: .portrait,
-          userSettings: .init()
+          userSettings: UserSettings(isDebugModeOn: true)
         ),
         reducer: {
           CalcScreenFeature()._printChanges()
