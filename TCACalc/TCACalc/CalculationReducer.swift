@@ -340,7 +340,7 @@ extension CalculationReducer.State {
               case .P, .E:
                 XCTFail("Unimplemented")
               case .AS:
-                self.num1 = self.evaluate(num1, op, num2)
+                self.num1 = self.evaluate(num1, op1!, num2)
                 self.num2 = num1
                 self.op1 = op
                 self.status = .transition

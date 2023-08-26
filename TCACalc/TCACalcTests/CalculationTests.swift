@@ -70,8 +70,8 @@ final class CalculationTests: XCTestCase {
   
   func test1plus2minus3() async {
     let store = ts
-        store.exhaustivity = .off(showSkippedAssertions: true)
-//    store.exhaustivity = .off(showSkippedAssertions: false)
+//        store.exhaustivity = .off(showSkippedAssertions: true)
+    store.exhaustivity = .off(showSkippedAssertions: false)
     await store.send(.vScreen(.calcGridV(.view(.onTap(int: 1)))))
     await store.receive(.calculation(.input(.int(1)))) {
       $0.calculation.num1 = 1
@@ -95,7 +95,7 @@ final class CalculationTests: XCTestCase {
     
     await store.send(.vScreen(.calcGridV(.view(.onTapMinusButton))))
     await store.receive(.calculation(.input(.operation(.minus)))) {
-      $0.calculation.op2 = .minus
+      $0.calculation.op1 = .minus
       $0.calculation.status = .transition
       $0.calculation.display = .num1
       $0.calculation.num1 = 3
@@ -105,9 +105,16 @@ final class CalculationTests: XCTestCase {
     await store.send(.vScreen(.calcGridV(.view(.onTap(int: 3)))))
     await store.receive(.calculation(.input(.int(3)))) {
       $0.calculation.status = .t_from_transition
-      $0.calculation.num2 = 0
+      $0.calculation.num2 = 3
       $0.calculation.display = .num2
       
+    }
+    
+    await store.send(.vScreen(.calcGridV(.view(.onTapEqualButton))))
+    await store.receive(.calculation(.input(.equals))) {
+      $0.calculation.status = .equal
+      $0.calculation.display = .num1
+      $0.calculation.num1 = 0
     }
   }
   
