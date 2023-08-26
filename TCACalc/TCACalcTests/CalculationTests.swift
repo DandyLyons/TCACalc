@@ -26,6 +26,28 @@ final class CalculationTests: XCTestCase {
     }
   )
   
+  func testPercent() async {
+    let store = ts
+            store.exhaustivity = .off(showSkippedAssertions: true)
+//    store.exhaustivity = .off(showSkippedAssertions: false)
+    await store.send(.vScreen(.calcGridV(.view(.onTap(int: 1)))))
+    await store.receive(.calculation(.input(.int(1)))) {
+      $0.calculation.num1 = 1
+      $0.calculation.status = .t_from_initial
+      $0.calculation.display = .num1
+    }
+    
+    await store.send(.vScreen(.calcGridV(.view(.onTapPercentButton))))
+    await store.receive(.calculation(.input(.toPercent))) {
+      $0.calculation.num1 = 0.01
+    }
+    
+    await store.send(.vScreen(.calcGridV(.view(.onTapPercentButton))))
+    await store.receive(.calculation(.input(.toPercent))) {
+      $0.calculation.num1 = 0.0001
+    }
+  }
+  
   func test34timesequalEqualEqual() async {
     let store = ts
 //    store.exhaustivity = .off(showSkippedAssertions: true)

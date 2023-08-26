@@ -49,6 +49,28 @@ final class TCACalcTests: XCTestCase {
     }
   }
   
+  func testPercentButton() async {
+    let store = ts
+    store.exhaustivity = .off(showSkippedAssertions: true)
+//    store.exhaustivity = .off(showSkippedAssertions: false)
+    await store.send(.vScreen(.calcGridV(.view(.onTap(int: 9)))))
+    await store.receive(.calculation(.delegate(.didFinishCalculating))) {
+      $0.vScreen.currentNum = "9"
+      $0.hScreen.currentNum = "9"
+    }
+    
+    await store.send(.vScreen(.calcGridV(.view(.onTapPercentButton))))
+    await store.receive(.calculation(.delegate(.didFinishCalculating))) {
+      $0.vScreen.currentNum = "0.09"
+      $0.hScreen.currentNum = "0.09"
+    }
+    await store.send(.vScreen(.calcGridV(.view(.onTapPercentButton))))
+    await store.receive(.calculation(.delegate(.didFinishCalculating))) {
+      $0.vScreen.currentNum = "0.0009"
+      $0.hScreen.currentNum = "0.0009"
+    }
+  }
+  
   func test1Plus1() async {
     let store = ts
 //        store.exhaustivity = .off(showSkippedAssertions: true)
@@ -103,20 +125,5 @@ final class TCACalcTests: XCTestCase {
 //    }
 //  }
 //  
-//  func testPercentButton() async {
-//    let store = TestStore(
-//      initialState: CalcScreenFeature.State(
-//        hScreen: .init(calcGridH: .init()),
-//        vScreen: .init(calcGridV: .init())
-//      ),
-//      reducer: CalcScreenFeature()
-//    )
-//    await store.send(.hScreen(.calcGridH(.view(.onTap(int: 9))))) {
-//      $0.updateCurrentNum(byPerforming: { $0 = 9 })
-//      $0.updateIsInBlankState(to: false)
-//    }
-//    await store.send(.vScreen(.calcGridV(.view(.onTapPercentButton)))) {
-//      $0.updateCurrentNum(byPerforming: { $0 = 0.09 })
-//    }
-//  }
+  
 }

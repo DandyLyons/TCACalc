@@ -108,7 +108,7 @@ struct CalcScreenFeature: Reducer {
 //    }
     
     mutating func onTapPercentButton() {
-//      self.updateCurrentNum(byPerforming: { $0 /= 100 })
+      
     }
     
     mutating func onTapNegateSignButton() {
@@ -270,8 +270,7 @@ struct CalcScreenFeature: Reducer {
 //                  state.onTapACButton()
                   return .run { await $0(.calculation(.input(.reset))) }
                 case .view(.onTapPercentButton):
-//                  state.onTapPercentButton()
-                  return .none
+                  return .run { await $0(.calculation(.input(.toPercent))) }
                 case .view(.onTapNegateSignButton):
 //                  state.onTapNegateSignButton()
                   return .none
@@ -310,8 +309,7 @@ struct CalcScreenFeature: Reducer {
                   return .run { await $0(.calculation(.input(.reset))) }
                   
                 case .view(.onTapPercentButton):
-//                  state.onTapPercentButton()
-                  return .none
+                  return .run { await $0(.calculation(.input(.toPercent))) }
                 case .view(.onTapNegateSignButton):
 //                  state.onTapNegateSignButton()
                   return .none

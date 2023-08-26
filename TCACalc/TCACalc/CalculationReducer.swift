@@ -47,7 +47,8 @@ struct CalculationReducer: Reducer {
       self.num3 = 0
       self.isDecimalOn = false
       self.display = .num1
-      self.decimalFormatStyle = .number
+//      self.decimalFormatStyle = .number.precision(.integerAndFractionLength(integerLimits: 0...10, fractionLimits: 0...10))
+      self.decimalFormatStyle = .localizedDecimal(locale: .autoupdatingCurrent)
     }
     
     /// This should never be called except from one of the `transitionTo` functions
@@ -138,6 +139,7 @@ struct CalculationReducer: Reducer {
       case equals
       case reset
       case operation(Operation)
+      case toPercent
     }
     
     case delegate(DelegateAction)
@@ -183,7 +185,6 @@ struct CalculationReducer: Reducer {
               state.process_equal(action: action)
               return .run { await $0(.delegate(.didFinishCalculating))}
           }
-          
       }
     }
   }
@@ -233,6 +234,15 @@ extension CalculationReducer.State {
     }
   }
   
+  mutating func toPercent() {
+    switch self.display {
+      case .num1: self.num1 /= 100
+      case .num2: self.num2 /= 100
+      case .num3: self.num3 /= 100
+      default: break
+    }
+  }
+  
   mutating func process_initial(action: Action)  {
     switch action {
       case .delegate: return
@@ -253,6 +263,8 @@ extension CalculationReducer.State {
             self.op1 = op
           case .reset:
             self.status = .initial
+            
+          case .toPercent: self.toPercent()
         }
     }
   }
@@ -284,6 +296,8 @@ extension CalculationReducer.State {
             } else if self.num1 == 0 {
               self.status = .initial
             }
+            
+          case .toPercent: self.toPercent()
         }
     }
   }
@@ -309,6 +323,8 @@ extension CalculationReducer.State {
           case .operation(let op):
             self.status = .transition
             self.op1 = op
+            
+          case .toPercent: self.toPercent()
         }
     }
   }
@@ -356,6 +372,8 @@ extension CalculationReducer.State {
                   self.status = .trailing
                 }
             }
+            
+          case .toPercent: self.toPercent()
         }
     }
   }
@@ -395,6 +413,8 @@ extension CalculationReducer.State {
               self.status = .equal
               self.display = .num1
             }
+            
+          case .toPercent: self.toPercent()
         }
     }
   }
@@ -435,6 +455,8 @@ extension CalculationReducer.State {
               self.num2 = self.num1
               self.display = .num1
             }
+            
+          case .toPercent: self.toPercent()
         }
     }
   }
@@ -459,6 +481,8 @@ extension CalculationReducer.State {
             self.status = .transition
             self.num2 = self.num1
             self.op1 = op
+            
+          case .toPercent: self.toPercent()
         }
     }
   }
