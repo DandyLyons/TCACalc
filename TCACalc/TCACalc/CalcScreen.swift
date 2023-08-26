@@ -78,6 +78,11 @@ struct CalcScreenFeature: Reducer {
           self.vScreen.calcGridV.currentOperation = .none
       }
       
+      // determine if AC Button should show AC or C
+      let shouldShowAC = self.calculation.status == .initial
+      self.vScreen.calcGridV.isInBlankState = shouldShowAC
+      self.hScreen.calcGridH.isInBlankState = shouldShowAC
+      
     }
     
     // TODO: Fix this
@@ -369,16 +374,11 @@ struct CalcScreenFeature: Reducer {
         
       }
     }
-//    Reduce<State, Action> { state, action in
-//      state.determineIfInBlankState()
-//      return .none
-//    }
     .ifLet(\.$presentation, action: /Action.presentation) {
       Self.Presentation()
     }
     Scope(state: \.calculation, action: /Action.calculation) {
       CalculationReducer()
-        ._printChanges()
     }
     Scope(state: \.hScreen, action: /Action.hScreen) {
       CalcScreenHFeature()

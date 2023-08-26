@@ -13,7 +13,6 @@ import ComposableArchitecture
 public struct CalcGridVFeature: Reducer {
   public init() {}
   
-  
   public struct State: Equatable {
     var isDivideOn: Bool { self.currentOperation == .divide }
     var isMultiplyOn: Bool { self.currentOperation == .multiply }
@@ -27,9 +26,9 @@ public struct CalcGridVFeature: Reducer {
     
     public var userSelectedColor: Color = .green
     
-    public init(currentOperation: Operation? = nil) {
+    public init(currentOperation: Operation? = nil, isInBlankState: Bool = true) {
       self.currentOperation = currentOperation
-      self.isInBlankState = currentOperation == nil
+      self.isInBlankState = isInBlankState
     }
   }
   public enum Action: Equatable {
@@ -57,36 +56,37 @@ public struct CalcGridVFeature: Reducer {
   
   public var body: some ReducerOf<Self> {
     Reduce<State, Action> { state, action in
-      return .none
+//      return .none
       
-//      switch action {
-//        case let .view(viewAction):
-//          switch viewAction {
-//            case .onTapDivideButton:
-//              return .none
-//            case .onTapMultiplyButton:
-//              return .none
-//            case .onTapMinusButton:
-//              return .none
-//            case .onTapPlusButton:
-//              return .none
-//            case .onTapEqualButton:
-//              return .none
-//            case .onTap:
-//              return .none
-//            case .onTapACButton:
-//              return .none
-//            case .onTapNegateSignButton:
-//              return .none
-//            case .onTapPercentButton:
-//              return .none
-//            case .onTapDecimalButton:
-//              return .none
-//          }
-//          
-//        case .delegate:
-//          return .none
-//      }
+      switch action {
+        case let .view(viewAction):
+          switch viewAction {
+            case .onTapDivideButton:
+              return .none
+            case .onTapMultiplyButton:
+              return .none
+            case .onTapMinusButton:
+              return .none
+            case .onTapPlusButton:
+              return .none
+            case .onTapEqualButton:
+              return .none
+            case .onTap:
+              return .none
+            case .onTapACButton:
+              state.isInBlankState = true
+              return .none
+            case .onTapNegateSignButton:
+              return .none
+            case .onTapPercentButton:
+              return .none
+            case .onTapDecimalButton:
+              return .none
+          }
+          
+        case .delegate:
+          return .none
+      }
     }
   }
 }
