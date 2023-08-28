@@ -282,10 +282,8 @@ struct CalcScreenFeature: Reducer {
             case .calcGridV(let vCalcGridAction):
               switch vCalcGridAction {
                 case .view(.onTap(int: let int)):
-//                  state.onTap(int: int)
                   return .run { await $0(.calculation(.input(.int(int))))}
                 case .view(.onTapACButton):
-//                  state.onTapACButton()
                   return .run { await $0(.calculation(.input(.reset))) }
                 case .view(.onTapPercentButton):
                   return .run { await $0(.calculation(.input(.toPercent))) }
@@ -293,23 +291,17 @@ struct CalcScreenFeature: Reducer {
                   return .run { await $0(.calculation(.input(.negate)))}
                   
                 case .view(.onTapDivideButton):
-//                  state.onTapDivideButton()
                   return .run { await $0(.calculation(.input(.operation(.divide)))) }
                 case .view(.onTapMultiplyButton):
-//                  state.onTapMultiplyButton()
                   return .run { await $0(.calculation(.input(.operation(.multiply)))) }
                 case .view(.onTapMinusButton):
-//                  state.onTapMinusButton()
                   return .run { await $0(.calculation(.input(.operation(.minus)))) }
                 case .view(.onTapPlusButton):
-//                  state.onTapPlusButton()
                   return .run { await $0(.calculation(.input(.operation(.plus)))) }
-                  
                 case .view(.onTapEqualButton):
-//                  state.onTapEqualButton()
                   return .run { await $0(.calculation(.input(.equals))) }
                 case .view(.onTapDecimalButton):
-                  return .none
+                  return .run { await $0(.calculation(.input(.decimal))) }
               }
           }
           

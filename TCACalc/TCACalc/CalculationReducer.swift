@@ -117,9 +117,7 @@ struct CalculationReducer: Reducer {
           shouldAppend = true
         }
         
-        if shouldAppend {
-          result.append(".")
-        }
+        if shouldAppend { result.append(".") }
       }
       
       result = self.num_resolved?.formatted(self.decimalFormatStyle) ?? "Error"
@@ -288,7 +286,12 @@ extension CalculationReducer.State {
         switch input {
           case .int(let int):
             self.status = .t_from_initial
-            self.num1.append(int)
+            if self.isDecimalOn {
+              self.num1.append(dot: int)
+              self.isDecimalOn = false
+            } else {
+              self.num1.append(int)
+            }
           case .decimal:
             self.isDecimalOn = true
             self.status = .t_from_initial
@@ -306,7 +309,6 @@ extension CalculationReducer.State {
             } else if self.num1 == 0 {
               self.status = .initial
             }
-            
           case .toPercent: self.toPercent()
           case .negate: self.negate()
         }
@@ -322,8 +324,13 @@ extension CalculationReducer.State {
             self.status = .t_from_initial
             self.num1 = 0
           case .int(let int):
-            self.num2 = Decimal(int)
             self.status = .t_from_transition
+            if self.isDecimalOn {
+              self.num2.append(dot: int)
+              self.isDecimalOn = false
+            } else {
+              self.num2 = Decimal(int)
+            }
           case .decimal:
             self.isDecimalOn = true
             self.display = .num2
@@ -356,7 +363,12 @@ extension CalculationReducer.State {
             }
           case .int(let int):
             self.status = .t_from_transition
-            self.num2.append(int)
+            if self.isDecimalOn {
+              self.num2.append(dot: int)
+              self.isDecimalOn = false
+            } else {
+              self.num2.append(int)
+            }
           case .decimal:
             self.status = .t_from_transition
             self.isDecimalOn = true
@@ -446,7 +458,12 @@ extension CalculationReducer.State {
               self.status = .t_from_trailing
             }
           case .int(let int):
-            self.num3.append(int)
+            if self.isDecimalOn {
+              self.num3.append(dot: int)
+              self.isDecimalOn = false
+            } else {
+              self.num3.append(int)
+            }
           case .decimal:
             break
           case .equals:

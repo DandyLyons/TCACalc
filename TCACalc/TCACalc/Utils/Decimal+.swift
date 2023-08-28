@@ -6,13 +6,16 @@
 //
 
 import Foundation
+import XCTestDynamicOverlay
 
 public extension Decimal {
   /// Mutates the `Decimal` in place as if the `Int` were appended to it.
   /// e.g. `(34.8).append(2)` would change the value to `34.82`
-  ///  NOTE: `int` should only ever be a 1 digit, positive number
-  ///  Doesn't currently work when self is a fraction and int is a 0
+  ///  NOTE: Doesn't currently work when self is a fraction and int is a 0
+  /// - Parameter int: should only ever be a 1 digit, positive number
   mutating func append(_ int: Int) {
+    guard (0...9).contains(int) else { XCTFail("Must be a value contained in 0...9"); return }
+    
     var result: Decimal
     
     // find out where the decimal place of self is
@@ -28,6 +31,22 @@ public extension Decimal {
     
     // add this to self
     self += appendable
+  }
+  
+  /// Mutates the `Decimal` in place as if the `Int` were appended to it after a "dot"
+  /// e.g. `34.append(dot:8)` would change the value to `34.8`
+  /// - Parameter int: should only ever be a 1 digit, positive number
+  mutating func append(dot int: Int) {
+    guard (0...9).contains(int) else { XCTFail("Must be a value contained in 0...9"); return }
+    let decimalPlace = self.exponent - 1
+    
+    // Divide the current Decimal by 10 raised to the power of the current decimalPlace
+    let factor = Decimal(10).toTheNthPower(decimalPlace)
+    self /= factor
+    
+    // Add the new decimal digit to the right of the current value
+    self += Decimal(int) / Decimal(10).toTheNthPower(decimalPlace + 1)
+    self /= 10
   }
   
   func toTheNthPower(_ exponent: Int) -> Decimal {
