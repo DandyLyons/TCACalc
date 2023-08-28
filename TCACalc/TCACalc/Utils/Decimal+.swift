@@ -60,6 +60,12 @@ extension Decimal {
     let double: Double = NSDecimalNumber(decimal: decimal).doubleValue
     return Int(double)
   }
+  
+  var isWholeNumber: Bool {
+    let intValue = NSDecimalNumber(decimal: self).intValue
+    let decimalValue = Decimal(intValue)
+    return decimalValue == self
+  }
 }
 
 extension Int {

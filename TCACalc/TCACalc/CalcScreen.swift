@@ -264,10 +264,15 @@ struct CalcScreenFeature: Reducer {
                   } else {
                     
                     if let decimal = state.calculation.num_resolved {
-                      
-                      let number = Int(truncatingIfNeeded: decimal)
-                      return .run { send in
-                        try await send(.factResponse(numberFact.fetch(number)))
+                      if decimal.isWholeNumber {
+                        
+                        
+                        let number = Int(truncatingIfNeeded: decimal)
+                        return .run { send in
+                          try await send(.factResponse(numberFact.fetch(number)))
+                        }
+                      } else {
+                        state.presentation = .alert(.alert_numberFactError_NotWholeNumber())
                       }
                     }
                   }
@@ -661,6 +666,12 @@ extension AlertState where Action == CalcScreenFeature.Presentation.Action.Alert
       TextState(fact)
     } actions: {
       ButtonState(role: .none, label: { TextState("Ok")})
+    }
+  }
+  
+  static func alert_numberFactError_NotWholeNumber() -> Self {
+    return Self {
+      TextState("Cannot get a number fact for non-whole numbers.")
     }
   }
 }
