@@ -511,8 +511,6 @@ import SwiftUI
 struct CalcScreen: View {
   typealias ViewStoreOf_CalcScreen = ViewStore<ViewState, CalcScreenFeature.Action>
   let store: StoreOf<CalcScreenFeature>
-//  @State private var currentOrientation: UIDeviceOrientation = UIDevice.current.orientation
-  
   
   struct ViewState: Equatable {
     #if os(iOS)
@@ -583,10 +581,12 @@ struct CalcScreen: View {
         }
       }
       // MARK: View Events
-      .onAppear {
-        viewStore.send(.currentOrientationChangedTo(UIDeviceOrientation.portrait))
+      .task(priority: .userInitiated) {
+        viewStore.send(.currentOrientationChangedTo(UIDevice.current.orientation))
       }
       .onRotate { newOrientation in
+        guard newOrientation != .portraitUpsideDown,
+              newOrientation != viewStore.currentOrientation else { return }
         viewStore.send(.currentOrientationChangedTo(newOrientation))
       }
       
