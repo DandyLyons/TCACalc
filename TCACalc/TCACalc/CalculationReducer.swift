@@ -139,6 +139,7 @@ struct CalculationReducer: Reducer {
       case reset
       case operation(Operation)
       case toPercent
+      case negate
     }
     
     case delegate(DelegateAction)
@@ -242,6 +243,15 @@ extension CalculationReducer.State {
     }
   }
   
+  mutating func negate() {
+    switch self.display {
+      case .num1: self.num1.negate()
+      case .num2: self.num2.negate()
+      case .num3: self.num3.negate()
+      default: break
+    }
+  }
+  
   mutating func process_initial(action: Action)  {
     switch action {
       case .delegate: return
@@ -264,6 +274,7 @@ extension CalculationReducer.State {
             self.status = .initial
             
           case .toPercent: self.toPercent()
+          case .negate: self.negate()
         }
     }
   }
@@ -297,6 +308,7 @@ extension CalculationReducer.State {
             }
             
           case .toPercent: self.toPercent()
+          case .negate: self.negate()
         }
     }
   }
@@ -324,6 +336,7 @@ extension CalculationReducer.State {
             self.op1 = op
             
           case .toPercent: self.toPercent()
+          case .negate: self.negate()
         }
     }
   }
@@ -373,6 +386,7 @@ extension CalculationReducer.State {
             }
             
           case .toPercent: self.toPercent()
+          case .negate: self.negate()
         }
     }
   }
@@ -414,6 +428,7 @@ extension CalculationReducer.State {
             }
             
           case .toPercent: self.toPercent()
+          case .negate: self.negate()
         }
     }
   }
@@ -456,6 +471,7 @@ extension CalculationReducer.State {
             }
             
           case .toPercent: self.toPercent()
+          case .negate: self.negate()
         }
     }
   }
@@ -482,6 +498,7 @@ extension CalculationReducer.State {
             self.op1 = op
             
           case .toPercent: self.toPercent()
+          case .negate: self.negate()
         }
     }
   }

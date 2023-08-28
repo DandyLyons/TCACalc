@@ -290,8 +290,7 @@ struct CalcScreenFeature: Reducer {
                 case .view(.onTapPercentButton):
                   return .run { await $0(.calculation(.input(.toPercent))) }
                 case .view(.onTapNegateSignButton):
-//                  state.onTapNegateSignButton()
-                  return .none
+                  return .run { await $0(.calculation(.input(.negate)))}
                   
                 case .view(.onTapDivideButton):
 //                  state.onTapDivideButton()
@@ -329,8 +328,7 @@ struct CalcScreenFeature: Reducer {
                 case .view(.onTapPercentButton):
                   return .run { await $0(.calculation(.input(.toPercent))) }
                 case .view(.onTapNegateSignButton):
-//                  state.onTapNegateSignButton()
-                  return .none
+                  return .run { await $0(.calculation(.input(.negate)))}
                   
                 case .view(.onTapDivideButton):
                   return .run { await $0(.calculation(.input(.operation(.divide)))) }
