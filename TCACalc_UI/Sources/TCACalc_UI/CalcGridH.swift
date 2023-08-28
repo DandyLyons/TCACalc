@@ -82,10 +82,36 @@ public struct CalcGridHFeature: Reducer {
       case onTapXToThePowerOfYButton
       case onTap10ToThePowerOfXButton
       case onTap1OverXButton
+      case onTapOpenParenthesesButton
+      case onTapCloseParenthesesButton
+      case onTapMCButton
+      case onTapMPlusButton
+      case onTapMMinusButton
+      case onTapMRButton
+      case onTap2ndButton
+      case onTapEToThePowerOfXButton
+      case onTapSquareRootButton
+      case onTapCubeRootButton
+      case onTapYRootXButton
+      case onTapLNButton
+      case onTapLogSub10
+      case onTapFactorialButton
+      case onTapSinButton
+      case onTapCosButton
+      case onTapTanButton
+      case onTapEButton
+      case onTapEEButton
+      case onTapRadButton
+      case onTapSinHButton
+      case onTapCosHButton
+      case onTapTanHButton
+      case onTapPiButton
+      case onTapRandButton
+      case onTapSecondButton
     }
     case delegate(Delegate)
     public enum Delegate: Equatable {
-      
+      case notYetImplemented
     }
     
     
@@ -124,16 +150,8 @@ public struct CalcGridHFeature: Reducer {
               return .none
               
             
-            case .onTapSquaredButton:
-              return .none
-            case .onTapCubedButton:
-              return .none
-            case .onTapXToThePowerOfYButton:
-              return .none
-            case .onTap10ToThePowerOfXButton:
-              return .none
-            case .onTap1OverXButton:
-              return .none
+            case .onTapSquaredButton, .onTapCubedButton, .onTapXToThePowerOfYButton, .onTap10ToThePowerOfXButton, .onTap1OverXButton, .onTapOpenParenthesesButton, .onTapCloseParenthesesButton, .onTapMCButton, .onTapMPlusButton, .onTapMMinusButton, .onTapMRButton, .onTap2ndButton, .onTapEToThePowerOfXButton, .onTapSquaredButton, .onTapCubeRootButton, .onTapYRootXButton, .onTapLNButton, .onTapLogSub10, .onTapFactorialButton, .onTapSinButton, .onTapCosButton, .onTapTanButton, .onTapEButton, .onTapEEButton, .onTapRadButton, .onTapSinHButton, .onTapCosHButton, .onTapTanHButton, .onTapPiButton, .onTapRandButton, .onTapSecondButton, .onTapSquareRootButton:
+              return .run { await $0(.delegate(.notYetImplemented))}
           }
           
         case .delegate:
@@ -218,12 +236,12 @@ public struct CalcGridH: View {
   func row1(_ viewStore: ViewStore<CalcGridH.ViewState, CalcGridHFeature.Action>) -> some View {
     GridRow {
       Group {
-        Button {} label: { Text("(") }
-        Button {} label: { Text(")") }
-        Button {} label: { Text("mc") }
-        Button {} label: { Text("m+") }
-        Button {} label: { Text("m-") }
-        Button {} label: { Text("mr") }
+        Button {viewStore.send(.view(.onTapOpenParenthesesButton))} label: { Text("(") }
+        Button {viewStore.send(.view(.onTapCloseParenthesesButton))} label: { Text(")") }
+        Button {viewStore.send(.view(.onTapMCButton))} label: { Text("mc") }
+        Button {viewStore.send(.view(.onTapMPlusButton))} label: { Text("m+") }
+        Button {viewStore.send(.view(.onTapMMinusButton))} label: { Text("m-") }
+        Button {viewStore.send(.view(.onTapMRButton))} label: { Text("mr") }
       }
       .buttonStyle(self.darkgrayStyle)
       Group {
@@ -241,11 +259,11 @@ public struct CalcGridH: View {
   func row2(_ viewStore: ViewStore<CalcGridH.ViewState, CalcGridHFeature.Action>) -> some View {
     GridRow {
       Group {
-        Button {} label: { Text("2") + Text("nd".attributed().superscripted()) }
+        Button { viewStore.send(.view(.onTapSecondButton))} label: { Text("2") + Text("nd".attributed().superscripted()) }
         Button { viewStore.send(.view(.onTapSquaredButton ))} label: { Text("x".attributed() + "2".attributed().superscripted()) }
         Button { viewStore.send(.view(.onTapCubedButton)) } label: { Text("x".attributed() + "3".attributed().superscripted()) }
         Button { viewStore.send(.view(.onTapXToThePowerOfYButton)) } label: { Text("x".attributed() + "y".attributed().superscripted()) }
-        Button {} label: { Text("e".attributed() + "x".attributed().superscripted()) }
+        Button {viewStore.send(.view(.onTapEToThePowerOfXButton))} label: { Text("e".attributed() + "x".attributed().superscripted()) }
         Button { viewStore.send(.view(.onTap10ToThePowerOfXButton))} label: { Text("10".attributed() + "x".attributed().superscripted()) }
       }
       .buttonStyle(self.darkgrayStyle)
@@ -264,12 +282,12 @@ public struct CalcGridH: View {
   func row3(_ viewStore: ViewStore<CalcGridH.ViewState, CalcGridHFeature.Action>) -> some View {
     GridRow {
       Group {
-        Button { } label: { Text("1/x") }
-        Button {} label: { Text("2".attributed().superscripted()) + Text(Image(systemName: "x.squareroot")) }
-        Button {} label: { Text("3".attributed().superscripted()) + Text(Image(systemName: "x.squareroot")) }
-        Button {} label: { Text("y".attributed().superscripted()) + Text(Image(systemName: "x.squareroot")) }
-        Button {} label: { Text("ln") }
-        Button {} label: { Text("log") + Text("10".attributed().subscripted()) }
+        Button { viewStore.send(.view(.onTap1OverXButton)) } label: { Text("1/x") }
+        Button {viewStore.send(.view(.onTapSquareRootButton))} label: { Text("2".attributed().superscripted()) + Text(Image(systemName: "x.squareroot")) }
+        Button {viewStore.send(.view(.onTapCubeRootButton))} label: { Text("3".attributed().superscripted()) + Text(Image(systemName: "x.squareroot")) }
+        Button {viewStore.send(.view(.onTapYRootXButton))} label: { Text("y".attributed().superscripted()) + Text(Image(systemName: "x.squareroot")) }
+        Button { viewStore.send(.view(.onTapLNButton))} label: { Text("ln") }
+        Button {viewStore.send(.view(.onTapLogSub10))} label: { Text("log") + Text("10".attributed().subscripted()) }
       }
       .buttonStyle(self.darkgrayStyle)
       Group {
@@ -287,12 +305,12 @@ public struct CalcGridH: View {
   func row4(_ viewStore: ViewStore<CalcGridH.ViewState, CalcGridHFeature.Action>) -> some View {
     GridRow {
       Group {
-        Button {} label: { Text("x!") }
-        Button {} label: { Text("sin") }
-        Button {} label: { Text("cos") }
-        Button {} label: { Text("tan") }
-        Button {} label: { Text("e") }
-        Button {} label: { Text("EE") }
+        Button {viewStore.send(.view(.onTapFactorialButton))} label: { Text("x!") }
+        Button {viewStore.send(.view(.onTapSinButton))} label: { Text("sin") }
+        Button {viewStore.send(.view(.onTapCosButton))} label: { Text("cos") }
+        Button {viewStore.send(.view(.onTapTanButton))} label: { Text("tan") }
+        Button {viewStore.send(.view(.onTapEButton))} label: { Text("e") }
+        Button {viewStore.send(.view(.onTapEEButton))} label: { Text("EE") }
       }
       .buttonStyle(self.darkgrayStyle)
       Group {
@@ -310,12 +328,12 @@ public struct CalcGridH: View {
   func row5(_ viewStore: ViewStore<CalcGridH.ViewState, CalcGridHFeature.Action>) -> some View {
     GridRow {
       Group {
-        Button {} label: { Text("Rad") }
-        Button {} label: { Text("sinh") }
-        Button {} label: { Text("cosh") }
-        Button {} label: { Text("tanh") }
-        Button {} label: { Text("π") }
-        Button {} label: { Text("Rand") }
+        Button {viewStore.send(.view(.onTapRadButton))} label: { Text("Rad") }
+        Button {viewStore.send(.view(.onTapSinHButton))} label: { Text("sinh") }
+        Button {viewStore.send(.view(.onTapCosHButton))} label: { Text("cosh") }
+        Button {viewStore.send(.view(.onTapTanHButton))} label: { Text("tanh") }
+        Button {viewStore.send(.view(.onTapPiButton))} label: { Text("π") }
+        Button { viewStore.send(.view(.onTapRandButton))} label: { Text("Rand") }
       }
       .buttonStyle(self.darkgrayStyle)
       Group {

@@ -356,9 +356,68 @@ struct CalcScreenFeature: Reducer {
                   return .none
                 case .view(.onTap1OverXButton):
                   return .none
+                case .view(.onTapOpenParenthesesButton):
+                  return .none
+                case .view(.onTapCloseParenthesesButton):
+                  return .none
+                case .view(.onTapMCButton):
+                  return .none
+                case .view(.onTapMPlusButton):
+                  return .none
+                case .view(.onTapMMinusButton):
+                  return .none
+                case .view(.onTapMRButton):
+                  return .none
+                case .view(.onTap2ndButton):
+                  return .none
+                case .view(.onTapEToThePowerOfXButton):
+                  return .none
+                case .view(.onTapSquareRootButton):
+                  return .none
+                case .view(.onTapCubeRootButton):
+                  return .none
+                case .view(.onTapYRootXButton):
+                  return .none
+                case .view(.onTapLNButton):
+                  return .none
+                  case .view(.onTapLogSub10):
+                  return .none
+                case .view(.onTapFactorialButton):
+                  return .none
+                case .view(.onTapSinButton):
+                  return .none
+                case .view(.onTapCosButton):
+                  return .none
+                case .view(.onTapTanButton):
+                  return .none
+                case .view(.onTapEButton):
+                  return .none
+                case .view(.onTapEEButton):
+                  return .none
+                case .view(.onTapRadButton):
+                  return .none
+                case .view(.onTapSinHButton):
+                  return .none
+                case .view(.onTapCosHButton):
+                  return .none
+                case .view(.onTapTanHButton):
+                  return .none
+                case .view(.onTapPiButton):
+                  return .none
+                case .view(.onTapRandButton):
+                  return .none
+                case .view(.onTapSecondButton):
+                  return .none
+                case .delegate(let hCalcGridDelegateActions):
+                  switch hCalcGridDelegateActions {
+                    case .notYetImplemented:
+                      state.vScreen.currentNum = "Not Yet Implemented"
+                      state.hScreen.currentNum = "Not Yet Implemented"
+                      return .none
+                  }
               }
-            case .delegate(let hCalcGridDelegateAction):
-              switch hCalcGridDelegateAction {
+            case .delegate(let hCalcScreenDelegateAction):
+              switch hCalcScreenDelegateAction {
                 case .presentSettingsView:
                   state.presentation = .settings(.init(state.userSettings))
                   return .none
