@@ -45,3 +45,25 @@ public extension Decimal {
     }
   }
 }
+
+extension Decimal {
+  /// returns a Decimal rounded to the nearest integer
+  func rounded(scale: Int = 0, roundingMode: NSDecimalNumber.RoundingMode = .plain) -> Decimal {
+    var result = Decimal()
+    var source = self
+    NSDecimalRound(&result, &source, scale, roundingMode)
+    return result
+  }
+  
+  func rounded() -> Int {
+    let decimal: Decimal = self.rounded()
+    let double: Double = NSDecimalNumber(decimal: decimal).doubleValue
+    return Int(double)
+  }
+}
+
+extension Int {
+  init(truncatingIfNeeded decimal: Decimal) {
+    self = decimal.rounded()
+  }
+}

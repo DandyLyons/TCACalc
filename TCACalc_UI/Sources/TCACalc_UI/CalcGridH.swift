@@ -76,6 +76,12 @@ public struct CalcGridHFeature: Reducer {
       case onTapNegateSignButton
       case onTapPercentButton
       case onTapDecimalButton
+      
+      case onTapSquaredButton
+      case onTapCubedButton
+      case onTapXToThePowerOfYButton
+      case onTap10ToThePowerOfXButton
+      case onTap1OverXButton
     }
     case delegate(Delegate)
     public enum Delegate: Equatable {
@@ -115,6 +121,18 @@ public struct CalcGridHFeature: Reducer {
             case .onTapPercentButton:
               return .none
             case .onTapDecimalButton:
+              return .none
+              
+            
+            case .onTapSquaredButton:
+              return .none
+            case .onTapCubedButton:
+              return .none
+            case .onTapXToThePowerOfYButton:
+              return .none
+            case .onTap10ToThePowerOfXButton:
+              return .none
+            case .onTap1OverXButton:
               return .none
           }
           
@@ -224,11 +242,11 @@ public struct CalcGridH: View {
     GridRow {
       Group {
         Button {} label: { Text("2") + Text("nd".attributed().superscripted()) }
-        Button {} label: { Text("x".attributed() + "2".attributed().superscripted()) }
-        Button {} label: { Text("x".attributed() + "3".attributed().superscripted()) }
-        Button {} label: { Text("x".attributed() + "y".attributed().superscripted()) }
+        Button { viewStore.send(.view(.onTapSquaredButton ))} label: { Text("x".attributed() + "2".attributed().superscripted()) }
+        Button { viewStore.send(.view(.onTapCubedButton)) } label: { Text("x".attributed() + "3".attributed().superscripted()) }
+        Button { viewStore.send(.view(.onTapXToThePowerOfYButton)) } label: { Text("x".attributed() + "y".attributed().superscripted()) }
         Button {} label: { Text("e".attributed() + "x".attributed().superscripted()) }
-        Button {} label: { Text("10".attributed() + "x".attributed().superscripted()) }
+        Button { viewStore.send(.view(.onTap10ToThePowerOfXButton))} label: { Text("10".attributed() + "x".attributed().superscripted()) }
       }
       .buttonStyle(self.darkgrayStyle)
       Group {

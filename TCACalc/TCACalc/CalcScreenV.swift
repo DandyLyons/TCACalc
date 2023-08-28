@@ -34,7 +34,7 @@ struct CalcScreenVFeature: Reducer {
     case delegate(Delegate)
     enum Delegate: Equatable {
       case presentSettingsView
-      case forceResetCalculation
+      case numDisplayTapped
     }
   }
   
@@ -49,7 +49,7 @@ struct CalcScreenVFeature: Reducer {
               }
             case .onTapNumDisplay:
               return .run { send in
-                await send(.delegate(.forceResetCalculation))
+                  await send(.delegate(.numDisplayTapped))
               }
           }
           

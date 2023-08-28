@@ -90,6 +90,14 @@ struct CalculationReducer: Reducer {
         case .equal: return nil
       }
     }
+    var num_resolved: Decimal? {
+      switch self.display {
+        case .num1: self.num1
+        case .num2: self.num2
+        case .num3: self.num3
+        case .error: nil
+      }
+    }
     
     var display: Display
     enum Display: Equatable { case num1, num2, num3, error }
@@ -114,16 +122,7 @@ struct CalculationReducer: Reducer {
         }
       }
       
-      switch self.display {
-        case .num1:
-          result = num1.formatted(decimalFormatStyle)
-        case .num2:
-          result = num2.formatted(decimalFormatStyle)
-        case .num3:
-          result = num3.formatted(decimalFormatStyle)
-        case .error:
-          result = "Error"
-      }
+      result = self.num_resolved?.formatted(self.decimalFormatStyle) ?? "Error"
       appendDecimalIfNecessary()
       return result
     }

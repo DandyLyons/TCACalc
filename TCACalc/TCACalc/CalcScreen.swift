@@ -10,6 +10,8 @@ import ComposableArchitecture
 
 
 
+
+
 struct CalcScreenFeature: Reducer {
   struct State: Equatable {
     var calculation: CalculationReducer.State
@@ -226,9 +228,11 @@ struct CalcScreenFeature: Reducer {
     }
     case presentation(PresentationAction<Presentation.Action>)
     
+    case factResponse(String)
   }
   
-  
+  // MARK: Dependencies
+  @Dependency(\.numberFact) var numberFact
   
   var body: some ReducerOf<Self> {
     Reduce<State, Action> { state, action in
@@ -254,9 +258,18 @@ struct CalcScreenFeature: Reducer {
                 case .presentSettingsView:
                   state.presentation = .settings(.init(state.userSettings))
                   return .none
-                case .forceResetCalculation:
+                case .numDisplayTapped:
                   if state.userSettings.isDebugModeOn {
-                    state.calculation = .init()
+                    state.calculation = .init() // force calculation engine to reset
+                  } else {
+                    
+                    if let decimal = state.calculation.num_resolved {
+                      
+                      let number = Int(truncatingIfNeeded: decimal)
+                      return .run { send in
+                        try await send(.factResponse(numberFact.fetch(number)))
+                      }
+                    }
                   }
                   return .none
               }
@@ -333,6 +346,16 @@ struct CalcScreenFeature: Reducer {
                   
                 case .view(.onTapDecimalButton):
                   return .run { await $0(.calculation(.input(.decimal))) }
+                case .view(.onTapSquaredButton):
+                  return .none
+                case .view(.onTapCubedButton):
+                  return .none
+                case .view(.onTapXToThePowerOfYButton):
+                  return .none
+                case .view(.onTap10ToThePowerOfXButton):
+                  return .none
+                case .view(.onTap1OverXButton):
+                  return .none
               }
             case .delegate(let hCalcGridDelegateAction):
               switch hCalcGridDelegateAction {
@@ -365,11 +388,19 @@ struct CalcScreenFeature: Reducer {
                       return .none
                   }
               }
+            case .alert(let alerts):
+              switch alerts {
+                case .numberFact:
+                  return .none
+              }
           }
           
         case .presentation(.dismiss):
           return .none
         
+        case .factResponse(let fact):
+          state.presentation = .alert(.alert_numberFact(fact))
+          return .none
       }
     }
     .ifLet(\.$presentation, action: /Action.presentation) {
@@ -389,9 +420,12 @@ struct CalcScreenFeature: Reducer {
   struct Presentation: Reducer {
     enum State: Equatable {
       case settings(SettingsReducer.State)
+      case alert(AlertState<Action.Alert>)
     }
     enum Action: Equatable {
       case settings(SettingsReducer.Action)
+      case alert(Alert)
+      enum Alert { case numberFact }
     }
     var body: some ReducerOf<Self> {
       Scope(state: /State.settings, action: /Action.settings) {
@@ -518,7 +552,12 @@ struct CalcScreen: View {
               .navigationTitle("Settings")
               .preferredColorScheme(viewStore.colorSchemeMode.resolvedColorScheme)
           }
-        })
+        }
+      )
+      .alert(store: self.store.scope(state: \.$presentation, action: { .presentation($0)}),
+             state: /CalcScreenFeature.Presentation.State.alert,
+             action: CalcScreenFeature.Presentation.Action.alert
+      )
       
     }
   }
@@ -556,6 +595,17 @@ struct Presentation: Reducer {
     }
   }
 }
+
+extension AlertState where Action == CalcScreenFeature.Presentation.Action.Alert {
+  static func alert_numberFact(_ fact: String) -> Self {
+    return Self {
+      TextState(fact)
+    } actions: {
+      ButtonState(role: .none, label: { TextState("Ok")})
+    }
+  }
+}
+
 
 //#Preview("CalcScreen H"
 //         , traits: .landscapeLeft
