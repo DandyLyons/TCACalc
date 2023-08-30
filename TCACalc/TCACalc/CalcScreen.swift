@@ -573,11 +573,11 @@ struct CalcScreen: View {
           case .unknown:
             // TODO: Delete this
             self.vScreen
-              .onAppear { print("Something is broken") }
+              .onAppear { print("UIDeviceOrientation is unknown") }
             
           @unknown default:
             self.vScreen
-              .onAppear { print("Something is broken") }
+              .onAppear { print("UIDeviceOrientation received unknown default") }
         }
       }
       // MARK: View Events

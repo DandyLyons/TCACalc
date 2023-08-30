@@ -13,40 +13,81 @@ public extension Decimal {
   /// e.g. `(34.8).append(2)` would change the value to `34.82`
   ///  NOTE: Doesn't currently work when self is a fraction and int is a 0
   /// - Parameter int: should only ever be a 1 digit, positive number
-  mutating func append(_ int: Int) {
+  /// - Parameter afterZeroes: Only used if appending to a decimal with trailing zeroes after a decimal (e.g. `(20.2).append(3, afterZeroes: 3)` returns `20.20003`
+  mutating func append(_ int: Int, afterZeroes leadingZeroes: UInt = 0) {
     guard (0...9).contains(int) else { XCTFail("Must be a value contained in 0...9"); return }
     
     var result: Decimal
     
-    // find out where the decimal place of self is
-    guard self.exponent != 0 else {
-      result = (self * 10) + Decimal(int)
-      self = result
-      return
+    
+    switch self.exponent {
+        
+        // all negative exponents
+        // where Decimal is < 1
+      case let exponent where exponent < 0:
+        var appendable = Decimal(int)
+        
+        // the number of times we need to move the decimal place to the left before we can append
+        // the int to self
+        
+        
+        var decimalPlacesToTheLeft = abs(self.exponent - 1) + Int(leadingZeroes)
+        while decimalPlacesToTheLeft > 0 {
+          appendable /= 10
+          decimalPlacesToTheLeft -= 1
+        }
+        self += appendable
+        
+        // exactly 0
+      case 0:
+        result = (self * 10) + Decimal(int)
+        self = result
+        return
+        
+        // all positive exponents
+        // ?: where Decimal is > 10
+      case let exponent where exponent > 0:
+        guard int != 0 else {
+          self *= 10
+          return
+        }
+        let appendable = Decimal(int)
+        
+        // add this to self
+        self = (self * 10) + appendable
+      
+      default:
+        XCTFail("Decimal.append() encountered unexpected value")
+        
     }
-    let decimalPlace = self.exponent - 1
-    
-    // multiply `int` by the appropriate power of ten and assign it to "appendable"
-    let appendable = Decimal(int) * (Decimal(10).toTheNthPower(decimalPlace))
-    
-    // add this to self
-    self += appendable
   }
+  
+  
   
   /// Mutates the `Decimal` in place as if the `Int` were appended to it after a "dot"
   /// e.g. `34.append(dot:8)` would change the value to `34.8`
   /// - Parameter int: should only ever be a 1 digit, positive number
-  mutating func append(dot int: Int) {
+  mutating func append(dot int: Int, afterZeroes leadingZeroes: UInt = 0) {
     guard (0...9).contains(int) else { XCTFail("Must be a value contained in 0...9"); return }
-    let decimalPlace = self.exponent - 1
+    guard self.isWholeNumber else {
+      XCTFail("Decimal.append(dot:) should not be called Decimal is a whole number. User .append( ) instead.")
+      return
+    }
+    var shifter = leadingZeroes
     
-    // Divide the current Decimal by 10 raised to the power of the current decimalPlace
-    let factor = Decimal(10).toTheNthPower(decimalPlace)
-    self /= factor
+    while shifter > 0 {
+      shifter -= 1
+      self *= 10
+    }
     
-    // Add the new decimal digit to the right of the current value
-    self += Decimal(int) / Decimal(10).toTheNthPower(decimalPlace + 1)
+    self.append(int)
+    while shifter < leadingZeroes {
+      shifter += 1
+      self /= 10
+    }
     self /= 10
+    
+    
   }
   
   func toTheNthPower(_ exponent: Int) -> Decimal {

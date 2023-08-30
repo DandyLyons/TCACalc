@@ -45,7 +45,6 @@ struct CalculationReducer: Reducer {
       self.num2 = 0
       self.op2 = nil
       self.num3 = 0
-      self.isDecimalOn = false
       self.display = .num1
 //      self.decimalFormatStyle = .number.precision(.integerAndFractionLength(integerLimits: 0...10, fractionLimits: 0...10))
       self.decimalFormatStyle = .localizedDecimal(locale: .autoupdatingCurrent)
@@ -72,7 +71,13 @@ struct CalculationReducer: Reducer {
     var num2: Decimal = 0
     var op2: Operation? = nil
     var num3: Decimal = 0
-    var isDecimalOn = false
+    
+    var buffer: Buffer = .init()
+    struct Buffer: Equatable {
+      var isDecimalOn = false
+      var trailingZeroesAfterDecimal: UInt = 0
+      var isNegativeOn = false
+    }
     
     var op_resolved: Operation? {
 //      switch status, op1, op2 {
@@ -113,7 +118,7 @@ struct CalculationReducer: Reducer {
         case .error: Decimal(0)
         }
         
-        if self.isDecimalOn && !numToDisplay.formatted().contains(".") {
+        if self.buffer.isDecimalOn && !numToDisplay.formatted().contains(".") {
           shouldAppend = true
         }
         
@@ -202,7 +207,7 @@ extension CalculationReducer.State {
         self.op2 = nil
         self.num3 = 0
         self.display = .num1
-        self.isDecimalOn = false
+        self.buffer.isDecimalOn = false
       case .t_from_initial:
         self.display = .num1
       case .transition:
@@ -256,12 +261,17 @@ extension CalculationReducer.State {
       case .input(let input):
         switch input {
           case .int(let int):
-            self.status = .t_from_initial
-            self.num1 = Decimal(int)
+            switch int {
+              case 0:
+                self.num1 = Decimal(int)
+              default:
+                self.status = .t_from_initial
+                self.num1 = Decimal(int)
+            }
             
           case .decimal:
             self.num1 = 0
-            self.isDecimalOn = true
+            self.buffer.isDecimalOn = true
             self.status = .t_from_initial
           case .equals:
             self.status = .equal
@@ -286,14 +296,41 @@ extension CalculationReducer.State {
         switch input {
           case .int(let int):
             self.status = .t_from_initial
-            if self.isDecimalOn {
-              self.num1.append(dot: int)
-              self.isDecimalOn = false
-            } else {
-              self.num1.append(int)
+            
+            switch int {
+              case 0:
+                switch (buffer.isDecimalOn, num1.isWholeNumber) {
+                  case (true, true):
+                    self.buffer.trailingZeroesAfterDecimal += 1
+                  case (false, false):
+                    self.num1.append(int)
+                    self.buffer.trailingZeroesAfterDecimal += 1
+                  case (false, true):
+                    self.num1.append(int)
+                  case (true, false):
+                    self.buffer.trailingZeroesAfterDecimal += 1
+                }
+                
+              default:
+                switch (buffer.isDecimalOn, num1.isWholeNumber) {
+                  case (true, true):
+                    self.num1.append(dot: int, afterZeroes: buffer.trailingZeroesAfterDecimal)
+                    self.buffer.isDecimalOn = false
+                    self.buffer.trailingZeroesAfterDecimal = 0
+                  case (false, false):
+                    self.num1.append(int, afterZeroes: buffer.trailingZeroesAfterDecimal)
+                    self.buffer.trailingZeroesAfterDecimal = 0
+                  case (false, true):
+                    self.num1.append(int)
+                  case (true, false):
+                    self.num1.append(dot: int, afterZeroes: buffer.trailingZeroesAfterDecimal)
+                    self.buffer.isDecimalOn = false
+                    self.buffer.trailingZeroesAfterDecimal = 0
+                }
             }
+            
           case .decimal:
-            self.isDecimalOn = true
+            self.buffer.isDecimalOn = true
             self.status = .t_from_initial
           case .equals:
             self.status = .equal
@@ -325,14 +362,14 @@ extension CalculationReducer.State {
             self.num1 = 0
           case .int(let int):
             self.status = .t_from_transition
-            if self.isDecimalOn {
+            if self.buffer.isDecimalOn {
               self.num2.append(dot: int)
-              self.isDecimalOn = false
+              self.buffer.isDecimalOn = false
             } else {
               self.num2 = Decimal(int)
             }
           case .decimal:
-            self.isDecimalOn = true
+            self.buffer.isDecimalOn = true
             self.display = .num2
             self.status = .t_from_transition
           case .equals:
@@ -363,15 +400,42 @@ extension CalculationReducer.State {
             }
           case .int(let int):
             self.status = .t_from_transition
-            if self.isDecimalOn {
-              self.num2.append(dot: int)
-              self.isDecimalOn = false
-            } else {
-              self.num2.append(int)
+            
+            switch int {
+              case 0:
+                switch (buffer.isDecimalOn, num2.isWholeNumber) {
+                  case (true, true):
+                    self.buffer.trailingZeroesAfterDecimal += 1
+                  case (false, false):
+                    self.num2.append(int)
+                    self.buffer.trailingZeroesAfterDecimal += 1
+                  case (false, true):
+                    self.num2.append(int)
+                  case (true, false):
+                    self.buffer.trailingZeroesAfterDecimal += 1
+                }
+                
+              default:
+                switch (buffer.isDecimalOn, num2.isWholeNumber) {
+                  case (true, true):
+                    self.num2.append(dot: int, afterZeroes: buffer.trailingZeroesAfterDecimal)
+                    self.buffer.isDecimalOn = false
+                    self.buffer.trailingZeroesAfterDecimal = 0
+                  case (false, false):
+                    self.num2.append(int, afterZeroes: buffer.trailingZeroesAfterDecimal)
+                    self.buffer.trailingZeroesAfterDecimal = 0
+                  case (false, true):
+                    self.num2.append(int)
+                  case (true, false):
+                    self.num2.append(dot: int, afterZeroes: buffer.trailingZeroesAfterDecimal)
+                    self.buffer.isDecimalOn = false
+                    self.buffer.trailingZeroesAfterDecimal = 0
+                }
             }
+            
           case .decimal:
             self.status = .t_from_transition
-            self.isDecimalOn = true
+            self.buffer.isDecimalOn = true
           case .equals:
             self.status = .equal
             self.num1 = self.evaluate(num1, self.op1!, num2)
@@ -458,11 +522,44 @@ extension CalculationReducer.State {
               self.status = .t_from_trailing
             }
           case .int(let int):
-            if self.isDecimalOn {
-              self.num3.append(dot: int)
-              self.isDecimalOn = false
-            } else {
-              self.num3.append(int)
+//            if self.isDecimalOn {
+//              self.num3.append(dot: int)
+//              self.isDecimalOn = false
+//            } else {
+//              self.num3.append(int)
+//            }
+            
+            
+            switch int {
+              case 0:
+                switch (buffer.isDecimalOn, num3.isWholeNumber) {
+                  case (true, true):
+                    self.buffer.trailingZeroesAfterDecimal += 1
+                  case (false, false):
+                    self.num3.append(int)
+                    self.buffer.trailingZeroesAfterDecimal += 1
+                  case (false, true):
+                    self.num3.append(int)
+                  case (true, false):
+                    self.buffer.trailingZeroesAfterDecimal += 1
+                }
+                
+              default:
+                switch (buffer.isDecimalOn, num3.isWholeNumber) {
+                  case (true, true):
+                    self.num3.append(dot: int, afterZeroes: buffer.trailingZeroesAfterDecimal)
+                    self.buffer.isDecimalOn = false
+                    self.buffer.trailingZeroesAfterDecimal = 0
+                  case (false, false):
+                    self.num3.append(int, afterZeroes: buffer.trailingZeroesAfterDecimal)
+                    self.buffer.trailingZeroesAfterDecimal = 0
+                  case (false, true):
+                    self.num3.append(int)
+                  case (true, false):
+                    self.num3.append(dot: int, afterZeroes: buffer.trailingZeroesAfterDecimal)
+                    self.buffer.isDecimalOn = false
+                    self.buffer.trailingZeroesAfterDecimal = 0
+                }
             }
           case .decimal:
             break

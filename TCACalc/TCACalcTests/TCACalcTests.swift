@@ -51,7 +51,7 @@ final class TCACalcTests: XCTestCase {
   
   func testPercentButton() async {
     let store = ts
-    store.exhaustivity = .off(showSkippedAssertions: true)
+    store.exhaustivity = .off(showSkippedAssertions: false)
 //    store.exhaustivity = .off(showSkippedAssertions: false)
     await store.send(.vScreen(.calcGridV(.view(.onTap(int: 9)))))
     await store.receive(.calculation(.delegate(.didFinishCalculating))) {
@@ -108,22 +108,69 @@ final class TCACalcTests: XCTestCase {
     }
   }
 
-//  func testNegate() async {
-//    let store = TestStore(
-//      initialState: CalcScreenFeature.State(
-//        hScreen: .init(calcGridH: .init()),
-//        vScreen: .init(calcGridV: .init())
-//      ),
-//      reducer: CalcScreenFeature()
-//    )
-//    await store.send(.vScreen(.calcGridV(.view(.onTap(int: 3))))) {
-//      $0.updateIsInBlankState(to: false)
-//      $0.updateCurrentNum { $0 = 3 }
+  // tests the negate button if it is pressed after the number
+  func testNegateAfter() async {
+    let store = ts
+            store.exhaustivity = .off(showSkippedAssertions: true)
+//    store.exhaustivity = .off(showSkippedAssertions: false)
+    
+    await store.send(.vScreen(.calcGridV(.view(.onTap(int: 3))))) 
+    await store.receive(.calculation(.input(.int(3)))) {
+      $0.calculation.num1 = 3
+    }
+    await store.send(.hScreen(.calcGridH(.view(.onTapNegateSignButton)))) 
+    await store.receive(.calculation(.input(.negate))) {
+      $0.calculation.num1 = -3
+    }
+    await store.send(.vScreen(.calcGridV(.view(.onTapPlusButton))))
+    await store.send(.vScreen(.calcGridV(.view(.onTap(int: 5)))))
+    await store.send(.hScreen(.calcGridH(.view(.onTapNegateSignButton))))
+    await store.receive(.calculation(.input(.negate))) {
+      $0.calculation.num2 = -5
+    }
+    await store.send(.vScreen(.calcGridV(.view(.onTapMultiplyButton))))
+    await store.send(.vScreen(.calcGridV(.view(.onTap(int: 2)))))
+    await store.send(.hScreen(.calcGridH(.view(.onTapNegateSignButton))))
+    await store.receive(.calculation(.input(.negate))) {
+      $0.calculation.num3 = -2
+    }
+    
+  }
+  
+//  // tests the negate button if it is pressed before the number
+//  func testNegateBefore() async {
+//    let store = ts
+//    store.exhaustivity = .off(showSkippedAssertions: true)
+//    //    store.exhaustivity = .off(showSkippedAssertions: false)
+//    
+//    await store.send(.hScreen(.calcGridH(.view(.onTapNegateSignButton))))
+//    await store.receive(.calculation(.input(.negate))) {
+//      $0.calculation.num1 = -3
 //    }
-//    await store.send(.hScreen(.calcGridH(.view(.onTapNegateSignButton)))) {
-//      $0.updateCurrentNum(byPerforming: { $0 = -3 })
+//    // assert negative 0
+//    
+//    await store.send(.vScreen(.calcGridV(.view(.onTap(int: 3)))))
+//    await store.receive(.calculation(.input(.int(3)))) {
+//      $0.calculation.num1 = 3
 //    }
+//    await store.send(.vScreen(.calcGridV(.view(.onTapPlusButton))))
+//    await store.send(.hScreen(.calcGridH(.view(.onTapNegateSignButton))))
+//    // assert negative 0
+//    
+//    await store.send(.vScreen(.calcGridV(.view(.onTap(int: 5)))))
+//    await store.receive(.calculation(.input(.negate))) {
+//      $0.calculation.num2 = -5
+//    }
+//    await store.send(.vScreen(.calcGridV(.view(.onTapMultiplyButton))))
+//    await store.send(.hScreen(.calcGridH(.view(.onTapNegateSignButton))))
+//    // assert negative 0
+//    
+//    await store.send(.vScreen(.calcGridV(.view(.onTap(int: 2)))))
+//    await store.receive(.calculation(.input(.negate))) {
+//      $0.calculation.num3 = -2
+//    }
+//    
 //  }
-//  
+  
   
 }
