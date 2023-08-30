@@ -44,6 +44,7 @@ struct SettingsReducer: Reducer {
       case colorSchemeModeChanged(ColorSchemeMode)
       case isDebugModeOnChanged(Bool)
       case accentColorChanged(Color)
+      case userSettingsChanged(UserSettings)
     }
     enum InternalAction: Equatable {
       
@@ -72,27 +73,37 @@ struct SettingsReducer: Reducer {
       }
     }
     BindingReducer()
-      .onChange(of: \.userSettings.colorSchemeMode) { oldValue, newValue in
-        // save colorSchemeMode to UserDefaults and notify delegate
+      .onChange(of: \.userSettings) { oldValue, newValue in
         Reduce<State, Action> { state, action in
           @Dependency(\.encode) var encode
           @Dependency(\.userDefaults) var userDefaults
-         
+          
           let data: Data? = try? encode(newValue)
-          userDefaults.set(data, forKey: UserDefaults.key_colorSchemeMode)
-          return .send(.delegate(.colorSchemeModeChanged(newValue)))
+          userDefaults.set(data, forKey: UserDefaults.key_userSettings)
+          return .send(.delegate(.userSettingsChanged(newValue)))
         }
       }
-      .onChange(of: \.userSettings.isDebugModeOn) { oldValue, newValue in
-        Reduce { state, action in
-          return .send(.delegate(.isDebugModeOnChanged(newValue)))
-        }
-      }
-      .onChange(of: \.userSettings.accentColor) { oldValue, newValue in
-        Reduce { state, action in
-          return .send(.delegate(.accentColorChanged(newValue)))
-        }
-      }
+//      .onChange(of: \.userSettings.colorSchemeMode, removeDuplicates: ==) { oldValue, newValue in
+//        // save colorSchemeMode to UserDefaults and notify delegate
+//        Reduce<State, Action> { state, action in
+//          @Dependency(\.encode) var encode
+//          @Dependency(\.userDefaults) var userDefaults
+//         
+//          let data: Data? = try? encode(newValue)
+//          userDefaults.set(data, forKey: UserDefaults.key_colorSchemeMode)
+//          return .send(.delegate(.colorSchemeModeChanged(newValue)))
+//        }
+//      }
+//      .onChange(of: \.userSettings.isDebugModeOn) { oldValue, newValue in
+//        Reduce { state, action in
+//          return .send(.delegate(.isDebugModeOnChanged(newValue)))
+//        }
+//      }
+//      .onChange(of: \.userSettings.accentColor) { oldValue, newValue in
+//        Reduce { state, action in
+//          return .send(.delegate(.accentColorChanged(newValue)))
+//        }
+//      }
   }
 }
 

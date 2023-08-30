@@ -49,10 +49,47 @@ final class TCACalcTests: XCTestCase {
     }
   }
   
+  func testTypeDecimals() async {
+    let store = ts
+    store.exhaustivity = .off(showSkippedAssertions: false)
+    
+    await store.send(.vScreen(.calcGridV(.view(.onTap(int: 0)))))
+    await store.receive(.calculation(.delegate(.didFinishCalculating))) {
+      $0.vScreen.currentNum = "0"
+      $0.hScreen.currentNum = "0"
+    }
+    
+    await store.send(.vScreen(.calcGridV(.view(.onTapDecimalButton))))
+    await store.receive(.calculation(.delegate(.didFinishCalculating))) {
+      $0.vScreen.currentNum = "0."
+      $0.hScreen.currentNum = "0."
+    }
+    await store.send(.vScreen(.calcGridV(.view(.onTap(int: 0)))))
+    await store.receive(.calculation(.delegate(.didFinishCalculating))) {
+      $0.vScreen.currentNum = "0.0"
+      $0.hScreen.currentNum = "0.0"
+    }
+    await store.send(.vScreen(.calcGridV(.view(.onTap(int: 5)))))
+    await store.receive(.calculation(.delegate(.didFinishCalculating))) {
+      $0.vScreen.currentNum = "0.05"
+      $0.hScreen.currentNum = "0.05"
+    }
+    await store.send(.vScreen(.calcGridV(.view(.onTap(int: 0)))))
+    await store.receive(.calculation(.delegate(.didFinishCalculating))) {
+      $0.vScreen.currentNum = "0.050"
+      $0.hScreen.currentNum = "0.050"
+    }
+    await store.send(.vScreen(.calcGridV(.view(.onTap(int: 9)))))
+    await store.receive(.calculation(.delegate(.didFinishCalculating))) {
+      $0.vScreen.currentNum = "0.0509"
+      $0.hScreen.currentNum = "0.0509"
+    }
+  }
+  
   func testPercentButton() async {
     let store = ts
     store.exhaustivity = .off(showSkippedAssertions: false)
-//    store.exhaustivity = .off(showSkippedAssertions: false)
+    //    store.exhaustivity = .off(showSkippedAssertions: false)
     await store.send(.vScreen(.calcGridV(.view(.onTap(int: 9)))))
     await store.receive(.calculation(.delegate(.didFinishCalculating))) {
       $0.vScreen.currentNum = "9"
@@ -111,8 +148,8 @@ final class TCACalcTests: XCTestCase {
   // tests the negate button if it is pressed after the number
   func testNegateAfter() async {
     let store = ts
-            store.exhaustivity = .off(showSkippedAssertions: true)
-//    store.exhaustivity = .off(showSkippedAssertions: false)
+    store.exhaustivity = .off(showSkippedAssertions: false)
+    
     
     await store.send(.vScreen(.calcGridV(.view(.onTap(int: 3))))) 
     await store.receive(.calculation(.input(.int(3)))) {

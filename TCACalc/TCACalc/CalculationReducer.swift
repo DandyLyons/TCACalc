@@ -77,6 +77,7 @@ struct CalculationReducer: Reducer {
       var isDecimalOn = false
       var trailingZeroesAfterDecimal: UInt = 0
       var isNegativeOn = false
+      mutating func reset() { self = .init() }
     }
     
     var op_resolved: Operation? {
@@ -108,26 +109,30 @@ struct CalculationReducer: Reducer {
     enum Display: Equatable { case num1, num2, num3, error }
     var displayString: String {
       var result: String
-      func appendDecimalIfNecessary() {
-        // check if decimal should be appended
-        var shouldAppend: Bool = false
-        let numToDisplay: Decimal = switch self.display {
+      result = self.num_resolved?.formatted(self.decimalFormatStyle) ?? "Error"
+      guard self.buffer != .init() else { return result }
+      let numToDisplay: Decimal = switch self.display {
         case .num1: self.num1
         case .num2: self.num2
         case .num3: self.num3
-        case .error: Decimal(0)
-        }
-        
-        if self.buffer.isDecimalOn && !numToDisplay.formatted().contains(".") {
-          shouldAppend = true
-        }
-        
-        if shouldAppend { result.append(".") }
+        case .error: Decimal(0) // fix this
+      }
+      if buffer.isNegativeOn { result = "- " + result }
+      
+      let zeroString = String(repeating: "0", count: Int(buffer.trailingZeroesAfterDecimal))
+      let hasTrailingZeroes = buffer.trailingZeroesAfterDecimal != 0
+      
+      switch (buffer.isDecimalOn, hasTrailingZeroes) {
+        case (false, false):
+          return result
+        case (true, true):
+          return result + "." + zeroString
+        case (true, false):
+          return result + "." + zeroString
+        case (false, true):
+          return result + zeroString
       }
       
-      result = self.num_resolved?.formatted(self.decimalFormatStyle) ?? "Error"
-      appendDecimalIfNecessary()
-      return result
     }
     
     var decimalFormatStyle: Decimal.FormatStyle
@@ -207,7 +212,7 @@ extension CalculationReducer.State {
         self.op2 = nil
         self.num3 = 0
         self.display = .num1
-        self.buffer.isDecimalOn = false
+        self.buffer.reset()
       case .t_from_initial:
         self.display = .num1
       case .transition:
@@ -220,20 +225,22 @@ extension CalculationReducer.State {
         self.display = .num3
       case .equal:
         self.display = .num1
+        self.buffer.reset()
     }
   }
   
   /// Note: This function does not have any side effects, and cannot.
   mutating func evaluate(_ aNumber: Decimal, _ operation: CalculationReducer.Operation, _ anotherNumber: Decimal) -> Decimal {
+    self.buffer.reset()
     switch operation {
       case .plus:
-        aNumber + anotherNumber
+        return aNumber + anotherNumber
       case .minus:
-        aNumber - anotherNumber
+        return aNumber - anotherNumber
       case .multiply:
-        aNumber * anotherNumber
+        return aNumber * anotherNumber
       case .divide:
-        aNumber / anotherNumber
+        return aNumber / anotherNumber
     }
   }
   
@@ -247,6 +254,15 @@ extension CalculationReducer.State {
   }
   
   mutating func negate() {
+    let numToNegate: Decimal = switch self.display {
+      case .num1: self.num1
+      case .num2: self.num2
+      case .num3: self.num3
+      default: Decimal.nan
+    }
+    let shouldPrependWithNegString = numToNegate == 0
+    if shouldPrependWithNegString { self.buffer.isNegativeOn = true }
+    
     switch self.display {
       case .num1: self.num1.negate()
       case .num2: self.num2.negate()
@@ -255,6 +271,7 @@ extension CalculationReducer.State {
     }
   }
   
+  // MARK: Status Processors
   mutating func process_initial(action: Action)  {
     switch action {
       case .delegate: return
@@ -267,6 +284,10 @@ extension CalculationReducer.State {
               default:
                 self.status = .t_from_initial
                 self.num1 = Decimal(int)
+                if self.buffer.isNegativeOn {
+                  self.buffer.isNegativeOn = false
+                  self.num1.negate()
+                }
             }
             
           case .decimal:
@@ -334,11 +355,14 @@ extension CalculationReducer.State {
             self.status = .t_from_initial
           case .equals:
             self.status = .equal
-            self.num1 = self.evaluate(num1, op1!, num2)
+            if let op1 {
+              self.num1 = self.evaluate(num1, op1, num2)
+            }
           case .operation(let op):
             self.op1 = op
             self.num2 = num1
             self.status = .transition
+            self.buffer.reset()
           case .reset:
             if self.num1 != 0 {
               self.num1 = 0
@@ -395,6 +419,7 @@ extension CalculationReducer.State {
           case.reset:
             if self.num2 != 0 {
               self.status = .t_from_transition
+              self.num2 = 0
             } else {
               self.status = .initial
             }
@@ -440,6 +465,7 @@ extension CalculationReducer.State {
             self.status = .equal
             self.num1 = self.evaluate(num1, self.op1!, num2)
           case .operation(let op):
+            self.buffer.reset()
             switch op.orderStep {
               case .P, .E:
                 XCTFail("Unimplemented")
@@ -486,6 +512,8 @@ extension CalculationReducer.State {
           case .decimal:
             self.status = .t_from_trailing
             self.display = .num3
+            self.num3 = Decimal(0)
+            self.buffer.isDecimalOn = true
           case .equals:
             self.num2 = self.evaluate(num2, op2!, num3)
             self.status = .equal
@@ -522,14 +550,6 @@ extension CalculationReducer.State {
               self.status = .t_from_trailing
             }
           case .int(let int):
-//            if self.isDecimalOn {
-//              self.num3.append(dot: int)
-//              self.isDecimalOn = false
-//            } else {
-//              self.num3.append(int)
-//            }
-            
-            
             switch int {
               case 0:
                 switch (buffer.isDecimalOn, num3.isWholeNumber) {
@@ -562,6 +582,7 @@ extension CalculationReducer.State {
                 }
             }
           case .decimal:
+            self.buffer.isDecimalOn = true
             break
           case .equals:
             self.num2 = self.evaluate(num2, op2!, num3)
@@ -604,7 +625,9 @@ extension CalculationReducer.State {
           case .decimal:
             self.status = .t_from_initial
           case .equals:
-            self.num1 = self.evaluate(num1, op1!, num2)
+            if let op1 {
+              self.num1 = self.evaluate(num1, op1, num2)
+            }
             
           case .operation(let op):
             self.status = .transition

@@ -63,4 +63,5 @@ struct UserSettings: Equatable, Codable {
 extension UserDefaults {
   static let key_isDebugModeOn = "IS_DEBUG_MODE_ON"
   static let key_userSelectedAccentColor = "USER_SELECTED_ACCENT_COLOR"
+  static let key_userSettings = "USER_SETTINGS"
 }

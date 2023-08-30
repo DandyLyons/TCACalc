@@ -261,12 +261,11 @@ struct CalcScreenFeature: Reducer {
                 case .numDisplayTapped:
                   if state.userSettings.isDebugModeOn {
                     state.calculation = .init() // force calculation engine to reset
+                    state.vScreen = .init(currentNum: "0", calcGridV: .init())
+                    state.hScreen = .init(currentNum: "0", calcGridH: .init())
                   } else {
-                    
                     if let decimal = state.calculation.num_resolved {
                       if decimal.isWholeNumber {
-                        
-                        
                         let number = Int(truncatingIfNeeded: decimal)
                         return .run { send in
                           try await send(.factResponse(numberFact.fetch(number)))
@@ -440,6 +439,13 @@ struct CalcScreenFeature: Reducer {
                       state.hScreen.calcGridH.userSelectedColor = newValue
                       state.vScreen.calcGridV.userSelectedColor = newValue
                       return .none
+                      // TODO: 👆🏼 DELETE
+                    case .userSettingsChanged(let newValue):
+                      state.userSettings = newValue
+                      state.hScreen.calcGridH.userSelectedColor = newValue.accentColor
+                      state.vScreen.calcGridV.userSelectedColor = newValue.accentColor
+                      return .none
+                      
                   }
               }
             case .alert(let alerts):
@@ -524,6 +530,8 @@ struct CalcScreen: View {
     let currentTintColor: Color
     let calculationState: CalculationReducer.State
     
+    let buffer: CalculationReducer.State.Buffer
+    
     init(state: CalcScreenFeature.State) {
       #if os(iOS)
       self.currentOrientation = state.currentOrientation
@@ -536,17 +544,19 @@ struct CalcScreen: View {
 
       self.isInBlankState = state.calculation.status == .initial
       self.currentTintColor = state.userSettings.accentColor
+      self.buffer = state.calculation.buffer
     }
   }
   
   @ViewBuilder
   func vDebugView(_ viewStore: ViewStoreOf_CalcScreen) -> some View {
     VStack(alignment: .trailing) {
-      Text("isInBlankState: \(viewStore.isInBlankState.description)")
-      Divider()
       Text("Current orientation: \(viewStore.currentOrientation.debugDescription)")
       Divider()
-      Text("Calculation State: \(viewStore.calculationState.debugDescription)")
+      Text("buffer.isDecimalOn:\(viewStore.buffer.isDecimalOn.description)")
+      Text("buffer.trailingZeroesAfterDecimal:\(viewStore.buffer.trailingZeroesAfterDecimal)")
+      Text("buffer.isNegativeOn:\(viewStore.buffer.isNegativeOn.description)")
+      
       VStack(alignment: .leading) {
         Text("State: \(viewStore.calculationState.status.rawValue)")
         Text("num1: \(viewStore.calculationState.num1.formatted())")
@@ -559,24 +569,23 @@ struct CalcScreen: View {
   }
   
   
+  
   var body: some View {
     WithViewStore(store, observe: ViewState.init) { viewStore in
       Group {
         switch viewStore.currentOrientation {
           case .portrait, .portraitUpsideDown,.faceDown, .faceUp:
-            self.vScreen
-              .overlay(alignment: .topTrailing) {
-                if viewStore.isDebugModeOn { self.vDebugView(viewStore).padding(.trailing) }
-              }
+            self.vScreen(viewStore)
+             
           case .landscapeLeft, .landscapeRight:
             self.hScreen
           case .unknown:
             // TODO: Delete this
-            self.vScreen
+            self.vScreen(viewStore)
               .onAppear { print("UIDeviceOrientation is unknown") }
             
           @unknown default:
-            self.vScreen
+            self.vScreen(viewStore)
               .onAppear { print("UIDeviceOrientation received unknown default") }
         }
       }
@@ -616,13 +625,20 @@ struct CalcScreen: View {
     }
   }
   
-  var vScreen: some View {
+  @ViewBuilder
+  func vScreen(_ viewStore: ViewStoreOf_CalcScreen) -> some View {
     CalcScreenVertical(
       store: self.store.scope(
         state: \.vScreen,
         action: CalcScreenFeature.Action.vScreen
       )
     )
+    .overlay(alignment: .topTrailing) {
+      if viewStore.isDebugModeOn {
+        self.vDebugView(viewStore).padding(.trailing)
+      }
+    }
+
   }
   
   var hScreen: some View {
@@ -678,6 +694,8 @@ extension AlertState where Action == CalcScreenFeature.Presentation.Action.Alert
 //    CalcScreenFeature()._printChanges()
 //  }))
 //}
+
+
 
 #Preview("CalcScreen V"
 ) {

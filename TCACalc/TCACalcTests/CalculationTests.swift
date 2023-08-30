@@ -28,8 +28,8 @@ final class CalculationTests: XCTestCase {
   
   func testPercent() async {
     let store = ts
-            store.exhaustivity = .off(showSkippedAssertions: true)
-//    store.exhaustivity = .off(showSkippedAssertions: false)
+            store.exhaustivity = .off(showSkippedAssertions: false)
+    
     await store.send(.vScreen(.calcGridV(.view(.onTap(int: 1)))))
     await store.receive(.calculation(.input(.int(1)))) {
       $0.calculation.num1 = 1
