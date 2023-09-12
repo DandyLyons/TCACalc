@@ -17,7 +17,7 @@ struct ContentView: View {
           hScreen: .init(currentNum: "0", calcGridH: .init()),
           vScreen: .init(currentNum: "0", calcGridV: .init()),
           currentOrientation: .landscapeLeft,
-          userSettings: UserSettings(isDebugModeOn: true)
+          userSettings: UserSettings(isDebugModeOn: false)
         ),
         reducer: {
           CalcScreenReducer()._printChanges()
