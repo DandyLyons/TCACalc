@@ -14,14 +14,14 @@ import ComposableArchitecture
 @MainActor
 final class TCACalcTests: XCTestCase {
   let ts = TestStore(
-    initialState: CalcScreenFeature.State(
+    initialState: CalcScreenReducer.State(
       hScreen: .init(calcGridH: .init()),
       vScreen: .init(calcGridV: .init()),
       currentOrientation: .portrait,
       userSettings: .init()
     ),
     reducer: {
-      CalcScreenFeature()
+      CalcScreenReducer()
     },
     withDependencies: {
       $0.decode = .json

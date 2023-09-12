@@ -1,73 +1,23 @@
 //
-//  CalcScreenHorizontal.swift
+//  CalcScreenHView.swift
 //  TCACalc
 //
-//  Created by Daniel Lyons on 7/14/23.
+//  Created by Daniel Lyons on 9/12/23.
 //
 
 import Foundation
+import SwiftUI
 import ComposableArchitecture
 import TCACalc_UI
 
-struct CalcScreenHFeature: Reducer {
-  struct State: Equatable {
-    var currentNum: String = "Not initialized"
-    var calcGridH: CalcGridHFeature.State
-  }
-  enum Action: Equatable {
-    //    case internalAction
-    
-    // SUBVIEWS
-    case calcGridH(CalcGridHFeature.Action)
-    
-    case view(View)
-    enum View: Equatable {
-      case onTapSettingsButton
-    }
-    case delegate(Delegate)
-    enum Delegate: Equatable {
-      case presentSettingsView
-    }
-    
-    
-  }
-  
-  var body: some ReducerOf<Self> {
-    Reduce<State, Action> { state, action in
-      switch action {
-        case let .view(viewAction):
-          switch viewAction {
-            case .onTapSettingsButton:
-              return .run{ send in
-                await send(.delegate(.presentSettingsView))
-              }
-          }
-          
-          // Reducers should not be responding to their own delegate calls
-        case .delegate: return .none
-          
-          // SPYING ON SUBVIEWS
-        case .calcGridH:
-          return .none
-      }
-    }
-    Scope(state: \.calcGridH, action: /Action.calcGridH) {
-      CalcGridHFeature()
-    }
-    
-  }
-}
-
-import SwiftUI
-
-struct CalcScreenHorizontal: View {
-  let store: StoreOf<CalcScreenHFeature>
+struct CalcScreenHView: View {
+  let store: StoreOf<CalcScreenHReducer>
   @Environment(\.colorScheme) var colorScheme
   
   struct ViewState: Equatable {
     let currentNum: String
     
-    init(state: CalcScreenHFeature.State) {
+    init(state: CalcScreenHReducer.State) {
       self.currentNum = state.currentNum
     }
   }
@@ -93,10 +43,14 @@ struct CalcScreenHorizontal: View {
               .contentTransition(.numericText(countsDown: true)) // feature idea: set countsdown to match if the number is increasing/decreasing
               .animation(.snappy, value: viewStore.currentNum)
             
+              .onTapGesture {
+                viewStore.send(.view(.onTapNumDisplay))
+              }
+            
           }
           
           CalcGridH(store: self.store.scope(state: \.calcGridH,
-                                            action: CalcScreenHFeature.Action.calcGridH)
+                                            action: CalcScreenHReducer.Action.calcGridH)
           )
         }
         .padding(.horizontal)
@@ -114,13 +68,13 @@ struct CalcScreenHorizontal: View {
           
         }
       }
-
+      
     }
   }
 }
 
-#Preview("CalcScreenHorizontal", traits: .landscapeLeft) {
-  CalcScreenHorizontal(store: .init(initialState: .init(calcGridH: .init()), reducer: {
-    CalcScreenHFeature()
+#Preview("CalcScreenHView", traits: .landscapeLeft) {
+  CalcScreenHView(store: .init(initialState: .init(calcGridH: .init()), reducer: {
+    CalcScreenHReducer()
   }))
 }

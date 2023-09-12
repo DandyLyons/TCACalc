@@ -7,30 +7,24 @@
 
 import Foundation
 import ComposableArchitecture
+import SwiftUI
 
 
 
 
-
-struct CalcScreenFeature: Reducer {
+struct CalcScreenReducer: Reducer {
   struct State: Equatable {
     var calculation: CalculationReducer.State
     
-    var hScreen: CalcScreenHFeature.State
-    var vScreen: CalcScreenVFeature.State
+    var hScreen: CalcScreenHReducer.State
+    var vScreen: CalcScreenVReducer.State
     @PresentationState var presentation: Presentation.State?
     
     var currentOrientation: UIDeviceOrientation
     var userSettings: UserSettings
     
-//    private(set) var activeOperation: ActiveOperation? = nil
-//    enum ActiveOperation: String { case divide, multiply, minus, plus }
-    
-    /// to mutate `currentNum` use `updateCurrentNum(byPerforming: )`
-//    private(set) var currentNum: Decimal = 0
-    
-    // MARK: CalcScreenFeature.init
-    /// Creates new State for CalcScreenFeature
+    // MARK: CalcScreenReducer.init
+    /// Creates new State for CalcScreenReducer
     /// - Parameters:
     ///   - hScreen: state of the subview shown when horizontal
     ///   - vScreen: state of the subview shown when vertival
@@ -42,12 +36,11 @@ struct CalcScreenFeature: Reducer {
     ///   - previousNum: the previous number
     ///   - isInBlankState: whether the calculator is currently in a blank state
     init(
-      hScreen: CalcScreenHFeature.State,
-      vScreen: CalcScreenVFeature.State,
+      hScreen: CalcScreenHReducer.State,
+      vScreen: CalcScreenVReducer.State,
       presentation: Presentation.State? = nil,
       currentOrientation: UIDeviceOrientation,
       userSettings: UserSettings,
-//      activeOperation: ActiveOperation? = nil,
       currentNum: Decimal = 0,
       previousNum: Decimal? = nil,
       isInBlankState: Bool = true
@@ -58,10 +51,6 @@ struct CalcScreenFeature: Reducer {
       self.presentation = presentation
       self.currentOrientation = currentOrientation
       self.userSettings = userSettings
-//      self.activeOperation = activeOperation
-//      self.currentNum = currentNum
-//      self.previousNum = previousNum
-//      self.isInBlankState = isInBlankState
     }
     
     mutating func calculationReducerDidUpdate() {
@@ -87,134 +76,13 @@ struct CalcScreenFeature: Reducer {
       
     }
     
-    // TODO: Fix this
-//    mutating func onTap(int: Int) {
-//      switch (self.isInBlankState, self.activeOperation) {
-//        case (true, .some):
-//          self.updateCurrentNum(byPerforming: { $0.append(int)})
-//        case (false, .some):
-//          self.previousNum = self.currentNum
-//          self.updateCurrentNum(byPerforming: { $0 = Decimal(int) })
-//        case (true, .none):
-//          self.updateCurrentNum(byPerforming: { $0.append(int)})
-//        case (false, .none):
-//          self.updateCurrentNum(byPerforming: { $0.append(int)})
-//      }
-//    }
-    
-//    mutating func onTapACButton() {
-//      self.updateCurrentNum(byPerforming: { $0 = 0})
-//      self.previousNum = nil
-//      self.updateIsInBlankState(byPerforming: { $0 = true })
-//      self.updateActiveOperation(to: nil)
-//    }
-    
-    mutating func onTapPercentButton() {
-      
-    }
-    
-    mutating func onTapNegateSignButton() {
-//      self.updateCurrentNum(byPerforming: { $0 *= -1 })
-    }
-//    mutating func onTapDivideButton() {
-//      self.updateActiveOperation(to: .divide)
-//    }
-//    mutating func onTapMultiplyButton() {
-//      self.updateActiveOperation(to: .multiply)
-//    }
-//    mutating func onTapMinusButton() {
-//      self.updateActiveOperation(to: .minus)
-//    }
-//    mutating func onTapPlusButton() {
-//      self.updateActiveOperation(to: .plus)
-//    }
-//    mutating func onTapEqualButton() {
-//      self._performArithmetic()
-//      self.updateActiveOperation(to: nil)
-//    }
-    
-    
-    
-//    mutating func updateCurrentNum(byPerforming mutation: (inout Decimal) -> Void) {
-//      mutation(&self.currentNum)
-//      mutation(&self.hScreen.currentNum)
-//      mutation(&self.vScreen.currentNum)
-//    }
-    
-//    mutating func updateActiveOperation(to newValue: ActiveOperation?) {
-//      switch newValue {
-//        case .divide:
-//          self.hScreen.calcGridH.turnDivideOn()
-//          self.vScreen.calcGridV.turnDivideOn()
-//        case .multiply:
-//          self.hScreen.calcGridH.turnMultiplyOn()
-//          self.vScreen.calcGridV.turnMultiplyOn()
-//        case .minus:
-//          self.hScreen.calcGridH.turnMinusOn()
-//          self.vScreen.calcGridV.turnMinusOn()
-//        case .plus:
-//          self.hScreen.calcGridH.turnPlusOn()
-//          self.vScreen.calcGridV.turnPlusOn()
-//        case nil:
-//          self.hScreen.calcGridH.turnAllOff()
-//          self.vScreen.calcGridV.turnAllOff()
-//      }
-//      self.activeOperation = newValue
-//    }
-    
-//    mutating func _performArithmetic() {
-//      guard let activeOperation,
-//            let previousNum else {
-//        return
-//      }
-//      let result: Decimal
-//      
-//      switch activeOperation {
-//          
-//        case .divide:
-//          result = previousNum / self.currentNum
-//        case .multiply:
-//          result = previousNum * self.currentNum
-//        case .minus:
-//          result = previousNum - self.currentNum
-//        case .plus:
-//          result = previousNum + self.currentNum
-//      }
-//      self.previousNum = self.currentNum
-//      self.updateCurrentNum(byPerforming: { $0 = result})
-//    }
-    
-//    var previousNum: Decimal? = nil
-//    private(set) var isInBlankState: Bool = true
-//    
-//    mutating func determineIfInBlankState () {
-//      if self.currentNum == 0,
-//         self.previousNum == nil {
-//        self.updateIsInBlankState(byPerforming: { $0 = true })
-//      } else {
-//        self.updateIsInBlankState(byPerforming: { $0 = false })
-//      }
-//    }
-    
-//    mutating func updateIsInBlankState(byPerforming mutation: (inout Bool) -> Void) {
-//      mutation(&self.isInBlankState)
-//      mutation(&self.vScreen.calcGridV.isInBlankState)
-//      mutation(&self.hScreen.calcGridH.isInBlankState)
-//    }
-    
-//    mutating func updateIsInBlankState(to newValue: Bool) {
-//      self.isInBlankState = newValue
-//      self.vScreen.calcGridV.isInBlankState = newValue
-//      self.hScreen.calcGridH.isInBlankState = newValue
-//    }
-    
   }
   enum Action: Equatable {
     case calculation(CalculationReducer.Action)
     //    case internalAction
     
-    case hScreen(CalcScreenHFeature.Action)
-    case vScreen(CalcScreenVFeature.Action)
+    case hScreen(CalcScreenHReducer.Action)
+    case vScreen(CalcScreenVReducer.Action)
     
     case currentOrientationChangedTo(UIDeviceOrientation)
     
@@ -325,17 +193,13 @@ struct CalcScreenFeature: Reducer {
                   return .run { await $0(.calculation(.input(.operation(.divide)))) }
                   
                 case .view(.onTapMultiplyButton):
-//                  state.onTapMultiplyButton()
                   return .run { await $0(.calculation(.input(.operation(.multiply)))) }
                 case .view(.onTapMinusButton):
-//                  state.onTapMinusButton()
                   return .run { await $0(.calculation(.input(.operation(.minus)))) }
                 case .view(.onTapPlusButton):
-//                  state.onTapPlusButton()
                   return .run { await $0(.calculation(.input(.operation(.plus)))) }
                   
                 case .view(.onTapEqualButton):
-//                  state.onTapEqualButton()
                   return .run { await $0(.calculation(.input(.equals))) }
                   
                 case .view(.onTapDecimalButton):
@@ -415,6 +279,25 @@ struct CalcScreenFeature: Reducer {
                 case .presentSettingsView:
                   state.presentation = .settings(.init(state.userSettings))
                   return .none
+                  
+                case .numDisplayTapped:
+                  if state.userSettings.isDebugModeOn {
+                    state.calculation = .init() // force calculation engine to reset
+                    state.vScreen = .init(currentNum: "0", calcGridV: .init())
+                    state.hScreen = .init(currentNum: "0", calcGridH: .init())
+                  } else {
+                    if let decimal = state.calculation.num_resolved {
+                      if decimal.isWholeNumber {
+                        let number = Int(truncatingIfNeeded: decimal)
+                        return .run { send in
+                          try await send(.factResponse(numberFact.fetch(number)))
+                        }
+                      } else {
+                        state.presentation = .alert(.alert_numberFactError_NotWholeNumber())
+                      }
+                    }
+                  }
+                  return .none
               }
           }
           
@@ -439,7 +322,6 @@ struct CalcScreenFeature: Reducer {
                       state.hScreen.calcGridH.userSelectedColor = newValue
                       state.vScreen.calcGridV.userSelectedColor = newValue
                       return .none
-                      // TODO: 👆🏼 DELETE
                     case .userSettingsChanged(let newValue):
                       state.userSettings = newValue
                       state.hScreen.calcGridH.userSelectedColor = newValue.accentColor
@@ -470,10 +352,10 @@ struct CalcScreenFeature: Reducer {
       CalculationReducer()
     }
     Scope(state: \.hScreen, action: /Action.hScreen) {
-      CalcScreenHFeature()
+      CalcScreenHReducer()
     }
     Scope(state: \.vScreen, action: /Action.vScreen) {
-      CalcScreenVFeature()
+      CalcScreenVReducer()
     }
   }
   
@@ -509,205 +391,4 @@ extension UIDeviceOrientation: CustomDebugStringConvertible {
       @unknown default: "unknown default"
     }
   }
-}
-
-// MARK: View
-import SwiftUI
-
-struct CalcScreen: View {
-  typealias ViewStoreOf_CalcScreen = ViewStore<ViewState, CalcScreenFeature.Action>
-  let store: StoreOf<CalcScreenFeature>
-  
-  struct ViewState: Equatable {
-    #if os(iOS)
-    let currentOrientation: UIDeviceOrientation
-    #endif
-    
-    let colorSchemeMode: ColorSchemeMode
-    let isDebugModeOn: Bool
-    let isInBlankState: Bool
-    
-    let currentTintColor: Color
-    let calculationState: CalculationReducer.State
-    
-    let buffer: CalculationReducer.State.Buffer
-    
-    init(state: CalcScreenFeature.State) {
-      #if os(iOS)
-      self.currentOrientation = state.currentOrientation
-      #endif
-      
-      self.calculationState = state.calculation
-      
-      self.colorSchemeMode = state.userSettings.colorSchemeMode
-      self.isDebugModeOn = state.userSettings.isDebugModeOn
-
-      self.isInBlankState = state.calculation.status == .initial
-      self.currentTintColor = state.userSettings.accentColor
-      self.buffer = state.calculation.buffer
-    }
-  }
-  
-  @ViewBuilder
-  func vDebugView(_ viewStore: ViewStoreOf_CalcScreen) -> some View {
-    VStack(alignment: .trailing) {
-      Text("Current orientation: \(viewStore.currentOrientation.debugDescription)")
-      Divider()
-      Text("buffer.isDecimalOn:\(viewStore.buffer.isDecimalOn.description)")
-      Text("buffer.trailingZeroesAfterDecimal:\(viewStore.buffer.trailingZeroesAfterDecimal)")
-      Text("buffer.isNegativeOn:\(viewStore.buffer.isNegativeOn.description)")
-      
-      VStack(alignment: .leading) {
-        Text("State: \(viewStore.calculationState.status.rawValue)")
-        Text("num1: \(viewStore.calculationState.num1.formatted())")
-        Text("op1: \(viewStore.calculationState.op1?.rawValue ?? "")")
-        Text("num2: \(viewStore.calculationState.num2.formatted())")
-        Text("op2: \(viewStore.calculationState.op2?.rawValue ?? "")")
-        Text("num3: \(viewStore.calculationState.num3.formatted())")
-      }.frame(maxWidth: .infinity, alignment: .leading)
-    }
-  }
-  
-  
-  
-  var body: some View {
-    WithViewStore(store, observe: ViewState.init) { viewStore in
-      Group {
-        switch viewStore.currentOrientation {
-          case .portrait, .portraitUpsideDown,.faceDown, .faceUp:
-            self.vScreen(viewStore)
-             
-          case .landscapeLeft, .landscapeRight:
-            self.hScreen
-          case .unknown:
-            // TODO: Delete this
-            self.vScreen(viewStore)
-              .onAppear { print("UIDeviceOrientation is unknown") }
-            
-          @unknown default:
-            self.vScreen(viewStore)
-              .onAppear { print("UIDeviceOrientation received unknown default") }
-        }
-      }
-      // MARK: View Events
-      .task(priority: .userInitiated) {
-        viewStore.send(.currentOrientationChangedTo(UIDevice.current.orientation))
-      }
-      .onRotate { newOrientation in
-        guard newOrientation != .portraitUpsideDown,
-              newOrientation != viewStore.currentOrientation else { return }
-        viewStore.send(.currentOrientationChangedTo(newOrientation))
-      }
-      
-      // MARK: View Styling
-      .preferredColorScheme(viewStore.colorSchemeMode.resolvedColorScheme)
-      .tint(viewStore.currentTintColor)
-      
-      // MARK: View Presentation
-      .sheet(
-        store: self.store.scope(state: \.$presentation, action: { .presentation($0) }),
-        state: /CalcScreenFeature.Presentation.State.settings,
-        action: CalcScreenFeature.Presentation.Action.settings,
-        onDismiss: nil,
-        content: { settingsStore in
-          NavigationStack {
-            SettingsView(store: settingsStore)
-              .navigationTitle("Settings")
-              .preferredColorScheme(viewStore.colorSchemeMode.resolvedColorScheme)
-          }
-        }
-      )
-      .alert(store: self.store.scope(state: \.$presentation, action: { .presentation($0)}),
-             state: /CalcScreenFeature.Presentation.State.alert,
-             action: CalcScreenFeature.Presentation.Action.alert
-      )
-      
-    }
-  }
-  
-  @ViewBuilder
-  func vScreen(_ viewStore: ViewStoreOf_CalcScreen) -> some View {
-    CalcScreenVertical(
-      store: self.store.scope(
-        state: \.vScreen,
-        action: CalcScreenFeature.Action.vScreen
-      )
-    )
-    .overlay(alignment: .topTrailing) {
-      if viewStore.isDebugModeOn {
-        self.vDebugView(viewStore).padding(.trailing)
-      }
-    }
-
-  }
-  
-  var hScreen: some View {
-    CalcScreenHorizontal(
-      store: self.store.scope(
-        state: \.hScreen,
-        action: CalcScreenFeature.Action.hScreen
-      )
-    )
-  }
-  
-}
-
-struct Presentation: Reducer {
-  enum State: Equatable {
-    case settings(SettingsReducer.State)
-  }
-  enum Action: Equatable {
-    case settings(SettingsReducer.Action)
-  }
-  var body: some ReducerOf<Self> {
-    Scope(state: /State.settings, action: /Action.settings) {
-      SettingsReducer()
-    }
-  }
-}
-
-extension AlertState where Action == CalcScreenFeature.Presentation.Action.Alert {
-  static func alert_numberFact(_ fact: String) -> Self {
-    return Self {
-      TextState(fact)
-    } actions: {
-      ButtonState(role: .none, label: { TextState("Ok")})
-    }
-  }
-  
-  static func alert_numberFactError_NotWholeNumber() -> Self {
-    return Self {
-      TextState("Cannot get a number fact for non-whole numbers.")
-    }
-  }
-}
-
-
-//#Preview("CalcScreen H"
-//         , traits: .landscapeLeft
-//) {
-//  CalcScreen(store: .init(initialState: .init(hScreen: .init(calcGridH: .init()),
-//                                              vScreen: .init(calcGridV: .init()),
-//                                              currentOrientation: .landscapeLeft
-//                                             ),
-//                          reducer: {
-//    CalcScreenFeature()._printChanges()
-//  }))
-//}
-
-
-
-#Preview("CalcScreen V"
-) {
-  CalcScreen(
-    store: .init(
-      initialState: .init(
-        hScreen: .init(calcGridH: .init()),
-        vScreen: .init(calcGridV: .init()),
-        currentOrientation: .portrait,
-        userSettings: .init(isDebugModeOn: true)
-      ),
-      reducer: {
-    CalcScreenFeature()._printChanges()
-  }))
 }

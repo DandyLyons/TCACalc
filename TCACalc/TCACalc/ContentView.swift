@@ -20,7 +20,7 @@ struct ContentView: View {
           userSettings: UserSettings(isDebugModeOn: true)
         ),
         reducer: {
-          CalcScreenFeature()._printChanges()
+          CalcScreenReducer()._printChanges()
         }))
   }
 }

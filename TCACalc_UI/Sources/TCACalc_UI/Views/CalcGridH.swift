@@ -150,7 +150,7 @@ public struct CalcGridHFeature: Reducer {
               return .none
               
             
-            case .onTapSquaredButton, .onTapCubedButton, .onTapXToThePowerOfYButton, .onTap10ToThePowerOfXButton, .onTap1OverXButton, .onTapOpenParenthesesButton, .onTapCloseParenthesesButton, .onTapMCButton, .onTapMPlusButton, .onTapMMinusButton, .onTapMRButton, .onTap2ndButton, .onTapEToThePowerOfXButton, .onTapSquaredButton, .onTapCubeRootButton, .onTapYRootXButton, .onTapLNButton, .onTapLogSub10, .onTapFactorialButton, .onTapSinButton, .onTapCosButton, .onTapTanButton, .onTapEButton, .onTapEEButton, .onTapRadButton, .onTapSinHButton, .onTapCosHButton, .onTapTanHButton, .onTapPiButton, .onTapRandButton, .onTapSecondButton, .onTapSquareRootButton:
+            case .onTapSquaredButton, .onTapCubedButton, .onTapXToThePowerOfYButton, .onTap10ToThePowerOfXButton, .onTap1OverXButton, .onTapOpenParenthesesButton, .onTapCloseParenthesesButton, .onTapMCButton, .onTapMPlusButton, .onTapMMinusButton, .onTapMRButton, .onTap2ndButton, .onTapEToThePowerOfXButton, .onTapCubeRootButton, .onTapYRootXButton, .onTapLNButton, .onTapLogSub10, .onTapFactorialButton, .onTapSinButton, .onTapCosButton, .onTapTanButton, .onTapEButton, .onTapEEButton, .onTapRadButton, .onTapSinHButton, .onTapCosHButton, .onTapTanHButton, .onTapPiButton, .onTapRandButton, .onTapSecondButton, .onTapSquareRootButton:
               return .run { await $0(.delegate(.notYetImplemented))}
           }
           
@@ -349,86 +349,6 @@ public struct CalcGridH: View {
   }
   
   
-  
-  
-//
-//  public var oldBody: some View {
-//    WithViewStore(self.store, observe: { $0 } ) { viewStore in
-//      
-//      
-//      Grid(alignment: .center, horizontalSpacing: 8.0, verticalSpacing: 8.0) {
-//        GridRow {
-//          Button(viewStore.isInBlankState ? "AC" : "C") { viewStore.send(.view(.onTapACButton)) }
-//            .buttonStyle(self.grayStyle)
-//          Button { viewStore.send(.view(.onTapNegateSignButton))} label: { Image(systemName: "plus.forwardslash.minus")}
-//            .buttonStyle(self.grayStyle)
-//          Button("%") { viewStore.send(.view(.onTapPercentButton)) }
-//            .buttonStyle(self.grayStyle)
-//          Button { viewStore.send(.view(.onTapDivideButton)) } label: {
-//            Image(systemName: "divide")
-//              .modifier(viewStore.isDivideOn ? self.onOrangeBackground : self.offOrangeBackground)
-//          }
-//        }
-//        GridRow {
-//          Button("7") { viewStore.send(.view(.onTap(int: 7))) }
-//            .buttonStyle(self.darkgrayStyle)
-//          Button("8") { viewStore.send(.view(.onTap(int: 8))) }
-//            .buttonStyle(self.darkgrayStyle)
-//          Button("9") { viewStore.send(.view(.onTap(int: 9))) }
-//            .buttonStyle(self.darkgrayStyle)
-//          Button { viewStore.send(.view(.onTapMultiplyButton)) } label: {
-//            Image(systemName: "multiply")
-//              .modifier(viewStore.isMultiplyOn ? self.onOrangeBackground : self.offOrangeBackground)
-//          }
-//        }
-//        GridRow {
-//          Button("4") { viewStore.send(.view(.onTap(int: 4))) }
-//            .buttonStyle(self.darkgrayStyle)
-//          Button("5") { viewStore.send(.view(.onTap(int: 5))) }
-//            .buttonStyle(self.darkgrayStyle)
-//          Button("6") { viewStore.send(.view(.onTap(int: 6))) }
-//            .buttonStyle(self.darkgrayStyle)
-//          
-//          Button { viewStore.send(.view(.onTapMinusButton)) } label: {
-//            Image(systemName: "minus")
-//              .modifier(viewStore.isMinusOn ? self.onOrangeBackground : self.offOrangeBackground)
-//          }
-//        }
-//        GridRow {
-//          Button("1") { viewStore.send(.view(.onTap(int: 1))) }
-//            .buttonStyle(self.darkgrayStyle)
-//          Button("2") { viewStore.send(.view(.onTap(int: 2))) }
-//            .buttonStyle(self.darkgrayStyle)
-//          Button("3") { viewStore.send(.view(.onTap(int: 3))) }
-//            .buttonStyle(self.darkgrayStyle)
-//          Button { viewStore.send(.view(.onTapPlusButton)) } label: {
-//            Image(systemName: "plus")
-//              .modifier(viewStore.isPlusOn ? self.onOrangeBackground : self.offOrangeBackground)
-//          }
-//        }
-//        GridRow {
-//          Button { viewStore.send(.view(.onTap(int: 0)))} label: { Text("0").foregroundStyle(.white)}
-//            .frame(maxHeight: .infinity)
-//            .gridCellColumns(2)
-//            .gridCellUnsizedAxes(.vertical)
-//            .frame(maxWidth: .infinity)
-//            .background { Capsule().foregroundColor(.secondary) }
-//          
-//          
-//          Button(".") {}
-//            .buttonStyle(self.darkgrayStyle)
-//          Button { viewStore.send(.view(.onTapEqualButton)) } label: {
-//            Image(systemName: "equal")
-//              .modifier(self.offOrangeBackground)
-//          }
-//        }
-//        
-//      }
-//      .font(.title)
-//      .fontWeight(.bold)
-//      
-//    }
-//  }
 }
 
 

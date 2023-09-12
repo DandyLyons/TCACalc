@@ -56,7 +56,6 @@ public struct CalcGridVFeature: Reducer {
   
   public var body: some ReducerOf<Self> {
     Reduce<State, Action> { state, action in
-//      return .none
       
       switch action {
         case let .view(viewAction):
@@ -202,14 +201,6 @@ public struct CalcGridV: View {
               Image(systemName: "plus")
               
             }
-            
-//              .modifier(viewStore.isPlusOn ? self.onOrangeBackground : self.offOrangeBackground)
-            
-//              .if(viewStore.isPlusOn) {
-//                $0.modifier(self.onTintBackground(viewStore.userSelectedColor))
-//              } else: {
-//                $0.modifier(self.offTintBackground(viewStore.userSelectedColor))
-//              }
           }
         }
         GridRow {
@@ -264,7 +255,6 @@ extension View {
 
 
 #Preview("CalcGridV"
-//        , traits: .none
 ) {
   ZStack {
     Color.black

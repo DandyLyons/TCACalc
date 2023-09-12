@@ -14,6 +14,9 @@ extension CalculationReducer.State: CustomDebugStringConvertible {
   }
 }
 
+
+
+/// A reducer responsible for the actual calculation of the calculator.
 struct CalculationReducer: Reducer {
   enum Operation: String, Equatable {
     case plus, minus, multiply, divide
@@ -46,7 +49,6 @@ struct CalculationReducer: Reducer {
       self.op2 = nil
       self.num3 = 0
       self.display = .num1
-//      self.decimalFormatStyle = .number.precision(.integerAndFractionLength(integerLimits: 0...10, fractionLimits: 0...10))
       self.decimalFormatStyle = .localizedDecimal(locale: .autoupdatingCurrent)
     }
     
@@ -81,11 +83,6 @@ struct CalculationReducer: Reducer {
     }
     
     var op_resolved: Operation? {
-//      switch status, op1, op2 {
-////        case (_ , .none, .none):
-////          return nil
-//        case (.)
-//      }
       switch status {
         case .initial: return nil
         case .t_from_initial: return nil
@@ -115,7 +112,8 @@ struct CalculationReducer: Reducer {
         case .num1: self.num1
         case .num2: self.num2
         case .num3: self.num3
-        case .error: Decimal(0) // fix this
+        // TODO: fix this
+        case .error: Decimal(0)
       }
       if buffer.isNegativeOn { result = "- " + result }
       
@@ -156,13 +154,7 @@ struct CalculationReducer: Reducer {
     
   }
   
-  // MARK: Dependencies
-  // @Dependency(\.routineClient) var routineClient
-  
-  
   typealias CalcEffect = Effect<CalculationReducer.Action>
-  
- 
   
   var body: some ReducerOf<Self> {
     Reduce<State, Action> { state, action in
