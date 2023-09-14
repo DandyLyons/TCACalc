@@ -91,11 +91,12 @@ struct SettingsView: View {
           Picker("Appearance", selection: viewStore.$userSettings.colorSchemeMode) {
             ForEach(ColorSchemeMode.allCases) { colorSchemeMode in
               Text(colorSchemeMode.localizedString)
-                .tag(colorSchemeMode.id)
+                .tag(colorSchemeMode)
             }
           }
           
           ColorPicker("Accent Color", selection: viewStore.$userSettings.accentColor)
+            .disabled(viewStore.userSettings.colorSchemeMode != .night)
         }
         Section("🪲 Debugging") {
           Toggle("Debug Mode", isOn: viewStore.$userSettings.isDebugModeOn)

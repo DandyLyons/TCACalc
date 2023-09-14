@@ -10,6 +10,11 @@ Welcome to TCACalc, an example of a calculator app implemented in [TCA](https://
 - Animated Text View
 - Light/dark mode toggle
 
+## Tech Stack 
+
+- TCA
+- Calculation engine implemented using a Finite State Machine
+
 
 ## Roadmap
 

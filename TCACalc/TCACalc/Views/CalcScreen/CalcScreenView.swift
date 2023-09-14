@@ -19,7 +19,7 @@ struct CalcScreen: View {
 #if os(iOS)
     let currentOrientation: UIDeviceOrientation
 #endif
-    
+    let isNightModeOn: Bool
     let colorSchemeMode: ColorSchemeMode
     let isDebugModeOn: Bool
     let isInBlankState: Bool
@@ -42,6 +42,7 @@ struct CalcScreen: View {
       self.isInBlankState = state.calculation.status == .initial
       self.currentTintColor = state.userSettings.accentColor
       self.buffer = state.calculation.buffer
+      self.isNightModeOn = state.userSettings.colorSchemeMode == .night
     }
   }
   
@@ -98,6 +99,7 @@ struct CalcScreen: View {
       
       // MARK: View Styling
       .preferredColorScheme(viewStore.colorSchemeMode.resolvedColorScheme)
+      .observingNightMode(viewStore.isNightModeOn)
       .tint(viewStore.currentTintColor)
       
       // MARK: View Presentation
@@ -112,6 +114,7 @@ struct CalcScreen: View {
               .navigationTitle("Settings")
               .preferredColorScheme(viewStore.colorSchemeMode.resolvedColorScheme)
           }
+          .observingNightMode(viewStore.colorSchemeMode == .night)
         }
       )
       .alert(store: self.store.scope(state: \.$presentation, action: { .presentation($0)}),

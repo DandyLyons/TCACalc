@@ -17,6 +17,7 @@
 		805170E92AB0F31D003F8CB2 /* CalcScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805170E82AB0F31D003F8CB2 /* CalcScreenView.swift */; };
 		805170ED2AB0F402003F8CB2 /* CalcScreenHView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805170EC2AB0F402003F8CB2 /* CalcScreenHView.swift */; };
 		805170F02AB0F5D2003F8CB2 /* CalcScreenV_View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805170EF2AB0F5D2003F8CB2 /* CalcScreenV_View.swift */; };
+		805170F22AB1344A003F8CB2 /* NightModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805170F12AB1344A003F8CB2 /* NightModeView.swift */; };
 		80649D332A607CC7007CC893 /* TCACalcApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80649D322A607CC7007CC893 /* TCACalcApp.swift */; };
 		80649D352A607CC7007CC893 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80649D342A607CC7007CC893 /* ContentView.swift */; };
 		80649D372A607CC9007CC893 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 80649D362A607CC9007CC893 /* Assets.xcassets */; };
@@ -54,6 +55,7 @@
 		805170E82AB0F31D003F8CB2 /* CalcScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalcScreenView.swift; sourceTree = "<group>"; };
 		805170EC2AB0F402003F8CB2 /* CalcScreenHView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalcScreenHView.swift; sourceTree = "<group>"; };
 		805170EF2AB0F5D2003F8CB2 /* CalcScreenV_View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalcScreenV_View.swift; sourceTree = "<group>"; };
+		805170F12AB1344A003F8CB2 /* NightModeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NightModeView.swift; sourceTree = "<group>"; };
 		80649D2F2A607CC7007CC893 /* TCACalc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TCACalc.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		80649D322A607CC7007CC893 /* TCACalcApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCACalcApp.swift; sourceTree = "<group>"; };
 		80649D342A607CC7007CC893 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -102,6 +104,7 @@
 		801FFAB12A63046100F84FC1 /* Prototypes */ = {
 			isa = PBXGroup;
 			children = (
+				805170F12AB1344A003F8CB2 /* NightModeView.swift */,
 			);
 			path = Prototypes;
 			sourceTree = "<group>";
@@ -336,6 +339,7 @@
 				8015D68D2A9A84AC005220F8 /* NumberFactClient.swift in Sources */,
 				804469832A954C140098F1ED /* CalculationReducer.swift in Sources */,
 				8043A4582A61FAA1006AB0DA /* CalcScreenHReducer.swift in Sources */,
+				805170F22AB1344A003F8CB2 /* NightModeView.swift in Sources */,
 				80936EBC2A60A8A200A2939F /* CalcScreenVReducer.swift in Sources */,
 				805170F02AB0F5D2003F8CB2 /* CalcScreenV_View.swift in Sources */,
 				803ED6672A8EF15100A1486C /* Settings.swift in Sources */,

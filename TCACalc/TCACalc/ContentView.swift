@@ -21,7 +21,9 @@ struct ContentView: View {
         ),
         reducer: {
           CalcScreenReducer()._printChanges()
-        }))
+        })
+    )
+    
   }
 }
 
