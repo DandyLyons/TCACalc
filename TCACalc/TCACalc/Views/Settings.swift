@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import ComposableArchitecture
 import DependenciesAdditions
-
+import PlusNightMode
 
 
 struct SettingsReducer: Reducer {
@@ -91,11 +91,14 @@ struct SettingsView: View {
           Picker("Appearance", selection: viewStore.$userSettings.colorSchemeMode) {
             ForEach(ColorSchemeMode.allCases) { colorSchemeMode in
               Text(colorSchemeMode.localizedString)
-                .tag(colorSchemeMode.id)
+                .tag(colorSchemeMode)
+                .observingNightMode(true)
             }
+            .observingNightMode(true)
           }
           
           ColorPicker("Accent Color", selection: viewStore.$userSettings.accentColor)
+            .disabled(viewStore.userSettings.colorSchemeMode == .night)
         }
         Section("🪲 Debugging") {
           Toggle("Debug Mode", isOn: viewStore.$userSettings.isDebugModeOn)

@@ -10,28 +10,26 @@ import SwiftUI
 import Dependencies
 import DependenciesAdditions
 
-public enum ColorSchemeMode: String, CaseIterable, Hashable, Identifiable, Codable {
+public enum ColorSchemeMode: String, CaseIterable, Hashable, Codable, Identifiable {
   case light = "Light"
   case dark = "Dark"
+  case night = "Night"
   case auto = "Automatic"
   
-  public var id: Self { self }
+  public var id: String { self.rawValue }
   
   public init(rawValue: String) {
     switch rawValue {
       case Self.light.rawValue: self = .light
       case Self.dark.rawValue: self = .dark
+      case Self.night.rawValue: self = .night
       case Self.auto.rawValue: self = .auto
       default: self = .auto
     }
   }
   
   public var localizedString: LocalizedStringKey {
-    switch self {
-      case .light: return "Light"
-      case .dark: return "Dark"
-      case .auto: return "Automatic"
-    }
+    return LocalizedStringKey(self.rawValue)
   }
   
   /// for use in `View.preferredColorScheme`
@@ -39,6 +37,7 @@ public enum ColorSchemeMode: String, CaseIterable, Hashable, Identifiable, Codab
     switch self {
       case .light: return .light
       case .dark: return .dark
+      case .night: return .dark
       case .auto: return nil
     }
   }
@@ -61,6 +60,7 @@ extension ColorScheme {
 }
 
 extension View {
+  
   
   @ViewBuilder
   func view<L: View, D: View>(for colorScheme: ColorScheme, light: () -> L, dark: () -> D) -> some View {

@@ -9,17 +9,18 @@
 /* Begin PBXBuildFile section */
 		8015D68A2A9A57E2005220F8 /* DELETEME.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8015D6892A9A57E2005220F8 /* DELETEME.swift */; };
 		8015D68D2A9A84AC005220F8 /* NumberFactClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8015D68C2A9A84AC005220F8 /* NumberFactClient.swift */; };
+		801B12262AB3C12A00AD9BEE /* SettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801B12252AB3C12A00AD9BEE /* SettingsTests.swift */; };
 		803ED6672A8EF15100A1486C /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803ED6662A8EF15100A1486C /* Settings.swift */; };
-		803ED6692A8EF3C800A1486C /* ColorSchemeMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803ED6682A8EF3C800A1486C /* ColorSchemeMode.swift */; };
 		8043A4562A61FA90006AB0DA /* CalcScreenReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8043A4552A61FA90006AB0DA /* CalcScreenReducer.swift */; };
 		8043A4582A61FAA1006AB0DA /* CalcScreenHReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8043A4572A61FAA1006AB0DA /* CalcScreenHReducer.swift */; };
 		804469832A954C140098F1ED /* CalculationReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804469822A954C140098F1ED /* CalculationReducer.swift */; };
 		805170E92AB0F31D003F8CB2 /* CalcScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805170E82AB0F31D003F8CB2 /* CalcScreenView.swift */; };
 		805170ED2AB0F402003F8CB2 /* CalcScreenHView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805170EC2AB0F402003F8CB2 /* CalcScreenHView.swift */; };
 		805170F02AB0F5D2003F8CB2 /* CalcScreenV_View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805170EF2AB0F5D2003F8CB2 /* CalcScreenV_View.swift */; };
+		805627C62AB382E100AFE8B7 /* ColorSchemeMode+UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805627C52AB382E000AFE8B7 /* ColorSchemeMode+UserDefaults.swift */; };
+		805627C92AB38D7F00AFE8B7 /* PlusNightMode in Frameworks */ = {isa = PBXBuildFile; productRef = 805627C82AB38D7F00AFE8B7 /* PlusNightMode */; };
 		80649D332A607CC7007CC893 /* TCACalcApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80649D322A607CC7007CC893 /* TCACalcApp.swift */; };
 		80649D352A607CC7007CC893 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80649D342A607CC7007CC893 /* ContentView.swift */; };
-		80649D372A607CC9007CC893 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 80649D362A607CC9007CC893 /* Assets.xcassets */; };
 		80649D3B2A607CC9007CC893 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 80649D3A2A607CC9007CC893 /* Preview Assets.xcassets */; };
 		806BC16A2A902AEE00B252F9 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806BC1692A902AEE00B252F9 /* UserSettings.swift */; };
 		807F40642A911DE2009A8FD7 /* Color+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807F40632A911DE2009A8FD7 /* Color+Codable.swift */; };
@@ -46,18 +47,19 @@
 		800BC8072A9CEEB000292F04 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8015D6892A9A57E2005220F8 /* DELETEME.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DELETEME.swift; sourceTree = "<group>"; };
 		8015D68C2A9A84AC005220F8 /* NumberFactClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberFactClient.swift; sourceTree = "<group>"; };
+		801B12252AB3C12A00AD9BEE /* SettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTests.swift; sourceTree = "<group>"; };
 		803ED6662A8EF15100A1486C /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
-		803ED6682A8EF3C800A1486C /* ColorSchemeMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSchemeMode.swift; sourceTree = "<group>"; };
 		8043A4552A61FA90006AB0DA /* CalcScreenReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalcScreenReducer.swift; sourceTree = "<group>"; };
 		8043A4572A61FAA1006AB0DA /* CalcScreenHReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalcScreenHReducer.swift; sourceTree = "<group>"; };
 		804469822A954C140098F1ED /* CalculationReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculationReducer.swift; sourceTree = "<group>"; };
 		805170E82AB0F31D003F8CB2 /* CalcScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalcScreenView.swift; sourceTree = "<group>"; };
 		805170EC2AB0F402003F8CB2 /* CalcScreenHView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalcScreenHView.swift; sourceTree = "<group>"; };
 		805170EF2AB0F5D2003F8CB2 /* CalcScreenV_View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalcScreenV_View.swift; sourceTree = "<group>"; };
+		805627C42AB3821000AFE8B7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		805627C52AB382E000AFE8B7 /* ColorSchemeMode+UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ColorSchemeMode+UserDefaults.swift"; sourceTree = "<group>"; };
 		80649D2F2A607CC7007CC893 /* TCACalc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TCACalc.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		80649D322A607CC7007CC893 /* TCACalcApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCACalcApp.swift; sourceTree = "<group>"; };
 		80649D342A607CC7007CC893 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		80649D362A607CC9007CC893 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		80649D382A607CC9007CC893 /* TCACalc.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TCACalc.entitlements; sourceTree = "<group>"; };
 		80649D3A2A607CC9007CC893 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		80649D442A607D72007CC893 /* TCACalc_UI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = TCACalc_UI; path = ../../TCACalc_UI; sourceTree = "<group>"; };
@@ -77,6 +79,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				805627C92AB38D7F00AFE8B7 /* PlusNightMode in Frameworks */,
 				80936EBA2A607E1100A2939F /* TCACalc_UI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -157,6 +160,7 @@
 		80649D312A607CC7007CC893 /* TCACalc */ = {
 			isa = PBXGroup;
 			children = (
+				805627C42AB3821000AFE8B7 /* Assets.xcassets */,
 				800BC8072A9CEEB000292F04 /* Info.plist */,
 				807F40622A911DA8009A8FD7 /* Utils */,
 				801FFAB12A63046100F84FC1 /* Prototypes */,
@@ -166,7 +170,6 @@
 				80DBE4312AB0CCDF00181FBF /* Views */,
 				804469822A954C140098F1ED /* CalculationReducer.swift */,
 				806BC1682A902AE000B252F9 /* Model */,
-				80649D362A607CC9007CC893 /* Assets.xcassets */,
 				80649D382A607CC9007CC893 /* TCACalc.entitlements */,
 				80649D392A607CC9007CC893 /* Preview Content */,
 			);
@@ -192,9 +195,9 @@
 		807F40622A911DA8009A8FD7 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				803ED6682A8EF3C800A1486C /* ColorSchemeMode.swift */,
 				80936EBD2A60C75000A2939F /* Decimal+.swift */,
 				807F40632A911DE2009A8FD7 /* Color+Codable.swift */,
+				805627C52AB382E000AFE8B7 /* ColorSchemeMode+UserDefaults.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -213,6 +216,7 @@
 				808EAFDD2A659245008F2368 /* Decimal+Tests.swift */,
 				80F2C4462A994ADD00D1B6DA /* CalculationTests.swift */,
 				80DBE4322AB0D04600181FBF /* NumberFactClientTests.swift */,
+				801B12252AB3C12A00AD9BEE /* SettingsTests.swift */,
 			);
 			path = TCACalcTests;
 			sourceTree = "<group>";
@@ -246,6 +250,7 @@
 			name = TCACalc;
 			packageProductDependencies = (
 				80936EB92A607E1100A2939F /* TCACalc_UI */,
+				805627C82AB38D7F00AFE8B7 /* PlusNightMode */,
 			);
 			productName = TCACalc;
 			productReference = 80649D2F2A607CC7007CC893 /* TCACalc.app */;
@@ -298,6 +303,7 @@
 			);
 			mainGroup = 80649D262A607CC7007CC893;
 			packageReferences = (
+				805627C72AB38D7F00AFE8B7 /* XCRemoteSwiftPackageReference "PlusNightMode" */,
 			);
 			productRefGroup = 80649D302A607CC7007CC893 /* Products */;
 			projectDirPath = "";
@@ -315,7 +321,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				80649D3B2A607CC9007CC893 /* Preview Assets.xcassets in Resources */,
-				80649D372A607CC9007CC893 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -340,8 +345,8 @@
 				805170F02AB0F5D2003F8CB2 /* CalcScreenV_View.swift in Sources */,
 				803ED6672A8EF15100A1486C /* Settings.swift in Sources */,
 				806BC16A2A902AEE00B252F9 /* UserSettings.swift in Sources */,
-				803ED6692A8EF3C800A1486C /* ColorSchemeMode.swift in Sources */,
 				80649D352A607CC7007CC893 /* ContentView.swift in Sources */,
+				805627C62AB382E100AFE8B7 /* ColorSchemeMode+UserDefaults.swift in Sources */,
 				80649D332A607CC7007CC893 /* TCACalcApp.swift in Sources */,
 				8043A4562A61FA90006AB0DA /* CalcScreenReducer.swift in Sources */,
 				807F40642A911DE2009A8FD7 /* Color+Codable.swift in Sources */,
@@ -359,6 +364,7 @@
 				80936EC62A60D94C00A2939F /* TCACalcTests.swift in Sources */,
 				808EAFDE2A659245008F2368 /* Decimal+Tests.swift in Sources */,
 				80F2C4472A994ADD00D1B6DA /* CalculationTests.swift in Sources */,
+				801B12262AB3C12A00AD9BEE /* SettingsTests.swift in Sources */,
 				80DBE4332AB0D04600181FBF /* NumberFactClientTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -650,7 +656,23 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		805627C72AB38D7F00AFE8B7 /* XCRemoteSwiftPackageReference "PlusNightMode" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/DandyLyons/PlusNightMode";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
+		805627C82AB38D7F00AFE8B7 /* PlusNightMode */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 805627C72AB38D7F00AFE8B7 /* XCRemoteSwiftPackageReference "PlusNightMode" */;
+			productName = PlusNightMode;
+		};
 		80936EB92A607E1100A2939F /* TCACalc_UI */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = TCACalc_UI;

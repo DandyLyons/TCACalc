@@ -10,6 +10,15 @@
       }
     },
     {
+      "identity" : "plusnightmode",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/DandyLyons/PlusNightMode",
+      "state" : {
+        "revision" : "6bf09afac1efafbe6056dcc971ffad3a20c66b13",
+        "version" : "0.1.0"
+      }
+    },
+    {
       "identity" : "swift-case-paths",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-case-paths",
