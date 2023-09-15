@@ -150,8 +150,10 @@ public struct CalcGridV: View {
         GridRow {
           Button(viewStore.isInBlankState ? "AC" : "C") { viewStore.send(.view(.onTapACButton)) }
             .buttonStyle(self.grayStyle)
+            .accessibilityLabel(Text(viewStore.isInBlankState ? "All Clear" : "Clear"))
           Button { viewStore.send(.view(.onTapNegateSignButton))} label: { Image(systemName: "plus.forwardslash.minus")}
             .buttonStyle(self.grayStyle)
+            .accessibilityLabel(Text("Negative"))
           Button("%") { viewStore.send(.view(.onTapPercentButton)) }
             .buttonStyle(self.grayStyle)
           Button { viewStore.send(.view(.onTapDivideButton)) } label: {
@@ -188,6 +190,7 @@ public struct CalcGridV: View {
               
             }
           }
+          .accessibilityLabel(Text("Subtract"))
         }
         GridRow {
           Button("1") { viewStore.send(.view(.onTap(int: 1))) }
@@ -216,10 +219,12 @@ public struct CalcGridV: View {
           
           Button(".") { viewStore.send(.view(.onTapDecimalButton))}
             .buttonStyle(self.darkgrayStyle)
+            .accessibilityLabel(Text("Decimal"))
           Button { viewStore.send(.view(.onTapEqualButton)) } label: {
             Image(systemName: "equal")
               .modifier(self.offTintBackground(viewStore.userSelectedColor))
           }
+          .accessibilityLabel(Text("Equals"))
         }
       }
       .font(.title)

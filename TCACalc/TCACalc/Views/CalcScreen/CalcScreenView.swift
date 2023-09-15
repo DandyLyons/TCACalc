@@ -112,6 +112,7 @@ struct CalcScreen: View {
               .navigationTitle("Settings")
               .preferredColorScheme(viewStore.colorSchemeMode.resolvedColorScheme)
           }
+          .accessibilityLabel(Text("Settings Screen"))
         }
       )
       .alert(store: self.store.scope(state: \.$presentation, action: { .presentation($0)}),
@@ -187,7 +188,7 @@ extension AlertState where Action == CalcScreenReducer.Presentation.Action.Alert
         hScreen: .init(currentNum: "0", calcGridH: .init()),
         vScreen: .init(currentNum: "0", calcGridV: .init()),
         currentOrientation: .portrait,
-        userSettings: .init(isDebugModeOn: true)
+        userSettings: .init(isDebugModeOn: false)
       ),
       reducer: {
         CalcScreenReducer()._printChanges()

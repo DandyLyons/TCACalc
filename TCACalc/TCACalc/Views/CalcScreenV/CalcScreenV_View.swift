@@ -37,6 +37,18 @@ struct CalcScreenV_View: View {
             .font(.system(size: 60, weight: .semibold, design: .default))
             .monospacedDigit()
           
+            .accessibilityRepresentation {
+              HStack {
+                
+                Text(viewStore.currentNum)
+                  .accessibilityAddTraits(.isSummaryElement)
+                  .accessibilityLabel(Text("Result"))
+                  .accessibilityValue(Text(viewStore.currentNum))
+              }
+              .frame(maxWidth: .infinity, maxHeight: .infinity)
+              .ignoresSafeArea(edges: .horizontal)
+            }
+          
             .preferredColorScheme(colorScheme.opposite)
             .textSelection(.enabled)
             .padding()
@@ -60,6 +72,7 @@ struct CalcScreenV_View: View {
             .frame(width: 50, height: 50)
         }
         .padding([.leading])
+        .accessibilityLabel(Text("Open Settings"))
         
       }
       
