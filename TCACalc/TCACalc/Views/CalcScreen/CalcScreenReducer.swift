@@ -269,8 +269,7 @@ struct CalcScreenReducer: Reducer {
                 case .delegate(let hCalcGridDelegateActions):
                   switch hCalcGridDelegateActions {
                     case .notYetImplemented:
-                      state.vScreen.currentNum = "Not Yet Implemented"
-                      state.hScreen.currentNum = "Not Yet Implemented"
+                      state.presentation = .alert(.alert_notYetImplemented())
                       return .none
                   }
               }
@@ -330,11 +329,7 @@ struct CalcScreenReducer: Reducer {
                       
                   }
               }
-            case .alert(let alerts):
-              switch alerts {
-                case .numberFact:
-                  return .none
-              }
+            case .alert: return .none
           }
           
         case .presentation(.dismiss):
@@ -367,7 +362,7 @@ struct CalcScreenReducer: Reducer {
     enum Action: Equatable {
       case settings(SettingsReducer.Action)
       case alert(Alert)
-      enum Alert { case numberFact }
+      enum Alert { case numberFact, notYetImplemented }
     }
     var body: some ReducerOf<Self> {
       Scope(state: /State.settings, action: /Action.settings) {

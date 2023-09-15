@@ -177,6 +177,17 @@ extension AlertState where Action == CalcScreenReducer.Presentation.Action.Alert
       TextState("Cannot get a number fact for non-whole numbers.")
     }
   }
+  
+  static func alert_notYetImplemented() -> Self {
+    let message = """
+🚧 👷🏼‍♀️ 👷🏼‍♂️ 🚧
+You've discovered a feature that hasn't been implemented!
+Feel free to submit an issue or pull request on my GitHub repo. 😄
+"""
+    return Self {
+      TextState(message)
+    }
+  }
 }
 
 #Preview("CalcScreen V"
