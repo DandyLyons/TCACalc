@@ -189,9 +189,17 @@ extension AlertState where Action == CalcScreenReducer.Presentation.Action.Alert
 You've discovered a feature that hasn't been implemented!
 Feel free to submit an issue or pull request on my GitHub repo. 😄
 """
-    return Self {
+    return .init {
+      TextState(message)
+    } actions: {
+      ButtonState(action: .send(.notYetImplemented(.viewGitHub))) {
+        TextState("View GitHub repo")
+      }
+      ButtonState(role: .cancel, label: { TextState("OK") })
+    } message: {
       TextState(message)
     }
+
   }
 }
 

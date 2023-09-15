@@ -362,11 +362,32 @@ struct CalcScreenReducer: Reducer {
     enum Action: Equatable {
       case settings(SettingsReducer.Action)
       case alert(Alert)
-      enum Alert { case numberFact, notYetImplemented }
+      enum Alert: Equatable {
+        case numberFact
+        case notYetImplemented(NYIAlertActions)
+        
+        enum NYIAlertActions: Equatable { case viewGitHub }
+      }
     }
     var body: some ReducerOf<Self> {
       Scope(state: /State.settings, action: /Action.settings) {
         SettingsReducer()
+      }
+      Reduce<State, Action> { state, action in
+        switch action {
+          case .alert(let alertAction):
+            switch alertAction {
+              case .numberFact: return .none
+              case .notYetImplemented(let nyi_action):
+                switch nyi_action {
+                  case .viewGitHub:
+                    let gitHubURL = URL(string: "https://github.com/DandyLyons/TCACalc")!
+                    UIApplication.shared.open(gitHubURL)
+                }
+            }
+          case .settings: return .none
+        }
+        return .none
       }
     }
   }

@@ -39,7 +39,6 @@ struct CalcScreenHView: View {
               .accessibilityValue(Text(viewStore.currentNum))
               .font(.system(size: 50, weight: .semibold, design: .default))
               .monospacedDigit()
-              .foregroundStyle(.white)
               .preferredColorScheme(colorScheme.opposite)
               .textSelection(.enabled)
               .padding()
