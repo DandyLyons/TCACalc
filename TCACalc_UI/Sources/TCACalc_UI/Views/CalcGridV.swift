@@ -92,6 +92,7 @@ public struct CalcGridVFeature: Reducer {
 
 public struct CalcGridV: View {
   let store: StoreOf<CalcGridVFeature>
+  @Environment(\.colorScheme) var colorScheme
   
   public init(store: StoreOf<CalcGridVFeature>) {
     self.store = store
@@ -102,16 +103,17 @@ public struct CalcGridV: View {
   
   @ViewBuilder
   func withCircleBackground(bool: Bool, color: Color, _ content: () -> some View) -> some View {
+    
     content()
       .if(bool) {
-        $0.modifier(self.onTintBackground(color))
+        $0.modifier(self.onTintBackground(color, withBorder: self.colorScheme == .light))
       } else: {
         $0.modifier(self.offTintBackground(color))
       }
   }
   
-  public func onTintBackground(_ color: Color) -> CircleBackground {
-    CircleBackground(foreground: color, background: .white)
+  public func onTintBackground(_ color: Color, withBorder isBordered: Bool = false) -> CircleBackground {
+    CircleBackground(foreground: color, background: .white, backgroundBordered: isBordered)
   }
   
   public func offTintBackground(_ color: Color) -> CircleBackground {
@@ -158,6 +160,7 @@ public struct CalcGridV: View {
             self.withCircleBackground(bool: viewStore.isDivideOn, color: viewStore.userSelectedColor) {
               Image(systemName: "divide")
             }
+            .shouldBorder(bool: self.colorScheme == .light, viewStore.userSelectedColor)
           }
         }
         GridRow {
@@ -269,4 +272,16 @@ extension View {
     .padding(.horizontal)
   }
   
+}
+
+extension View {
+  @ViewBuilder
+  func shouldBorder(bool: Bool, _ content: some ShapeStyle) -> some View {
+    if bool {
+      self
+        .border(content)
+    } else {
+      self
+    }
+  }
 }

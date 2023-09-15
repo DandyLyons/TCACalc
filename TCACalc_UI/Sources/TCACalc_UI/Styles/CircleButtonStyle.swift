@@ -6,38 +6,69 @@ import SwiftUI
 public struct CircleButtonStyle: ButtonStyle {
   public let foregroundIdleColor: Color
   public let backgroundIdleColor: Color
+  public let showingIdleBorder: Bool
   public let foregroundPressedColor: Color
   public let backgroundPressedColor: Color
+  public let showingPressedBorder: Bool
   
-  public init(foregroundIdleColor: Color, backgroundIdleColor: Color, foregroundPressedColor: Color, backgroundPressedColor: Color) {
+  public init(
+    foregroundIdleColor: Color,
+    backgroundIdleColor: Color,
+    showingIdleBorder: Bool = false,
+    foregroundPressedColor: Color,
+    backgroundPressedColor: Color,
+    showingPressedBorder: Bool = false
+  ) {
     self.foregroundIdleColor = foregroundIdleColor
     self.backgroundIdleColor = backgroundIdleColor
+    self.showingIdleBorder = showingIdleBorder
     self.foregroundPressedColor = foregroundPressedColor
     self.backgroundPressedColor = backgroundPressedColor
+    self.showingPressedBorder = showingPressedBorder
   }
   
-  public init(foregroundIdleColor: Color, backgroundIdleColor: Color) {
+  public init(
+    foregroundIdleColor: Color,
+    showingIdleBorder: Bool = false,
+    backgroundIdleColor: Color,
+    showingPressedBorder: Bool = false
+  ) {
     self.foregroundIdleColor = foregroundIdleColor
     self.backgroundIdleColor = backgroundIdleColor
+    self.showingIdleBorder = showingIdleBorder
     self.foregroundPressedColor = foregroundIdleColor
     self.backgroundPressedColor = backgroundIdleColor
+    self.showingPressedBorder = showingPressedBorder
   }
   
   public func makeBody(configuration: Configuration) -> some View {
     if configuration.isPressed {
       ZStack {
-        Circle()
-          .foregroundColor(self.backgroundPressedColor)
+        if showingPressedBorder {
+          Circle()
+            .foregroundColor(self.backgroundPressedColor)
+            .border(self.foregroundPressedColor)
+        } else {
+          Circle()
+            .foregroundColor(self.backgroundPressedColor)
+        }
 
         configuration.label
           .foregroundColor(self.foregroundPressedColor)
+        
           
           
       }
     } else {
       ZStack {
-        Circle()
-          .foregroundColor(self.backgroundIdleColor)
+        if showingIdleBorder {
+          Circle()
+            .foregroundColor(self.backgroundIdleColor)
+            .border(self.foregroundIdleColor)
+        } else {
+          Circle()
+            .foregroundColor(self.backgroundIdleColor)
+        }
         
         configuration.label
           .foregroundColor(self.foregroundIdleColor)
