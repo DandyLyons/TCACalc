@@ -9,6 +9,7 @@ Welcome to TCACalc, an example of a calculator app implemented in [TCA](https://
 
 - Animated Text View
 - Light/dark mode toggle
+  - Introducing [Night Mode](https://github.com/DandyLyons/PlusNightMode): A black and red UI Appearance for better sleep. 
 
 ## Tech Stack 
 
@@ -20,7 +21,7 @@ Welcome to TCACalc, an example of a calculator app implemented in [TCA](https://
 
 
 - [ ] Add support for Widgets
-- [ ] Add night mode
+- [x] Add [Night Mode](https://github.com/DandyLyons/PlusNightMode)
 
 
 ## Feedback

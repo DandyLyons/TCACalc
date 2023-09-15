@@ -103,6 +103,11 @@ struct SettingsView: View {
         Section("🪲 Debugging") {
           Toggle("Debug Mode", isOn: viewStore.$userSettings.isDebugModeOn)
         }
+        Section("Info") {
+          Link(destination: URL(string: "https://github.com/DandyLyons/TCACalc")!) {
+            Text("See the GitHub repo")
+          }
+        }
       }
       .preferredColorScheme(viewStore.userSettings.colorSchemeMode.resolvedColorScheme)
       .toolbar {
