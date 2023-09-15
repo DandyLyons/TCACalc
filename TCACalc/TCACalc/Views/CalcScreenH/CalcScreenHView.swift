@@ -26,6 +26,7 @@ struct CalcScreenHView: View {
     WithViewStore(store, observe: ViewState.init) { viewStore in
       
       ZStack {
+        // background
         self.view(for: colorScheme, light: { Color.white }, dark: { Color.black })
           .ignoresSafeArea()
         
@@ -34,6 +35,8 @@ struct CalcScreenHView: View {
             Spacer()
             
             Text(viewStore.currentNum)
+              .accessibilityLabel(Text("Result"))
+              .accessibilityValue(Text(viewStore.currentNum))
               .font(.system(size: 50, weight: .semibold, design: .default))
               .monospacedDigit()
               .foregroundStyle(.white)
@@ -65,6 +68,7 @@ struct CalcScreenHView: View {
               .padding(.top)
           }
           .padding([.leading])
+          .accessibilityLabel(Text("Open Settings"))
           
         }
       }

@@ -237,16 +237,24 @@ public struct CalcGridH: View {
     GridRow {
       Group {
         Button {viewStore.send(.view(.onTapOpenParenthesesButton))} label: { Text("(") }
+          .accessibilityLabel(Text("Open Parentheses"))
         Button {viewStore.send(.view(.onTapCloseParenthesesButton))} label: { Text(")") }
+          .accessibilityLabel(Text("Close Parentheses"))
         Button {viewStore.send(.view(.onTapMCButton))} label: { Text("mc") }
+          .accessibilityLabel(Text("Memory Clear"))
         Button {viewStore.send(.view(.onTapMPlusButton))} label: { Text("m+") }
+          .accessibilityLabel(Text("Memory Add"))
         Button {viewStore.send(.view(.onTapMMinusButton))} label: { Text("m-") }
+          .accessibilityLabel(Text("Memory Subtract"))
         Button {viewStore.send(.view(.onTapMRButton))} label: { Text("mr") }
+          .accessibilityLabel(Text("Memory Recall"))
       }
       .buttonStyle(self.darkgrayStyle)
       Group {
-        Button {viewStore.send(.view(.onTapACButton))} label: { Text("AC") }
+        Button {viewStore.send(.view(.onTapACButton))} label: { Text(viewStore.isInBlankState ? "AC" : "C") }
+          .accessibilityLabel(Text(viewStore.isInBlankState ? "All Clear" : "Clear")) 
         Button { viewStore.send(.view(.onTapNegateSignButton))} label: {Image(systemName: "plus.forwardslash.minus") }
+          .accessibilityLabel(Text("Negative"))
         Button {viewStore.send(.view(.onTapPercentButton))} label: { Text("%") }
       }.buttonStyle(self.grayStyle)
       Button {viewStore.send(.view(.onTapDivideButton))} label: { 
@@ -260,11 +268,17 @@ public struct CalcGridH: View {
     GridRow {
       Group {
         Button { viewStore.send(.view(.onTapSecondButton))} label: { Text("2") + Text("nd".attributed().superscripted()) }
+          .accessibilityLabel(Text("Alternative Trigonometry Functions"))
         Button { viewStore.send(.view(.onTapSquaredButton ))} label: { Text("x".attributed() + "2".attributed().superscripted()) }
+          .accessibilityLabel(Text("Squared"))
         Button { viewStore.send(.view(.onTapCubedButton)) } label: { Text("x".attributed() + "3".attributed().superscripted()) }
+          .accessibilityLabel(Text("Cubed"))
         Button { viewStore.send(.view(.onTapXToThePowerOfYButton)) } label: { Text("x".attributed() + "y".attributed().superscripted()) }
+          .accessibilityLabel(Text("Power"))
         Button {viewStore.send(.view(.onTapEToThePowerOfXButton))} label: { Text("e".attributed() + "x".attributed().superscripted()) }
+          .accessibilityLabel(Text("Exponential"))
         Button { viewStore.send(.view(.onTap10ToThePowerOfXButton))} label: { Text("10".attributed() + "x".attributed().superscripted()) }
+          .accessibilityLabel(Text("10 to the power of"))
       }
       .buttonStyle(self.darkgrayStyle)
       Group {
@@ -283,11 +297,17 @@ public struct CalcGridH: View {
     GridRow {
       Group {
         Button { viewStore.send(.view(.onTap1OverXButton)) } label: { Text("1/x") }
+          .accessibilityLabel(Text("Reciprocal"))
         Button {viewStore.send(.view(.onTapSquareRootButton))} label: { Text("2".attributed().superscripted()) + Text(Image(systemName: "x.squareroot")) }
+          .accessibilityLabel(Text("Square Root"))
         Button {viewStore.send(.view(.onTapCubeRootButton))} label: { Text("3".attributed().superscripted()) + Text(Image(systemName: "x.squareroot")) }
+          .accessibilityLabel(Text("Cube Root"))
         Button {viewStore.send(.view(.onTapYRootXButton))} label: { Text("y".attributed().superscripted()) + Text(Image(systemName: "x.squareroot")) }
+          .accessibilityLabel(Text("Root"))
         Button { viewStore.send(.view(.onTapLNButton))} label: { Text("ln") }
+          .accessibilityLabel(Text("Natural Log"))
         Button {viewStore.send(.view(.onTapLogSub10))} label: { Text("log") + Text("10".attributed().subscripted()) }
+          .accessibilityLabel(Text("Log Base 10"))
       }
       .buttonStyle(self.darkgrayStyle)
       Group {
@@ -306,11 +326,18 @@ public struct CalcGridH: View {
     GridRow {
       Group {
         Button {viewStore.send(.view(.onTapFactorialButton))} label: { Text("x!") }
+          .accessibilityLabel(Text("Factorial"))
         Button {viewStore.send(.view(.onTapSinButton))} label: { Text("sin") }
+          .accessibilityLabel(Text("Sine"))
         Button {viewStore.send(.view(.onTapCosButton))} label: { Text("cos") }
+          .accessibilityLabel(Text("Cosine"))
         Button {viewStore.send(.view(.onTapTanButton))} label: { Text("tan") }
+          .accessibilityLabel(Text("Tangent"))
         Button {viewStore.send(.view(.onTapEButton))} label: { Text("e") }
+          .accessibilityLabel(Text("Euler's Number"))
         Button {viewStore.send(.view(.onTapEEButton))} label: { Text("EE") }
+          .accessibilityLabel(Text("EE"))
+          .accessibilityHint(Text("Engineering Exponent"))
       }
       .buttonStyle(self.darkgrayStyle)
       Group {
@@ -329,11 +356,17 @@ public struct CalcGridH: View {
     GridRow {
       Group {
         Button {viewStore.send(.view(.onTapRadButton))} label: { Text("Rad") }
+          .accessibilityLabel(Text("Radians"))
         Button {viewStore.send(.view(.onTapSinHButton))} label: { Text("sinh") }
+          .accessibilityLabel(Text("Hyperbolic Sine"))
         Button {viewStore.send(.view(.onTapCosHButton))} label: { Text("cosh") }
+          .accessibilityLabel(Text("Hyberbolic Cosine"))
         Button {viewStore.send(.view(.onTapTanHButton))} label: { Text("tanh") }
+          .accessibilityLabel(Text("Hyberbolic Tangent"))
         Button {viewStore.send(.view(.onTapPiButton))} label: { Text("π") }
+          .accessibilityLabel(Text("Pi"))
         Button { viewStore.send(.view(.onTapRandButton))} label: { Text("Rand") }
+          .accessibilityLabel(Text("Random Number"))
       }
       .buttonStyle(self.darkgrayStyle)
       Group {
@@ -341,6 +374,7 @@ public struct CalcGridH: View {
           .gridCellColumns(2)
         
         Button(".") { viewStore.send(.view(.onTapDecimalButton)) }
+          .accessibilityLabel(Text("Decimal"))
       }.buttonStyle(self.midgrayStyle)
       Button {viewStore.send(.view(.onTapEqualButton))} label: { 
         Image(systemName: "equal") }
@@ -353,8 +387,7 @@ public struct CalcGridH: View {
 
 
 
-#Preview("CalcGridH"
-         , traits: .landscapeLeft
+#Preview("CalcGridH", traits: .landscapeLeft
 ) {
   ZStack {
     Color.black
