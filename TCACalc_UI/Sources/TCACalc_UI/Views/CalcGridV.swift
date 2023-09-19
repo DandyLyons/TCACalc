@@ -70,10 +70,9 @@ public struct CalcGridVFeature: Reducer {
               return .none
             case .onTapEqualButton:
               return .none
-            case .onTap:
+            case .onTap(int: _):
               return .none
             case .onTapACButton:
-              state.isInBlankState = true
               return .none
             case .onTapNegateSignButton:
               return .none

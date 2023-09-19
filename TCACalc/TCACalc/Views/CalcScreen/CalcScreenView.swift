@@ -17,9 +17,6 @@ struct CalcScreen: View {
   let store: StoreOf<CalcScreenReducer>
   
   struct ViewState: Equatable {
-#if os(iOS)
-    let currentOrientation: UIDeviceOrientation
-#endif
     let isNightModeOn: Bool
     let colorSchemeMode: ColorSchemeMode
     let isDebugModeOn: Bool
@@ -31,9 +28,6 @@ struct CalcScreen: View {
     let buffer: CalculationReducer.State.Buffer
     
     init(state: CalcScreenReducer.State) {
-#if os(iOS)
-      self.currentOrientation = state.currentOrientation
-#endif
       
       self.calculationState = state.calculation
       
@@ -50,7 +44,6 @@ struct CalcScreen: View {
   @ViewBuilder
   func vDebugView(_ viewStore: ViewStoreOf_CalcScreen) -> some View {
     VStack(alignment: .trailing) {
-      Text("Current orientation: \(viewStore.currentOrientation.debugDescription)")
       Divider()
       Text("buffer.isDecimalOn:\(viewStore.buffer.isDecimalOn.description)")
       Text("buffer.trailingZeroesAfterDecimal:\(viewStore.buffer.trailingZeroesAfterDecimal)")
@@ -67,36 +60,18 @@ struct CalcScreen: View {
     }
   }
   
-  
+  @Dependency(\.logger) var logger
   
   var body: some View {
     WithViewStore(store, observe: ViewState.init) { viewStore in
       Group {
-        switch viewStore.currentOrientation {
-          case .portrait, .portraitUpsideDown,.faceDown, .faceUp:
-            self.vScreen(viewStore)
-            
-          case .landscapeLeft, .landscapeRight:
-            self.hScreen
-          case .unknown:
-            // TODO: Delete this
-            self.vScreen(viewStore)
-              .onAppear { print("UIDeviceOrientation is unknown") }
-            
-          @unknown default:
-            self.vScreen(viewStore)
-              .onAppear { print("UIDeviceOrientation received unknown default") }
+        VHView {
+          self.vScreen(viewStore)
+        } hView: {
+          self.hScreen
         }
       }
       // MARK: View Events
-      .task(priority: .userInitiated) {
-        viewStore.send(.currentOrientationChangedTo(UIDevice.current.orientation))
-      }
-      .onRotate { newOrientation in
-        guard newOrientation != .portraitUpsideDown,
-              newOrientation != viewStore.currentOrientation else { return }
-        viewStore.send(.currentOrientationChangedTo(newOrientation))
-      }
       
       // MARK: View Styling
       .preferredColorScheme(viewStore.colorSchemeMode.resolvedColorScheme)
@@ -210,7 +185,6 @@ Feel free to submit an issue or pull request on my GitHub repo. 😄
       initialState: .init(
         hScreen: .init(currentNum: "0", calcGridH: .init()),
         vScreen: .init(currentNum: "0", calcGridV: .init()),
-        currentOrientation: .portrait,
         userSettings: .init(isDebugModeOn: false)
       ),
       reducer: {

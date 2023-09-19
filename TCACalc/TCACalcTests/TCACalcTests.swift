@@ -17,7 +17,6 @@ final class TCACalcTests: XCTestCase {
     initialState: CalcScreenReducer.State(
       hScreen: .init(calcGridH: .init()),
       vScreen: .init(calcGridV: .init()),
-      currentOrientation: .portrait,
       userSettings: .init()
     ),
     reducer: {
@@ -108,40 +107,75 @@ final class TCACalcTests: XCTestCase {
     }
   }
   
-  func test1Plus1() async {
+  func test1Plus2() async {
     let store = ts
-//        store.exhaustivity = .off(showSkippedAssertions: true)
-    store.exhaustivity = .off(showSkippedAssertions: false)
+        store.exhaustivity = .on
     
-    await store.send(.currentOrientationChangedTo(.landscapeLeft)) {
-      $0.currentOrientation = .landscapeLeft
-    }
     await store.send(.hScreen(.calcGridH(.view(.onTap(int: 1))))) 
+    await store.receive(.calculation(.input(.int(1)))) {
+      $0.calculation.num1 = 1
+      $0.calculation.status = .t_from_initial
+    }
     await store.receive(.calculation(.delegate(.didFinishCalculating))) {
       $0.vScreen.currentNum = "1"
       $0.hScreen.currentNum = "1"
-      $0.vScreen.calcGridV.currentOperation = nil
+      $0.vScreen.calcGridV.isInBlankState = false
+      $0.hScreen.calcGridH.isInBlankState = false
     }
     
-    await store.send(.currentOrientationChangedTo(.portrait)) {
-      $0.currentOrientation = .portrait
-    }
+    
     await store.send(.hScreen(.calcGridH(.view(.onTapPlusButton))))
+    await store.receive(.calculation(.input(.operation(.plus)))) {
+      $0.calculation.status = .transition
+      $0.calculation.num2 = 1
+      $0.calculation.op1 = .plus
+    }
     await store.receive(.calculation(.delegate(.didFinishCalculating))) {
       $0.vScreen.calcGridV.currentOperation = .plus
+      $0.hScreen.calcGridH.currentOperation = .plus
     }
-    await store.send(.vScreen(.calcGridV(.view(.onTap(int: 1))))) 
+    
+    await store.send(.vScreen(.calcGridV(.view(.onTap(int: 2)))))
+    await store.receive(.calculation(.input(.int(2)))) {
+      $0.calculation.status = .t_from_transition
+      $0.calculation.num2 = 2
+    }
     await store.receive(.calculation(.delegate(.didFinishCalculating))) {
-      $0.vScreen.currentNum = "1"
-      $0.hScreen.currentNum = "1"
+      $0.vScreen.currentNum = "2"
+      $0.hScreen.currentNum = "2"
       $0.vScreen.calcGridV.currentOperation = nil
+      $0.hScreen.calcGridH.currentOperation = nil
     }
-    await store.send(.currentOrientationChangedTo(.landscapeRight)) {
-      $0.currentOrientation = .landscapeRight
+    
+    await store.send(.hScreen(.calcGridH(.view(.onTapEqualButton))))
+    await store.receive(.calculation(.input(.equals))) {
+      $0.calculation.status = .equal
+      $0.calculation.num1 = 3
     }
-    await store.send(.hScreen(.calcGridH(.view(.onTapEqualButton)))) 
     await store.receive(.calculation(.delegate(.didFinishCalculating))) {
       $0.vScreen.calcGridV.currentOperation = nil
+      $0.hScreen.calcGridH.currentOperation = nil
+      $0.vScreen.currentNum = "3"
+      $0.hScreen.currentNum = "3"
+    }
+    
+    await store.send(.vScreen(.calcGridV(.view(.onTapACButton))))
+    await store.receive(.calculation(.input(.reset))) {
+      $0.calculation.status = .t_from_initial
+      $0.calculation.num1 = 0
+    }
+    await store.receive(.calculation(.delegate(.didFinishCalculating))) {
+      $0.vScreen.currentNum = "0"
+      $0.hScreen.currentNum = "0"
+    }
+    
+    await store.send(.vScreen(.calcGridV(.view(.onTapACButton))))
+    await store.receive(.calculation(.input(.reset))) {
+      $0.calculation.status = .initial
+    }
+    await store.receive(.calculation(.delegate(.didFinishCalculating))) {
+      $0.vScreen.calcGridV.isInBlankState = true
+      $0.hScreen.calcGridH.isInBlankState = true
     }
   }
 

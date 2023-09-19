@@ -16,14 +16,12 @@ struct ContentView: View {
         initialState: .init(
           hScreen: .init(currentNum: "0", calcGridH: .init()),
           vScreen: .init(currentNum: "0", calcGridV: .init()),
-          currentOrientation: .landscapeLeft,
           userSettings: .init(isDebugModeOn: false, colorSchemeMode: .light)
         ),
         reducer: {
           CalcScreenReducer()._printChanges()
         })
     )
-    
   }
 }
 

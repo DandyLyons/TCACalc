@@ -10,7 +10,7 @@ import ComposableArchitecture
 
 extension CalculationReducer.State: CustomDebugStringConvertible {
   var debugDescription: String {
-    "CustomDebugStringConvertible not yet implemented"
+    "CustomDebugStringConvertible for CalculationReducer.State not yet implemented"
   }
 }
 

@@ -20,7 +20,6 @@ struct CalcScreenReducer: Reducer {
     var vScreen: CalcScreenVReducer.State
     @PresentationState var presentation: Presentation.State?
     
-    var currentOrientation: UIDeviceOrientation
     var userSettings: UserSettings
     
     // MARK: CalcScreenReducer.init
@@ -39,7 +38,6 @@ struct CalcScreenReducer: Reducer {
       hScreen: CalcScreenHReducer.State,
       vScreen: CalcScreenVReducer.State,
       presentation: Presentation.State? = nil,
-      currentOrientation: UIDeviceOrientation,
       userSettings: UserSettings,
       currentNum: Decimal = 0,
       previousNum: Decimal? = nil,
@@ -49,7 +47,6 @@ struct CalcScreenReducer: Reducer {
       self.hScreen = hScreen
       self.vScreen = vScreen
       self.presentation = presentation
-      self.currentOrientation = currentOrientation
       self.userSettings = userSettings
     }
     
@@ -59,14 +56,19 @@ struct CalcScreenReducer: Reducer {
       switch self.calculation.op_resolved {
         case .plus:
           self.vScreen.calcGridV.currentOperation = .plus
+          self.hScreen.calcGridH.currentOperation = .plus
         case .minus:
           self.vScreen.calcGridV.currentOperation = .minus
+          self.hScreen.calcGridH.currentOperation = .minus
         case .multiply:
           self.vScreen.calcGridV.currentOperation = .multiply
+          self.hScreen.calcGridH.currentOperation = .multiply
         case .divide:
           self.vScreen.calcGridV.currentOperation = .divide
+          self.hScreen.calcGridH.currentOperation = .divide
         case .none:
           self.vScreen.calcGridV.currentOperation = .none
+          self.hScreen.calcGridH.currentOperation = .none
       }
       
       // determine if AC Button should show AC or C
@@ -83,8 +85,6 @@ struct CalcScreenReducer: Reducer {
     
     case hScreen(CalcScreenHReducer.Action)
     case vScreen(CalcScreenVReducer.Action)
-    
-    case currentOrientationChangedTo(UIDeviceOrientation)
     
     case view(View)
     enum View: Equatable {
@@ -113,9 +113,6 @@ struct CalcScreenReducer: Reducer {
           }
         case .calculation: return .none
           
-        case let .currentOrientationChangedTo(newOrientation):
-          state.currentOrientation = newOrientation
-          return .none
           
           // SPYING ON SUBVIEWS
         case .vScreen(let vScreenAction):

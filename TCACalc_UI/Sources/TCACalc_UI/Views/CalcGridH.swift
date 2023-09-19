@@ -15,54 +15,24 @@ public struct CalcGridHFeature: Reducer {
   public init() {}
   
   public struct State: Equatable {
-    public var isDivideOn = false
-    public var isMultiplyOn = false
-    public var isMinusOn = false
-    public var isPlusOn = false
+    public var isDivideOn: Bool { self.currentOperation == .divide }
+    public var isMultiplyOn: Bool { self.currentOperation == .multiply }
+    public var isMinusOn: Bool { self.currentOperation == .minus }
+    public var isPlusOn: Bool { self.currentOperation == .plus }
     public var isInBlankState = true
+    public var currentOperation: Operation?
+    public enum Operation: Equatable {
+      case divide, multiply, minus, plus
+    }
     
     public var userSelectedColor: Color = .green
     
-    public init(isDivideOn: Bool = false, isMultiplyOn: Bool = false, isMinusOn: Bool = false, isPlusOn: Bool = false) {
-      self.isDivideOn = isDivideOn
-      self.isMultiplyOn = isMultiplyOn
-      self.isMinusOn = isMinusOn
-      self.isPlusOn = isPlusOn
-    }
-    
-    public mutating func turnDivideOn() {
-      self.isDivideOn = true
-      self.isMultiplyOn = false
-      self.isMinusOn = false
-      self.isPlusOn = false
-    }
-    public mutating func turnMultiplyOn() {
-      self.isDivideOn = false
-      self.isMultiplyOn = true
-      self.isMinusOn = false
-      self.isPlusOn = false
-    }
-    public mutating func turnMinusOn() {
-      self.isDivideOn = false
-      self.isMultiplyOn = false
-      self.isMinusOn = true
-      self.isPlusOn = false
-    }
-    public mutating func turnPlusOn() {
-      self.isDivideOn = false
-      self.isMultiplyOn = false
-      self.isMinusOn = false
-      self.isPlusOn = true
-    }
-    public mutating func turnAllOff() {
-      self.isDivideOn = false
-      self.isMultiplyOn = false
-      self.isMinusOn = false
-      self.isPlusOn = false
+    public init(currentOperation: Operation? = nil, isInBlankState: Bool = true) {
+      self.currentOperation = currentOperation
+      self.isInBlankState = isInBlankState
     }
   }
   public enum Action: Equatable {
-    //    case internalAction
     
     case view(View)
     public enum View: Equatable {
@@ -123,22 +93,16 @@ public struct CalcGridHFeature: Reducer {
         case let .view(viewAction):
           switch viewAction {
             case .onTapDivideButton:
-              state.turnDivideOn()
               return .none
             case .onTapMultiplyButton:
-              state.turnMultiplyOn()
               return .none
             case .onTapMinusButton:
-              state.turnMinusOn()
               return .none
             case .onTapPlusButton:
-              state.turnPlusOn()
               return .none
             case .onTapEqualButton:
-              print("Not yet implemented")
-              state.turnAllOff()
               return .none
-            case let .onTap(int: int):
+            case .onTap(int: _):
               return .none
             case .onTapACButton:
               return .none

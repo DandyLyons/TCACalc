@@ -86,7 +86,6 @@ struct CalcScreenV_View: View {
       initialState: .init(
         hScreen: .init(calcGridH: .init()),
         vScreen: .init(calcGridV: .init()),
-        currentOrientation: .portrait,
         userSettings: .init()
       ),
       reducer: {

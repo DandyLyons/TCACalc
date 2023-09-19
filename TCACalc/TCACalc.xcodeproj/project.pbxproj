@@ -30,6 +30,8 @@
 		80936EBE2A60C75000A2939F /* Decimal+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80936EBD2A60C75000A2939F /* Decimal+.swift */; };
 		80936EC62A60D94C00A2939F /* TCACalcTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80936EC52A60D94C00A2939F /* TCACalcTests.swift */; };
 		80DBE4332AB0D04600181FBF /* NumberFactClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80DBE4322AB0D04600181FBF /* NumberFactClientTests.swift */; };
+		80E9F8F62ABA0AAC00FC33F6 /* SizeClass Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E9F8F52ABA0AAC00FC33F6 /* SizeClass Test.swift */; };
+		80E9F8FD2ABA132D00FC33F6 /* VHView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E9F8FC2ABA132D00FC33F6 /* VHView.swift */; };
 		80F2C4472A994ADD00D1B6DA /* CalculationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F2C4462A994ADD00D1B6DA /* CalculationTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -71,6 +73,8 @@
 		80936EC32A60D94C00A2939F /* TCACalcTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TCACalcTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		80936EC52A60D94C00A2939F /* TCACalcTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCACalcTests.swift; sourceTree = "<group>"; };
 		80DBE4322AB0D04600181FBF /* NumberFactClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberFactClientTests.swift; sourceTree = "<group>"; };
+		80E9F8F52ABA0AAC00FC33F6 /* SizeClass Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SizeClass Test.swift"; sourceTree = "<group>"; };
+		80E9F8FC2ABA132D00FC33F6 /* VHView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VHView.swift; sourceTree = "<group>"; };
 		80F2C4462A994ADD00D1B6DA /* CalculationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculationTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -105,6 +109,8 @@
 		801FFAB12A63046100F84FC1 /* Prototypes */ = {
 			isa = PBXGroup;
 			children = (
+				80E9F8F52ABA0AAC00FC33F6 /* SizeClass Test.swift */,
+				80E9F8FC2ABA132D00FC33F6 /* VHView.swift */,
 			);
 			path = Prototypes;
 			sourceTree = "<group>";
@@ -338,6 +344,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				80E9F8F62ABA0AAC00FC33F6 /* SizeClass Test.swift in Sources */,
 				8015D68D2A9A84AC005220F8 /* NumberFactClient.swift in Sources */,
 				804469832A954C140098F1ED /* CalculationReducer.swift in Sources */,
 				8043A4582A61FAA1006AB0DA /* CalcScreenHReducer.swift in Sources */,
@@ -346,6 +353,7 @@
 				803ED6672A8EF15100A1486C /* Settings.swift in Sources */,
 				806BC16A2A902AEE00B252F9 /* UserSettings.swift in Sources */,
 				80649D352A607CC7007CC893 /* ContentView.swift in Sources */,
+				80E9F8FD2ABA132D00FC33F6 /* VHView.swift in Sources */,
 				805627C62AB382E100AFE8B7 /* ColorSchemeMode+UserDefaults.swift in Sources */,
 				80649D332A607CC7007CC893 /* TCACalcApp.swift in Sources */,
 				8043A4562A61FA90006AB0DA /* CalcScreenReducer.swift in Sources */,

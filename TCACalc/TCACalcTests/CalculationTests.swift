@@ -15,7 +15,6 @@ final class CalculationTests: XCTestCase {
     initialState: CalcScreenReducer.State(
       hScreen: .init(calcGridH: .init()),
       vScreen: .init(calcGridV: .init()),
-      currentOrientation: .portrait,
       userSettings: .init()
     ),
     reducer: {
