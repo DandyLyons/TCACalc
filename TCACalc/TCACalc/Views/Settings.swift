@@ -100,9 +100,15 @@ struct SettingsView: View {
           ColorPicker("Accent Color", selection: viewStore.$userSettings.accentColor)
             .disabled(viewStore.userSettings.colorSchemeMode == .night)
         }
-        Section("🪲 Debugging") {
+        Section {
           Toggle("Debug Mode", isOn: viewStore.$userSettings.isDebugModeOn)
+        } header: {
+          Text("🪲 Debugging")
+        } footer: {
+          Text("Debugging labels are only visible in portrait orientation.")
         }
+        
+        
         Section("Info") {
           Link(destination: URL(string: "https://github.com/DandyLyons/TCACalc")!) {
             Text("See the GitHub repo")

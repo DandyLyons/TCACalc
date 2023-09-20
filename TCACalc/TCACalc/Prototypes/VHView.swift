@@ -58,9 +58,11 @@ struct VHView<VView: View, HView: View>: View {
     ZStack {
       self.vView()
         .zIndex(visibleView == .vertical ? 1 : -1)
+        .opacity(visibleView == .vertical ? 1 : 0.001)
       
       self.hView()
         .zIndex(visibleView == .horizontal ? 1 : -1)
+        .opacity(visibleView == .horizontal ? 1 : 0.001)
     }
   }
   
