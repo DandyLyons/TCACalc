@@ -16,10 +16,37 @@ struct CalcScreenHView: View {
   
   struct ViewState: Equatable {
     let currentNum: String
+    let canRequestNumFact: Bool
     
     init(state: CalcScreenHReducer.State) {
       self.currentNum = state.currentNum
+      self.canRequestNumFact = state.canRequestNumFact
     }
+  }
+  
+  @ViewBuilder
+  func settingsButton(_ viewStore: ViewStore<ViewState, CalcScreenHReducer.Action>) -> some View {
+    Button { viewStore.send(.view(.onTapSettingsButton))} label: {
+      Image(systemName: "gear.circle.fill")
+        .resizable()
+        .frame(width: 40, height: 40)
+        .padding(.top)
+    }
+    .padding([.leading])
+    .accessibilityLabel(Text("Open Settings"))
+  }
+  
+  @ViewBuilder
+  func numberFactsButton(_ viewStore: ViewStore<ViewState, CalcScreenHReducer.Action>) -> some View {
+    Button { viewStore.send(.view(.onTapNumberFactsButton))} label: {
+      Image(systemName: "info.circle.fill")
+        .resizable()
+        .frame(width: 40, height: 40)
+        .padding(.top)
+    }
+    .accessibilityLabel(Text("Get Number Fact"))
+    .disabled(!viewStore.state.canRequestNumFact)
+    .animation(.default, value: viewStore.state.canRequestNumFact)
   }
   
   var body: some View {
@@ -59,25 +86,28 @@ struct CalcScreenHView: View {
         
         
         .overlay(alignment: .topLeading) {
-          
-          Button { viewStore.send(.view(.onTapSettingsButton))} label: {
-            Image(systemName: "gear.circle.fill")
-              .resizable()
-              .frame(width: 40, height: 40)
-              .padding(.top)
+          HStack {
+            self.settingsButton(viewStore)
+            self.numberFactsButton(viewStore)
           }
-          .padding([.leading])
-          .accessibilityLabel(Text("Open Settings"))
-          
         }
+        
       }
       
     }
   }
 }
 
-#Preview("CalcScreenHView", traits: .landscapeLeft) {
-  CalcScreenHView(store: .init(initialState: .init(calcGridH: .init()), reducer: {
-    CalcScreenHReducer()
-  }))
+#Preview("CalcScreenHView in CalcScreen", traits: .landscapeLeft) {
+  CalcScreen(
+    store: .init(
+      initialState: .init(
+        hScreen: .init(calcGridH: .init()),
+        vScreen: .init(calcGridV: .init()),
+        userSettings: .init()
+      ),
+      reducer: {
+        CalcScreenReducer()._printChanges()
+      })
+  )
 }

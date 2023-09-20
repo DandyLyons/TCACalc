@@ -22,6 +22,10 @@ struct CalcScreenReducer: Reducer {
     
     var userSettings: UserSettings
     
+    var canRequestNumFact: Bool {
+      self.calculation.num_resolved?.isWholeNumber ?? false
+    }
+    
     // MARK: CalcScreenReducer.init
     /// Creates new State for CalcScreenReducer
     /// - Parameters:
@@ -53,6 +57,8 @@ struct CalcScreenReducer: Reducer {
     mutating func calculationReducerDidUpdate() {
       self.hScreen.currentNum = self.calculation.displayString
       self.vScreen.currentNum = self.calculation.displayString
+      self.hScreen.canRequestNumFact = self.canRequestNumFact
+      self.vScreen.canRequestNumFact = self.canRequestNumFact
       switch self.calculation.op_resolved {
         case .plus:
           self.vScreen.calcGridV.currentOperation = .plus
@@ -99,8 +105,22 @@ struct CalcScreenReducer: Reducer {
     case factResponse(String)
   }
   
+  func handleNumFactRequest(_ state: inout Self.State) -> Effect<Self.Action> {
+    if let decimal = state.calculation.num_resolved {
+      if decimal.isWholeNumber {
+        let number = Int(truncatingIfNeeded: decimal)
+        return .run { send in
+          @Dependency(\.numberFact) var numberFactClient
+          try await send(.factResponse(numberFactClient.fetch(number)))
+        }
+      } else {
+        state.presentation = .alert(.alert_numberFactError_NotWholeNumber())
+      }
+    }
+    return .none
+  }
+  
   // MARK: Dependencies
-  @Dependency(\.numberFact) var numberFact
   
   var body: some ReducerOf<Self> {
     Reduce<State, Action> { state, action in
@@ -128,19 +148,11 @@ struct CalcScreenReducer: Reducer {
                     state.calculation = .init() // force calculation engine to reset
                     state.vScreen = .init(currentNum: "0", calcGridV: .init())
                     state.hScreen = .init(currentNum: "0", calcGridH: .init())
-                  } else {
-                    if let decimal = state.calculation.num_resolved {
-                      if decimal.isWholeNumber {
-                        let number = Int(truncatingIfNeeded: decimal)
-                        return .run { send in
-                          try await send(.factResponse(numberFact.fetch(number)))
-                        }
-                      } else {
-                        state.presentation = .alert(.alert_numberFactError_NotWholeNumber())
-                      }
-                    }
                   }
                   return .none
+                  
+                case .requestNumFact:
+                  return self.handleNumFactRequest(&state)
               }
               
             case .calcGridV(let vCalcGridAction):
@@ -281,19 +293,11 @@ struct CalcScreenReducer: Reducer {
                     state.calculation = .init() // force calculation engine to reset
                     state.vScreen = .init(currentNum: "0", calcGridV: .init())
                     state.hScreen = .init(currentNum: "0", calcGridH: .init())
-                  } else {
-                    if let decimal = state.calculation.num_resolved {
-                      if decimal.isWholeNumber {
-                        let number = Int(truncatingIfNeeded: decimal)
-                        return .run { send in
-                          try await send(.factResponse(numberFact.fetch(number)))
-                        }
-                      } else {
-                        state.presentation = .alert(.alert_numberFactError_NotWholeNumber())
-                      }
-                    }
                   }
                   return .none
+                case .requestNumFact:
+                  return self.handleNumFactRequest(&state)
+                  
               }
           }
           

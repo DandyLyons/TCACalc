@@ -19,7 +19,7 @@ struct CalcScreenVReducer: Reducer {
     var currentNum: String = "Not initialized"
     
     var calcGridV: CalcGridVFeature.State
-    
+    var canRequestNumFact: Bool = true
   }
   enum Action: Equatable {
     
@@ -30,11 +30,13 @@ struct CalcScreenVReducer: Reducer {
     enum ViewAction: Equatable {
       case onTapSettingsButton
       case onTapNumDisplay
-      }
+      case onTapNumberFactsButton
+    }
     case delegate(Delegate)
     enum Delegate: Equatable {
       case presentSettingsView
       case numDisplayTapped
+      case requestNumFact
     }
   }
   
@@ -50,6 +52,10 @@ struct CalcScreenVReducer: Reducer {
             case .onTapNumDisplay:
               return .run { send in
                   await send(.delegate(.numDisplayTapped))
+              }
+            case .onTapNumberFactsButton:
+              return .run { send in
+                await send(.delegate(.requestNumFact))
               }
           }
           
