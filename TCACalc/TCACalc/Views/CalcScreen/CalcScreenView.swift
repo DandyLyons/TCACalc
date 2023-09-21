@@ -88,7 +88,6 @@ struct CalcScreen: View {
           NavigationStack {
             SettingsView(store: settingsStore)
               .navigationTitle("Settings")
-              .preferredColorScheme(viewStore.colorSchemeMode.resolvedColorScheme)
           }
           .observingNightMode(viewStore.colorSchemeMode == .night)
           .accessibilityLabel(Text("Settings Screen"))
@@ -159,13 +158,16 @@ extension AlertState where Action == CalcScreenReducer.Presentation.Action.Alert
   }
   
   static func alert_notYetImplemented() -> Self {
-    let message = """
-🚧 👷🏼‍♀️ 👷🏼‍♂️ 🚧
+    let title = """
+    🚧 👷🏼‍♀️ 👷🏼‍♂️ 🚧
 You've discovered a feature that hasn't been implemented!
+
+"""
+    let message = """
 Feel free to submit an issue or pull request on my GitHub repo. 😄
 """
     return .init {
-      TextState(message)
+      TextState(title)
     } actions: {
       ButtonState(action: .send(.notYetImplemented(.viewGitHub))) {
         TextState("View GitHub repo")

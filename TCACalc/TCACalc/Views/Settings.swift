@@ -46,6 +46,19 @@ struct SettingsReducer: Reducer {
    @Dependency(\.dismiss) var dismiss
   
   var body: some ReducerOf<Self> {
+    BindingReducer()
+      .onChange(of: \.userSettings) { oldValue, newValue in
+        Reduce<State, Action> { state, action in
+          //          @Dependency(\.encode) var encode
+          //          @Dependency(\.userDefaults) var userDefaults
+          
+          //          let data: Data? = try? encode(newValue)
+          //          userDefaults.set(data, forKey: UserDefaults.key_userSettings)
+          
+          return .send(.delegate(.userSettingsChanged(newValue)))
+        }
+      }
+    
     Reduce<State, Action> { state, action in
       switch action {
           
@@ -59,17 +72,7 @@ struct SettingsReducer: Reducer {
           }
       }
     }
-    BindingReducer()
-      .onChange(of: \.userSettings) { oldValue, newValue in
-        Reduce<State, Action> { state, action in
-          @Dependency(\.encode) var encode
-          @Dependency(\.userDefaults) var userDefaults
-          
-          let data: Data? = try? encode(newValue)
-          userDefaults.set(data, forKey: UserDefaults.key_userSettings)
-          return .send(.delegate(.userSettingsChanged(newValue)))
-        }
-      }
+    
   }
 }
 
@@ -84,18 +87,22 @@ struct SettingsView: View {
     }
   }
   
+  @ViewBuilder
+  func appearancePicker(style: some PickerStyle, _ viewStore: ViewStore<ViewState, SettingsReducer.Action>) -> some View {
+    Picker("Appearance", selection: viewStore.$userSettings.colorSchemeMode) {
+      ForEach(ColorSchemeMode.allCases) { colorSchemeMode in
+        Text(colorSchemeMode.localizedString)
+          .tag(colorSchemeMode)
+      }
+    }.pickerStyle(style)
+
+  }
+  
   var body: some View {
     WithViewStore(store, observe: ViewState.init) { viewStore in
       Form {
         Section("Appearance") {
-          Picker("Appearance", selection: viewStore.$userSettings.colorSchemeMode) {
-            ForEach(ColorSchemeMode.allCases) { colorSchemeMode in
-              Text(colorSchemeMode.localizedString)
-                .tag(colorSchemeMode)
-                .observingNightMode(true)
-            }
-            .observingNightMode(true)
-          }
+          self.appearancePicker(style: .segmented, viewStore)
           
           ColorPicker("Accent Color", selection: viewStore.$userSettings.accentColor)
             .disabled(viewStore.userSettings.colorSchemeMode == .night)
@@ -133,5 +140,8 @@ struct SettingsView: View {
     }
   )
   
-  return SettingsView(store: store)
+  return NavigationStack {
+    SettingsView(store: store)
+      .navigationTitle("Settings")
+  }
 }

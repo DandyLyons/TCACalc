@@ -18,7 +18,6 @@
 		805170ED2AB0F402003F8CB2 /* CalcScreenHView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805170EC2AB0F402003F8CB2 /* CalcScreenHView.swift */; };
 		805170F02AB0F5D2003F8CB2 /* CalcScreenV_View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805170EF2AB0F5D2003F8CB2 /* CalcScreenV_View.swift */; };
 		805627C62AB382E100AFE8B7 /* ColorSchemeMode+UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805627C52AB382E000AFE8B7 /* ColorSchemeMode+UserDefaults.swift */; };
-		805627C92AB38D7F00AFE8B7 /* PlusNightMode in Frameworks */ = {isa = PBXBuildFile; productRef = 805627C82AB38D7F00AFE8B7 /* PlusNightMode */; };
 		80649D332A607CC7007CC893 /* TCACalcApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80649D322A607CC7007CC893 /* TCACalcApp.swift */; };
 		80649D352A607CC7007CC893 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80649D342A607CC7007CC893 /* ContentView.swift */; };
 		80649D3B2A607CC9007CC893 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 80649D3A2A607CC9007CC893 /* Preview Assets.xcassets */; };
@@ -33,6 +32,7 @@
 		80E9F8F62ABA0AAC00FC33F6 /* SizeClass Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E9F8F52ABA0AAC00FC33F6 /* SizeClass Test.swift */; };
 		80E9F8FD2ABA132D00FC33F6 /* VHView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E9F8FC2ABA132D00FC33F6 /* VHView.swift */; };
 		80F2C4472A994ADD00D1B6DA /* CalculationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F2C4462A994ADD00D1B6DA /* CalculationTests.swift */; };
+		80F8A6B52ABCF561004199CC /* PlusNightMode in Frameworks */ = {isa = PBXBuildFile; productRef = 80F8A6B42ABCF561004199CC /* PlusNightMode */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,6 +72,7 @@
 		80936EBD2A60C75000A2939F /* Decimal+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Decimal+.swift"; sourceTree = "<group>"; };
 		80936EC32A60D94C00A2939F /* TCACalcTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TCACalcTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		80936EC52A60D94C00A2939F /* TCACalcTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCACalcTests.swift; sourceTree = "<group>"; };
+		809B47592ABCF45500FC8306 /* Plus Night Mode */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "Plus Night Mode"; path = "../../../../Developer/My Swift Packages/Plus Night Mode"; sourceTree = "<group>"; };
 		80DBE4322AB0D04600181FBF /* NumberFactClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberFactClientTests.swift; sourceTree = "<group>"; };
 		80E9F8F52ABA0AAC00FC33F6 /* SizeClass Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SizeClass Test.swift"; sourceTree = "<group>"; };
 		80E9F8FC2ABA132D00FC33F6 /* VHView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VHView.swift; sourceTree = "<group>"; };
@@ -83,7 +84,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				805627C92AB38D7F00AFE8B7 /* PlusNightMode in Frameworks */,
+				80F8A6B52ABCF561004199CC /* PlusNightMode in Frameworks */,
 				80936EBA2A607E1100A2939F /* TCACalc_UI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -145,6 +146,7 @@
 		80649D262A607CC7007CC893 = {
 			isa = PBXGroup;
 			children = (
+				809B47592ABCF45500FC8306 /* Plus Night Mode */,
 				8015D68B2A9A849D005220F8 /* Dependencies */,
 				8015D6892A9A57E2005220F8 /* DELETEME.swift */,
 				80649D312A607CC7007CC893 /* TCACalc */,
@@ -256,7 +258,7 @@
 			name = TCACalc;
 			packageProductDependencies = (
 				80936EB92A607E1100A2939F /* TCACalc_UI */,
-				805627C82AB38D7F00AFE8B7 /* PlusNightMode */,
+				80F8A6B42ABCF561004199CC /* PlusNightMode */,
 			);
 			productName = TCACalc;
 			productReference = 80649D2F2A607CC7007CC893 /* TCACalc.app */;
@@ -309,7 +311,6 @@
 			);
 			mainGroup = 80649D262A607CC7007CC893;
 			packageReferences = (
-				805627C72AB38D7F00AFE8B7 /* XCRemoteSwiftPackageReference "PlusNightMode" */,
 			);
 			productRefGroup = 80649D302A607CC7007CC893 /* Products */;
 			projectDirPath = "";
@@ -668,26 +669,14 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		805627C72AB38D7F00AFE8B7 /* XCRemoteSwiftPackageReference "PlusNightMode" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/DandyLyons/PlusNightMode";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.1.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
 /* Begin XCSwiftPackageProductDependency section */
-		805627C82AB38D7F00AFE8B7 /* PlusNightMode */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 805627C72AB38D7F00AFE8B7 /* XCRemoteSwiftPackageReference "PlusNightMode" */;
-			productName = PlusNightMode;
-		};
 		80936EB92A607E1100A2939F /* TCACalc_UI */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = TCACalc_UI;
+		};
+		80F8A6B42ABCF561004199CC /* PlusNightMode */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PlusNightMode;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

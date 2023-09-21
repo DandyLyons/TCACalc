@@ -49,7 +49,6 @@ struct CalcScreenV_View: View {
       .padding()
       .contentTransition(.numericText(countsDown: true)) // feature idea: set countsdown to match if the number is increasing/decreasing
       .animation(.snappy, value: viewStore.currentNum)
-    
       .onTapGesture { viewStore.send(.view(.onTapNumDisplay)) }
   }
   
@@ -66,15 +65,16 @@ struct CalcScreenV_View: View {
   
   @ViewBuilder
   func numberFactsButton(_ viewStore: ViewStore<ViewState, CalcScreenVReducer.Action>) -> some View {
-    Button { viewStore.send(.view(.onTapNumberFactsButton))} label: {
-      Image(systemName: "info.circle.fill")
-        .resizable()
-        .frame(width: 50, height: 50)
+    if viewStore.state.canRequestNumFact {
+      Button { viewStore.send(.view(.onTapNumberFactsButton))} label: {
+        Image(systemName: "info.circle.fill")
+          .resizable()
+          .frame(width: 50, height: 50)
+      }
+      .padding([.trailing])
+      .accessibilityLabel(Text("Get Number Fact"))
+      .animation(.default, value: viewStore.state.canRequestNumFact)
     }
-    .padding([.trailing])
-    .accessibilityLabel(Text("Get Number Fact"))
-    .disabled(!viewStore.state.canRequestNumFact)
-    .animation(.default, value: viewStore.state.canRequestNumFact)
   }
   
   var body: some View {
