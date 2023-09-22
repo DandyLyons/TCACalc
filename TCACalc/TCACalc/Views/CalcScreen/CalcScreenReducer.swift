@@ -307,7 +307,7 @@ struct CalcScreenReducer: Reducer {
               // MARK: Settings
             case .settings(let settingsAction):
               switch settingsAction {
-                case ._internal, .binding, .view: return .none
+                case ._internal, .binding, .view, .presentation: return .none
                   
                 case .delegate(let settingsDelegateActions):
                   switch settingsDelegateActions {
@@ -327,7 +327,6 @@ struct CalcScreenReducer: Reducer {
                       state.hScreen.calcGridH.userSelectedColor = newValue.accentColor
                       state.vScreen.calcGridV.userSelectedColor = newValue.accentColor
                       return .none
-                      
                   }
               }
             case .alert: return .none

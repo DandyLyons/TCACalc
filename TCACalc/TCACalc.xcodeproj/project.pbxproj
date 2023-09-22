@@ -29,10 +29,14 @@
 		80936EBE2A60C75000A2939F /* Decimal+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80936EBD2A60C75000A2939F /* Decimal+.swift */; };
 		80936EC62A60D94C00A2939F /* TCACalcTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80936EC52A60D94C00A2939F /* TCACalcTests.swift */; };
 		80DBE4332AB0D04600181FBF /* NumberFactClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80DBE4322AB0D04600181FBF /* NumberFactClientTests.swift */; };
-		80E9F8F62ABA0AAC00FC33F6 /* SizeClass Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E9F8F52ABA0AAC00FC33F6 /* SizeClass Test.swift */; };
-		80E9F8FD2ABA132D00FC33F6 /* VHView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E9F8FC2ABA132D00FC33F6 /* VHView.swift */; };
+		80E139252AB63BC600C1FF51 /* UserSettingsClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E139242AB63BC600C1FF51 /* UserSettingsClient.swift */; };
+		80E9F8F62ABA0AAC00FC33F6 /* (null) in Sources */ = {isa = PBXBuildFile; };
+		80E9F8FD2ABA132D00FC33F6 /* (null) in Sources */ = {isa = PBXBuildFile; };
+		80EFA42E2AB89983001DF5C1 /* UserSettings+FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EFA42D2AB89983001DF5C1 /* UserSettings+FileManager.swift */; };
 		80F2C4472A994ADD00D1B6DA /* CalculationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F2C4462A994ADD00D1B6DA /* CalculationTests.swift */; };
-		80F8A6B52ABCF561004199CC /* PlusNightMode in Frameworks */ = {isa = PBXBuildFile; productRef = 80F8A6B42ABCF561004199CC /* PlusNightMode */; };
+		80F8A6B62ABD0C52004199CC /* PlusNightMode in Frameworks */ = {isa = PBXBuildFile; productRef = 80F8A6B42ABCF561004199CC /* PlusNightMode */; };
+		80F8A6BA2ABD0E14004199CC /* VHView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F8A6B72ABD0E14004199CC /* VHView.swift */; };
+		80F8A6BB2ABD0E14004199CC /* SizeClass Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F8A6B82ABD0E14004199CC /* SizeClass Test.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,9 +78,11 @@
 		80936EC52A60D94C00A2939F /* TCACalcTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCACalcTests.swift; sourceTree = "<group>"; };
 		809B47592ABCF45500FC8306 /* Plus Night Mode */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "Plus Night Mode"; path = "../../../../Developer/My Swift Packages/Plus Night Mode"; sourceTree = "<group>"; };
 		80DBE4322AB0D04600181FBF /* NumberFactClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberFactClientTests.swift; sourceTree = "<group>"; };
-		80E9F8F52ABA0AAC00FC33F6 /* SizeClass Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SizeClass Test.swift"; sourceTree = "<group>"; };
-		80E9F8FC2ABA132D00FC33F6 /* VHView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VHView.swift; sourceTree = "<group>"; };
+		80E139242AB63BC600C1FF51 /* UserSettingsClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSettingsClient.swift; sourceTree = "<group>"; };
+		80EFA42D2AB89983001DF5C1 /* UserSettings+FileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserSettings+FileManager.swift"; sourceTree = "<group>"; };
 		80F2C4462A994ADD00D1B6DA /* CalculationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculationTests.swift; sourceTree = "<group>"; };
+		80F8A6B72ABD0E14004199CC /* VHView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VHView.swift; sourceTree = "<group>"; };
+		80F8A6B82ABD0E14004199CC /* SizeClass Test.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SizeClass Test.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,7 +90,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				80F8A6B52ABCF561004199CC /* PlusNightMode in Frameworks */,
+				80F8A6B62ABD0C52004199CC /* PlusNightMode in Frameworks */,
 				80936EBA2A607E1100A2939F /* TCACalc_UI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -103,6 +109,7 @@
 			isa = PBXGroup;
 			children = (
 				8015D68C2A9A84AC005220F8 /* NumberFactClient.swift */,
+				80E139242AB63BC600C1FF51 /* UserSettingsClient.swift */,
 			);
 			path = Dependencies;
 			sourceTree = "<group>";
@@ -110,8 +117,8 @@
 		801FFAB12A63046100F84FC1 /* Prototypes */ = {
 			isa = PBXGroup;
 			children = (
-				80E9F8F52ABA0AAC00FC33F6 /* SizeClass Test.swift */,
-				80E9F8FC2ABA132D00FC33F6 /* VHView.swift */,
+				80F8A6B82ABD0E14004199CC /* SizeClass Test.swift */,
+				80F8A6B72ABD0E14004199CC /* VHView.swift */,
 			);
 			path = Prototypes;
 			sourceTree = "<group>";
@@ -206,6 +213,7 @@
 				80936EBD2A60C75000A2939F /* Decimal+.swift */,
 				807F40632A911DE2009A8FD7 /* Color+Codable.swift */,
 				805627C52AB382E000AFE8B7 /* ColorSchemeMode+UserDefaults.swift */,
+				80EFA42D2AB89983001DF5C1 /* UserSettings+FileManager.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -345,18 +353,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				80E9F8F62ABA0AAC00FC33F6 /* SizeClass Test.swift in Sources */,
+				80F8A6BA2ABD0E14004199CC /* VHView.swift in Sources */,
+				80E9F8F62ABA0AAC00FC33F6 /* (null) in Sources */,
 				8015D68D2A9A84AC005220F8 /* NumberFactClient.swift in Sources */,
 				804469832A954C140098F1ED /* CalculationReducer.swift in Sources */,
 				8043A4582A61FAA1006AB0DA /* CalcScreenHReducer.swift in Sources */,
 				80936EBC2A60A8A200A2939F /* CalcScreenVReducer.swift in Sources */,
 				805170F02AB0F5D2003F8CB2 /* CalcScreenV_View.swift in Sources */,
+				80E139252AB63BC600C1FF51 /* UserSettingsClient.swift in Sources */,
 				803ED6672A8EF15100A1486C /* Settings.swift in Sources */,
 				806BC16A2A902AEE00B252F9 /* UserSettings.swift in Sources */,
 				80649D352A607CC7007CC893 /* ContentView.swift in Sources */,
-				80E9F8FD2ABA132D00FC33F6 /* VHView.swift in Sources */,
+				80E9F8FD2ABA132D00FC33F6 /* (null) in Sources */,
 				805627C62AB382E100AFE8B7 /* ColorSchemeMode+UserDefaults.swift in Sources */,
 				80649D332A607CC7007CC893 /* TCACalcApp.swift in Sources */,
+				80F8A6BB2ABD0E14004199CC /* SizeClass Test.swift in Sources */,
+				80EFA42E2AB89983001DF5C1 /* UserSettings+FileManager.swift in Sources */,
 				8043A4562A61FA90006AB0DA /* CalcScreenReducer.swift in Sources */,
 				807F40642A911DE2009A8FD7 /* Color+Codable.swift in Sources */,
 				805170E92AB0F31D003F8CB2 /* CalcScreenView.swift in Sources */,

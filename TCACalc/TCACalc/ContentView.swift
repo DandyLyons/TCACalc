@@ -20,6 +20,9 @@ struct ContentView: View {
         ),
         reducer: {
           CalcScreenReducer()._printChanges()
+        }, withDependencies: {
+          $0
+//          $0.userSettings = .failToWrite
         })
     )
   }

@@ -27,30 +27,23 @@ final class NumberFactClientsTests: XCTestCase {
   
   func testTapNumDisplay() async {
     let store = ts
-    store.exhaustivity = .off(showSkippedAssertions: false)
+    store.exhaustivity = .off(showSkippedAssertions: true)
     
     await store.send(.vScreen(.calcGridV(.view(.onTap(int: 5)))))
-    await store.send(.vScreen(.view(.onTapNumDisplay)))
-    await store.receive(.vScreen(.delegate(.numDisplayTapped)))
+    await store.send(.vScreen(.view(.onTapNumberFactsButton)))
+    await store.send(.vScreen(.delegate(.requestNumFact)))
     await store.receive(.factResponse("5 is a cool number")) {
       $0.presentation = .alert(.alert_numberFact("5 is a cool number"))
     }
     await store.send(.presentation(.dismiss))
     
     await store.send(.hScreen(.calcGridH(.view(.onTap(int: 4)))))
-    await store.send(.hScreen(.view(.onTapNumDisplay)))
-    await store.receive(.hScreen(.delegate(.numDisplayTapped)))
+    await store.send(.hScreen(.view(.onTapNumberFactsButton)))
+    await store.send(.hScreen(.delegate(.requestNumFact)))
     await store.receive(.factResponse("54 is a cool number")) {
       $0.presentation = .alert(.alert_numberFact("54 is a cool number"))
     }
     await store.send(.presentation(.dismiss))
-    
-    await store.send(.hScreen(.calcGridH(.view(.onTapDecimalButton))))
-    await store.send(.hScreen(.calcGridH(.view(.onTap(int: 7))))) 
-    await store.send(.hScreen(.view(.onTapNumDisplay))) 
-    await store.receive(.hScreen(.delegate(.numDisplayTapped))) {
-      $0.presentation = .alert(.alert_numberFactError_NotWholeNumber())
-    }
   }
   
   
