@@ -6,12 +6,14 @@
 //
 
 import SwiftUI
+import PlusNightMode
 
 @main
 struct TCACalcApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+          ContentView()
+//          ExampleNightModeView()
         }
     }
 }

@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 import ComposableArchitecture
 import TCACalc_UI
+import PlusNightMode
 
 struct CalcScreenHView: View {
   let store: StoreOf<CalcScreenHReducer>
@@ -17,10 +18,12 @@ struct CalcScreenHView: View {
   struct ViewState: Equatable {
     let currentNum: String
     let canRequestNumFact: Bool
+    let userSelectedColor: Color
     
     init(state: CalcScreenHReducer.State) {
       self.currentNum = state.currentNum
       self.canRequestNumFact = state.canRequestNumFact
+      self.userSelectedColor = state.userSelectedColor
     }
   }
   
@@ -34,6 +37,7 @@ struct CalcScreenHView: View {
     }
     .padding([.leading])
     .accessibilityLabel(Text("Open Settings"))
+    .tint(colorSchemeMode.wrappedValue == .night ? .red : viewStore.userSelectedColor)
   }
   
   @ViewBuilder
@@ -47,7 +51,10 @@ struct CalcScreenHView: View {
     .accessibilityLabel(Text("Get Number Fact"))
     .disabled(!viewStore.state.canRequestNumFact)
     .animation(.default, value: viewStore.state.canRequestNumFact)
+    .tint(colorSchemeMode.wrappedValue == .night ? .red : viewStore.userSelectedColor)
   }
+  
+  @Environment(\.colorSchemeMode) var colorSchemeMode
   
   var body: some View {
     WithViewStore(store, observe: ViewState.init) { viewStore in

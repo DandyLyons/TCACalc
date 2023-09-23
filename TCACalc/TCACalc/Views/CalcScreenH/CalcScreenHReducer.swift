@@ -8,12 +8,14 @@
 import Foundation
 import ComposableArchitecture
 import TCACalc_UI
+import SwiftUI
 
 struct CalcScreenHReducer: Reducer {
   struct State: Equatable {
-    var currentNum: String = "Not initialized"
+    var currentNum: String = "0"
     var calcGridH: CalcGridHFeature.State
     var canRequestNumFact: Bool = true
+    var userSelectedColor: Color = .green
   }
   enum Action: Equatable {
     

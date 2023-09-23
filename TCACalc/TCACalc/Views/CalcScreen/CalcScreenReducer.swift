@@ -8,7 +8,7 @@
 import Foundation
 import ComposableArchitecture
 import SwiftUI
-
+import PlusNightMode
 
 
 
@@ -87,7 +87,10 @@ struct CalcScreenReducer: Reducer {
   }
   enum Action: Equatable {
     case calculation(CalculationReducer.Action)
-    //    case internalAction
+    case internalAction(_InternalAction)
+    enum _InternalAction: Equatable {
+      case colorScreenModeChanged(ColorSchemeMode)
+    }
     
     case hScreen(CalcScreenHReducer.Action)
     case vScreen(CalcScreenVReducer.Action)
@@ -133,6 +136,12 @@ struct CalcScreenReducer: Reducer {
           }
         case .calculation: return .none
           
+        case .internalAction(let internalAction):
+          switch internalAction {
+            case .colorScreenModeChanged(let newValue):
+              state.userSettings.colorSchemeMode = newValue
+              return .none
+          }
           
           // SPYING ON SUBVIEWS
         case .vScreen(let vScreenAction):

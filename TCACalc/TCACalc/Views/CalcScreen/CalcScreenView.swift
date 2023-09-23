@@ -75,7 +75,7 @@ struct CalcScreen: View {
       
       // MARK: View Styling
       .preferredColorScheme(viewStore.colorSchemeMode.resolvedColorScheme)
-      .observingNightMode(viewStore.isNightModeOn)
+      .colorSchemeMode(viewStore.binding(get: \.colorSchemeMode, send: { .internalAction(.colorScreenModeChanged($0))}))
       .tint(viewStore.currentTintColor)
       
       // MARK: View Presentation
@@ -89,7 +89,7 @@ struct CalcScreen: View {
             SettingsView(store: settingsStore)
               .navigationTitle("Settings")
           }
-          .observingNightMode(viewStore.colorSchemeMode == .night)
+          .colorSchemeMode(viewStore.binding(get: \.colorSchemeMode, send: { .internalAction(.colorScreenModeChanged($0))}))
           .accessibilityLabel(Text("Settings Screen"))
         }
       )

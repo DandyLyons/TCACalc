@@ -158,9 +158,12 @@ struct SettingsView: View {
         Text(colorSchemeMode.localizedString)
           .tag(colorSchemeMode)
       }
-    }.pickerStyle(style)
-
+    }
+    .pickerStyle(style)
+    .tint(viewStore.state.userSettings.accentColor)
   }
+  
+  @Environment(\.colorSchemeMode) var colorSchemeMode
   
   var body: some View {
     WithViewStore(store, observe: ViewState.init) { viewStore in
@@ -186,7 +189,7 @@ struct SettingsView: View {
           }
         }
       }
-      .preferredColorScheme(viewStore.userSettings.colorSchemeMode.resolvedColorScheme)
+      
       .toolbar {
         Button("Done") { viewStore.send(.view(.onTapDoneButton))}
       }

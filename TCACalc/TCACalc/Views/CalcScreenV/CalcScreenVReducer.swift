@@ -8,6 +8,7 @@
 import Foundation
 import ComposableArchitecture
 import TCACalc_UI
+import SwiftUI
 
 struct CalcScreenVReducer: Reducer {
   struct State: Equatable {
@@ -16,10 +17,11 @@ struct CalcScreenVReducer: Reducer {
     enum OperationButton {
       case divide, multiply, minus, plus, equal, none
     }
-    var currentNum: String = "Not initialized"
+    var currentNum: String = "0"
     
     var calcGridV: CalcGridVFeature.State
     var canRequestNumFact: Bool = true
+    var userSelectedColor: Color = .green
   }
   enum Action: Equatable {
     
