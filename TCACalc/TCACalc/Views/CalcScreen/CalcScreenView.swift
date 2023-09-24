@@ -91,6 +91,7 @@ struct CalcScreen: View {
           }
           .colorSchemeMode(viewStore.binding(get: \.colorSchemeMode, send: { .internalAction(.colorScreenModeChanged($0))}))
           .accessibilityLabel(Text("Settings Screen"))
+          .tint(viewStore.currentTintColor)
         }
       )
       .alert(store: self.store.scope(state: \.$presentation, action: { .presentation($0)}),

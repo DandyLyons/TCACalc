@@ -16,18 +16,17 @@ struct ContentView: View {
         initialState: .init(
           hScreen: .init(currentNum: "0", calcGridH: .init()),
           vScreen: .init(currentNum: "0", calcGridV: .init()),
-          userSettings: .init(isDebugModeOn: false, colorSchemeMode: .auto)
+          userSettings: .init()
         ),
         reducer: {
           CalcScreenReducer()._printChanges()
         }, withDependencies: {
-          $0
-//          $0.userSettings = .failToWrite
+          $0.userSettings = .fileManager
         })
     )
   }
 }
 
 #Preview {
-    ContentView()
+  ContentView()
 }

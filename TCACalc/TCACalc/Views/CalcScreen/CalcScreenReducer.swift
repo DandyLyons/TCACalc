@@ -84,6 +84,13 @@ struct CalcScreenReducer: Reducer {
       
     }
     
+    mutating func userSelectedColorDidUpdate(to newValue: Color) {
+      self.hScreen.calcGridH.userSelectedColor = newValue
+      self.hScreen.userSelectedColor = newValue
+      self.vScreen.calcGridV.userSelectedColor = newValue
+      self.vScreen.userSelectedColor = newValue
+    }
+    
   }
   enum Action: Equatable {
     case calculation(CalculationReducer.Action)
@@ -122,8 +129,6 @@ struct CalcScreenReducer: Reducer {
     }
     return .none
   }
-  
-  // MARK: Dependencies
   
   var body: some ReducerOf<Self> {
     Reduce<State, Action> { state, action in
@@ -349,6 +354,12 @@ struct CalcScreenReducer: Reducer {
           return .none
       }
     }
+    .onChange(of: \.userSettings.accentColor, { oldValue, newValue in
+      Reduce<State, Action> { state, action in
+        state.userSelectedColorDidUpdate(to: newValue)
+        return .none
+      }
+    })
     .ifLet(\.$presentation, action: /Action.presentation) {
       Self.Presentation()
     }
@@ -403,6 +414,7 @@ struct CalcScreenReducer: Reducer {
   
 }
 
+// TODO: Remove
 extension UIDeviceOrientation: CustomDebugStringConvertible {
   public var debugDescription: String {
     switch self {

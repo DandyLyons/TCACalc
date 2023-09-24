@@ -40,11 +40,17 @@ extension UserSettings {
     
     let documentsDirectory = FileManager.getDocumentsDirectory()
     let userSettingsPath = documentsDirectory.appending(path: "UserSettings.json")
-    guard manager.fileExists(atPath: userSettingsPath.absoluteString)
+    guard manager.fileExists(atPath: userSettingsPath.path(percentEncoded: false))
     else {
       logger.notice("UserSettings.json doesn't exist. Creating now")
-      let data = try! JSONEncoder().encode(UserSettings())
-      let successful = manager.createFile(atPath: userSettingsPath.absoluteString, contents: data)
+      let data = try! JSONEncoder().encode(UserSettings.defaultValue)
+      try! manager.createDirectory(at: documentsDirectory, withIntermediateDirectories: true)
+      logger.notice("Created new directory at \(documentsDirectory)")
+      
+      let successful = manager.createFile(
+        atPath: userSettingsPath.path(percentEncoded: false),
+        contents: data,
+        attributes: [:])
       if successful {
         return userSettingsPath
       } else {
@@ -73,13 +79,15 @@ extension UserSettings {
     @Dependency(\.logger) var logger
     let manager = FileManager.default
     
+    logger.notice("calling loadFromFileManager")
+    
     guard let userSettingsPath = try? Self.getUserSettingsFolderURL()
     else {
       logger.warning("Failed to load UserSettings from disk. Returning placeholder instead.")
       return UserSettings()
     }
     do {
-      if let data = manager.contents(atPath: userSettingsPath.absoluteString) {
+      if let data = manager.contents(atPath: userSettingsPath.path(percentEncoded: false)) {
         let userSettings = try JSONDecoder().decode(UserSettings.self, from: data)
         return userSettings
         
@@ -105,6 +113,9 @@ extension UserSettings {
   static func saveToFileManager(_ newValue: UserSettings) throws {
     @Dependency(\.dataWriter) var dataWriter
     @Dependency(\.logger) var logger
+    
+    logger.notice("calling saveToFileManager")
+    
     guard let userSettingsPath = try? Self.getUserSettingsFolderURL()
     else {
       logger.critical("Failed to save UserSettings")
@@ -119,5 +130,18 @@ extension UserSettings {
       throw SaveError(message: "Failed to write UserSettigns to disk.")
     }
     
+  }
+}
+
+extension UserSettings {
+  static var defaultValue: UserSettings = .init(defaultValue: true)
+  private init(defaultValue: Bool) {
+    self.isDebugModeOn = false
+    self.colorSchemeMode = .auto
+    self.accentColor = .accentColor
+    
+    if !defaultValue {
+      XCTFail("UserSettings(defaultValue: false) should never be called. ")
+    }
   }
 }

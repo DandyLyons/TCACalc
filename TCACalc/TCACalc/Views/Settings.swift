@@ -81,16 +81,20 @@ struct SettingsReducer: Reducer {
   var body: some ReducerOf<Self> {
     BindingReducer()
       .onChange(of: \.userSettings) { oldValue, newValue in
-        Reduce<State, Action> { state, action in
-          //          @Dependency(\.encode) var encode
-          //          @Dependency(\.userDefaults) var userDefaults
-          
-          //          let data: Data? = try? encode(newValue)
-          //          userDefaults.set(data, forKey: UserDefaults.key_userSettings)
-          
+        Reduce<State, Action> { _, _ in
+          @Dependency(\.logger) var logger
+          logger.notice("UserSettings did change in SettingsReducer.State. Saving now.")
+          @Dependency(\.userSettings.save) var saveUserSettings
+          do {
+            try saveUserSettings(newValue)
+          } catch {
+            logger.warning("UserSettings failed to save.")
+            return .send(._internal(.showError(.saveError)))
+          }
           return .send(.delegate(.userSettingsChanged(newValue)))
         }
       }
+      
     
     Reduce<State, Action> { state, action in
       switch action {
@@ -118,25 +122,6 @@ struct SettingsReducer: Reducer {
     .ifLet(\.$presentation, action: /Action.presentation) {
       Self.Presentation()
     }
-    BindingReducer()
-      .onChange(of: \.userSettings) { oldValue, newValue in
-        Reduce<State, Action> { state, action in
-//          @Dependency(\.userSettings) var userSettings
-//          
-//          do {
-//            try userSettings.save(newValue)
-//          } catch {
-//            @Dependency(\.logger) var logger
-//            logger.warning("Usersettings failed to save.")
-//            return .send(._internal(.showError(.saveError)))
-//          }
-//          
-//          return .send(.delegate(.userSettingsChanged(newValue)))
-          return .none
-        }
-          
-      }
-    
   }
 }
 
@@ -189,7 +174,7 @@ struct SettingsView: View {
           }
         }
       }
-      
+      .tint(viewStore.userSettings.accentColor)
       .toolbar {
         Button("Done") { viewStore.send(.view(.onTapDoneButton))}
       }
