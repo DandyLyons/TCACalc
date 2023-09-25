@@ -19,12 +19,10 @@ struct CalcScreenV_View: View {
   struct ViewState: Equatable {
     let currentNum: String
     let canRequestNumFact: Bool
-    let userSelectedColor: Color
     
     init(state: CalcScreenVReducer.State) {
       self.currentNum = state.currentNum
       self.canRequestNumFact = state.canRequestNumFact
-      self.userSelectedColor = state.userSelectedColor
     }
   }
   
@@ -63,7 +61,7 @@ struct CalcScreenV_View: View {
     }
     .padding([.leading])
     .accessibilityLabel(Text("Open Settings"))
-    .tint(colorSchemeMode.wrappedValue == .night ? .red : viewStore.userSelectedColor)
+    .tint(colorSchemeMode.wrappedValue == .night ? .red : userSelectedColor)
   }
   
   @ViewBuilder
@@ -77,11 +75,13 @@ struct CalcScreenV_View: View {
       .padding([.trailing])
       .accessibilityLabel(Text("Get Number Fact"))
       .animation(.default, value: viewStore.state.canRequestNumFact)
-      .tint(colorSchemeMode.wrappedValue == .night ? .red : viewStore.userSelectedColor)
+      .tint(colorSchemeMode.wrappedValue == .night ? .red : userSelectedColor)
+      .transition(.asymmetric(insertion: .scale.animation(.bouncy), removal: .opacity.animation(.smooth(duration: 1))))
     }
   }
   
   @Environment(\.colorSchemeMode) var colorSchemeMode
+  @Environment(\.userSelectedColor) var userSelectedColor
   
   var body: some View {
     WithViewStore(store, observe: ViewState.init) { viewStore in

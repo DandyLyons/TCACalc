@@ -42,7 +42,7 @@ struct CalcScreenReducer: Reducer {
       hScreen: CalcScreenHReducer.State,
       vScreen: CalcScreenVReducer.State,
       presentation: Presentation.State? = nil,
-      userSettings: UserSettings,
+      userSettings: UserSettings = .init(), 
       currentNum: Decimal = 0,
       previousNum: Decimal? = nil,
       isInBlankState: Bool = true
@@ -83,14 +83,6 @@ struct CalcScreenReducer: Reducer {
       self.hScreen.calcGridH.isInBlankState = shouldShowAC
       
     }
-    
-    mutating func userSelectedColorDidUpdate(to newValue: Color) {
-      self.hScreen.calcGridH.userSelectedColor = newValue
-      self.hScreen.userSelectedColor = newValue
-      self.vScreen.calcGridV.userSelectedColor = newValue
-      self.vScreen.userSelectedColor = newValue
-    }
-    
   }
   enum Action: Equatable {
     case calculation(CalculationReducer.Action)
@@ -331,16 +323,9 @@ struct CalcScreenReducer: Reducer {
                     case .isDebugModeOnChanged(let newValue):
                       state.userSettings.isDebugModeOn = newValue
                       return .none
-                    case .accentColorChanged(let newValue):
-                      state.userSettings.accentColor = newValue
-                      state.hScreen.calcGridH.userSelectedColor = newValue
-                      state.vScreen.calcGridV.userSelectedColor = newValue
-                      return .none
                     case .userSettingsChanged(let newValue):
                       state.userSettings = newValue
-                      state.hScreen.calcGridH.userSelectedColor = newValue.accentColor
-                      state.vScreen.calcGridV.userSelectedColor = newValue.accentColor
-                      return .none
+                      return.none
                   }
               }
             case .alert: return .none
@@ -354,12 +339,6 @@ struct CalcScreenReducer: Reducer {
           return .none
       }
     }
-    .onChange(of: \.userSettings.accentColor, { oldValue, newValue in
-      Reduce<State, Action> { state, action in
-        state.userSelectedColorDidUpdate(to: newValue)
-        return .none
-      }
-    })
     .ifLet(\.$presentation, action: /Action.presentation) {
       Self.Presentation()
     }

@@ -24,8 +24,6 @@ public struct CalcGridVFeature: Reducer {
       case divide, multiply, minus, plus
     }
     
-    public var userSelectedColor: Color = .green
-    
     public init(currentOperation: Operation? = nil, isInBlankState: Bool = true) {
       self.currentOperation = currentOperation
       self.isInBlankState = isInBlankState
@@ -127,7 +125,6 @@ public struct CalcGridV: View {
     let isPlusOn: Bool
     let isInBlankState: Bool
     
-    let userSelectedColor: Color
     
     init(state: CalcGridVFeature.State) {
       self.isDivideOn = state.isDivideOn
@@ -135,11 +132,10 @@ public struct CalcGridV: View {
       self.isMinusOn = state.isMinusOn
       self.isPlusOn = state.isPlusOn
       self.isInBlankState = state.isInBlankState
-      
-      self.userSelectedColor = state.userSelectedColor
     }
   }
   
+  @Environment(\.userSelectedColor) var userSelectedColor
     
   public var body: some View {
     WithViewStore(self.store, observe: ViewState.init ) { viewStore in
@@ -156,7 +152,7 @@ public struct CalcGridV: View {
           Button("%") { viewStore.send(.view(.onTapPercentButton)) }
             .buttonStyle(self.grayStyle)
           Button { viewStore.send(.view(.onTapDivideButton)) } label: {
-            self.withCircleBackground(bool: viewStore.isDivideOn, color: viewStore.userSelectedColor) {
+            self.withCircleBackground(bool: viewStore.isDivideOn, color: userSelectedColor) {
               Image(systemName: "divide")
             }
           }
@@ -169,7 +165,7 @@ public struct CalcGridV: View {
           Button("9") { viewStore.send(.view(.onTap(int: 9))) }
             .buttonStyle(self.darkgrayStyle)
           Button { viewStore.send(.view(.onTapMultiplyButton)) } label: {
-            self.withCircleBackground(bool: viewStore.isMultiplyOn, color: viewStore.userSelectedColor) {
+            self.withCircleBackground(bool: viewStore.isMultiplyOn, color: userSelectedColor) {
               Image(systemName: "multiply")
               
             }
@@ -184,7 +180,7 @@ public struct CalcGridV: View {
             .buttonStyle(self.darkgrayStyle)
           
           Button { viewStore.send(.view(.onTapMinusButton)) } label: {
-            self.withCircleBackground(bool: viewStore.isMinusOn, color: viewStore.userSelectedColor) {
+            self.withCircleBackground(bool: viewStore.isMinusOn, color: userSelectedColor) {
               Image(systemName: "minus")
               
             }
@@ -199,7 +195,7 @@ public struct CalcGridV: View {
           Button("3") { viewStore.send(.view(.onTap(int: 3))) }
             .buttonStyle(self.darkgrayStyle)
           Button { viewStore.send(.view(.onTapPlusButton)) } label: {
-            self.withCircleBackground(bool: viewStore.isPlusOn, color: viewStore.userSelectedColor) {
+            self.withCircleBackground(bool: viewStore.isPlusOn, color: userSelectedColor) {
               Image(systemName: "plus")
               
             }
@@ -221,7 +217,7 @@ public struct CalcGridV: View {
             .accessibilityLabel(Text("Decimal"))
           Button { viewStore.send(.view(.onTapEqualButton)) } label: {
             Image(systemName: "equal")
-              .modifier(self.offTintBackground(viewStore.userSelectedColor))
+              .modifier(self.offTintBackground(userSelectedColor))
           }
           .accessibilityLabel(Text("Equals"))
         }

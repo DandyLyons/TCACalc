@@ -15,22 +15,24 @@ public struct CalcGridHFeature: Reducer {
   public init() {}
   
   public struct State: Equatable {
-    public var isDivideOn: Bool { self.currentOperation == .divide }
-    public var isMultiplyOn: Bool { self.currentOperation == .multiply }
-    public var isMinusOn: Bool { self.currentOperation == .minus }
-    public var isPlusOn: Bool { self.currentOperation == .plus }
-    public var isInBlankState = true
     public var currentOperation: Operation?
+    public var isInBlankState = true
     public enum Operation: Equatable {
       case divide, multiply, minus, plus
     }
     
-    public var userSelectedColor: Color = .green
-    
-    public init(currentOperation: Operation? = nil, isInBlankState: Bool = true) {
+    public init(
+      currentOperation: Operation? = nil,
+      isInBlankState: Bool = true
+    ) {
       self.currentOperation = currentOperation
       self.isInBlankState = isInBlankState
     }
+    
+    public var isDivideOn: Bool { self.currentOperation == .divide }
+    public var isMultiplyOn: Bool { self.currentOperation == .multiply }
+    public var isMinusOn: Bool { self.currentOperation == .minus }
+    public var isPlusOn: Bool { self.currentOperation == .plus }
   }
   public enum Action: Equatable {
     
@@ -83,8 +85,6 @@ public struct CalcGridHFeature: Reducer {
     public enum Delegate: Equatable {
       case notYetImplemented
     }
-    
-    
   }
   
   public var body: some ReducerOf<Self> {
@@ -165,17 +165,16 @@ public struct CalcGridH: View {
     let isPlusOn: Bool
     let isInBlankState: Bool
     
-    let userSelectedColor: Color
-    
     init(state: CalcGridHFeature.State) {
       self.isDivideOn = state.isDivideOn
       self.isMultiplyOn = state.isMultiplyOn
       self.isMinusOn = state.isMinusOn
       self.isPlusOn = state.isPlusOn
       self.isInBlankState = state.isInBlankState
-      self.userSelectedColor = state.userSelectedColor
     }
   }
+  
+  @Environment(\.userSelectedColor) var userSelectedColor
   
   public var body: some View {
     WithViewStore(self.store, observe: ViewState.init ) { viewStore in
@@ -222,7 +221,7 @@ public struct CalcGridH: View {
         Button {viewStore.send(.view(.onTapPercentButton))} label: { Text("%") }
       }.buttonStyle(self.grayStyle)
       Button {viewStore.send(.view(.onTapDivideButton))} label: { 
-        self.withCircleBackground(bool: viewStore.isDivideOn, color: viewStore.userSelectedColor) {
+        self.withCircleBackground(bool: viewStore.isDivideOn, color: userSelectedColor) {
           Image(systemName: "divide") }
         }
     }
@@ -251,7 +250,7 @@ public struct CalcGridH: View {
         Button { viewStore.send(.view(.onTap(int: 9)))} label: { Text("9") }
       }.buttonStyle(self.midgrayStyle)
       Button { viewStore.send(.view(.onTapMultiplyButton))} label: { 
-        self.withCircleBackground(bool: viewStore.isMultiplyOn, color: viewStore.userSelectedColor) {
+        self.withCircleBackground(bool: viewStore.isMultiplyOn, color: userSelectedColor) {
           Image(systemName: "multiply") }
       }
     }
@@ -280,7 +279,7 @@ public struct CalcGridH: View {
         Button { viewStore.send(.view(.onTap(int: 6)))} label: { Text("6") }
       }.buttonStyle(self.midgrayStyle)
       Button {viewStore.send(.view(.onTapMinusButton))} label: { 
-        self.withCircleBackground(bool: viewStore.isMinusOn, color: viewStore.userSelectedColor) {
+        self.withCircleBackground(bool: viewStore.isMinusOn, color: userSelectedColor) {
           Image(systemName: "minus") }
       }
     }
@@ -310,7 +309,7 @@ public struct CalcGridH: View {
         Button { viewStore.send(.view(.onTap(int: 3)))} label: { Text("3") }
       }.buttonStyle(self.midgrayStyle)
       Button {viewStore.send(.view(.onTapPlusButton))} label: { 
-        self.withCircleBackground(bool: viewStore.isPlusOn, color: viewStore.userSelectedColor) {
+        self.withCircleBackground(bool: viewStore.isPlusOn, color: userSelectedColor) {
           Image(systemName: "plus") }
       }
     }
@@ -342,7 +341,7 @@ public struct CalcGridH: View {
       }.buttonStyle(self.midgrayStyle)
       Button {viewStore.send(.view(.onTapEqualButton))} label: { 
         Image(systemName: "equal") }
-          .modifier(self.offTintBackground(viewStore.userSelectedColor))
+          .modifier(self.offTintBackground(userSelectedColor))
     }
   }
   

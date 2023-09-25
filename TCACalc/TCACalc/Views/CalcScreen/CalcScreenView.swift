@@ -8,6 +8,7 @@
 import Foundation
 import ComposableArchitecture
 import PlusNightMode
+import TCACalc_UI
 
 // MARK: View
 import SwiftUI
@@ -71,10 +72,10 @@ struct CalcScreen: View {
           self.hScreen
         }
       }
-      // MARK: View Events
+      // MARK: Environment
+      .environment(\.userSelectedColor, viewStore.currentTintColor)
       
       // MARK: View Styling
-      .preferredColorScheme(viewStore.colorSchemeMode.resolvedColorScheme)
       .colorSchemeMode(viewStore.binding(get: \.colorSchemeMode, send: { .internalAction(.colorScreenModeChanged($0))}))
       .tint(viewStore.currentTintColor)
       

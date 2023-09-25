@@ -33,11 +33,9 @@ struct SettingsReducer: Reducer {
     case binding(BindingAction<State>)
     case presentation(PresentationAction<Presentation.Action>)
     
-    
     enum DelegateAction: Equatable {
       case colorSchemeModeChanged(ColorSchemeMode)
       case isDebugModeOnChanged(Bool)
-      case accentColorChanged(Color)
       case userSettingsChanged(UserSettings)
     }
     enum InternalAction: Equatable {

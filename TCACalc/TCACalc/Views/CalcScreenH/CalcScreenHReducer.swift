@@ -15,7 +15,6 @@ struct CalcScreenHReducer: Reducer {
     var currentNum: String = "0"
     var calcGridH: CalcGridHFeature.State
     var canRequestNumFact: Bool = true
-    var userSelectedColor: Color = .green
   }
   enum Action: Equatable {
     

@@ -21,7 +21,6 @@ struct CalcScreenVReducer: Reducer {
     
     var calcGridV: CalcGridVFeature.State
     var canRequestNumFact: Bool = true
-    var userSelectedColor: Color = .green
   }
   enum Action: Equatable {
     

@@ -40,6 +40,7 @@ extension UserSettings {
     
     let documentsDirectory = FileManager.getDocumentsDirectory()
     let userSettingsPath = documentsDirectory.appending(path: "UserSettings.json")
+    logger.debug("UserSettings.json: \(userSettingsPath.absoluteString)")
     guard manager.fileExists(atPath: userSettingsPath.path(percentEncoded: false))
     else {
       logger.notice("UserSettings.json doesn't exist. Creating now")
