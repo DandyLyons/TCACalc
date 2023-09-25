@@ -20,14 +20,14 @@ final class NumberFactClientsTests: XCTestCase {
     reducer: {
       CalcScreenReducer()
     },
-    withDependencies: {
-      $0.numberFact = .previewValue
+    withDependencies: { _ in
+//      $0
     }
   )
   
   func testTapNumDisplay() async {
     let store = ts
-    store.exhaustivity = .off(showSkippedAssertions: true)
+    store.exhaustivity = .off
     
     await store.send(.vScreen(.calcGridV(.view(.onTap(int: 5)))))
     await store.send(.vScreen(.view(.onTapNumberFactsButton)))

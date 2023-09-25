@@ -17,12 +17,9 @@ struct ContentView: View {
           hScreen: .init(currentNum: "0", calcGridH: .init()),
           vScreen: .init(currentNum: "0", calcGridV: .init()),
           userSettings: .init()
-        ),
-        reducer: {
+        )) {
           CalcScreenReducer()._printChanges()
-        }, withDependencies: {
-          $0.userSettings = .fileManager
-        })
+        }
     )
   }
 }
@@ -30,3 +27,4 @@ struct ContentView: View {
 #Preview {
   ContentView()
 }
+
