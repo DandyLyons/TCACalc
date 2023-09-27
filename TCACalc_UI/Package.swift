@@ -16,7 +16,8 @@ let package = Package(
     ],
     dependencies: [
       .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", from: "1.1.0"),
-      .package(url: "https://github.com/tgrapperon/swift-dependencies-additions", from: "1.0.0")
+      .package(url: "https://github.com/tgrapperon/swift-dependencies-additions", from: "1.0.0"),
+      .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.13.0")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -30,7 +31,11 @@ let package = Package(
         ),
         .testTarget(
             name: "TCACalc_UITests",
-            dependencies: ["TCACalc_UI"]),
+            dependencies: [
+              "TCACalc_UI",
+              .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
+              .product(name: "InlineSnapshotTesting", package: "swift-snapshot-testing")
+            ]),
     ]
 )
 

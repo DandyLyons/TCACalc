@@ -172,7 +172,7 @@ struct SettingsView: View {
           }
         }
       }
-      .tint(viewStore.userSettings.accentColor)
+      .tint(colorSchemeMode == .night ? .red :   viewStore.userSettings.accentColor)
       .toolbar {
         Button("Done") { viewStore.send(.view(.onTapDoneButton))}
       }
@@ -183,23 +183,25 @@ struct SettingsView: View {
              action: SettingsReducer.Presentation.Action.alert
       )
     }
+//    .colorSchemeMode(colorSchemeMode)
   }
 }
 
 // MARK: Previews
-#Preview("SettingsView") {
-  let store = StoreOf<SettingsReducer>(
-    initialState: SettingsReducer.State(),
-    reducer: {
-      SettingsReducer()
-        ._printChanges()
-    }
+#Preview("SettingsView: presented") {
+  CalcScreen(
+    store: .init(
+      initialState: .init(
+        hScreen: .init(currentNum: "0", calcGridH: .init()),
+        vScreen: .init(currentNum: "0", calcGridV: .init()),
+        presentation: .settings(.init(.init(colorSchemeMode: .night))),
+        userSettings: .init(colorSchemeMode: .night, accentColor: .blue)
+        
+      )) {
+        CalcScreenReducer()
+      }
   )
-  
-  return NavigationStack {
-    SettingsView(store: store)
-      .navigationTitle("Settings")
-  }
+//  .environment(\.colorSchemeMode, .light)
 }
 
 extension AlertState where Action == SettingsReducer.Presentation.Action.Alert {

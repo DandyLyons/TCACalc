@@ -61,7 +61,7 @@ struct CalcScreenV_View: View {
     }
     .padding([.leading])
     .accessibilityLabel(Text("Open Settings"))
-    .tint(colorSchemeMode.wrappedValue == .night ? .red : userSelectedColor)
+    .tint(colorSchemeMode == .night ? .red : userSelectedColor)
   }
   
   @ViewBuilder
@@ -75,7 +75,7 @@ struct CalcScreenV_View: View {
       .padding([.trailing])
       .accessibilityLabel(Text("Get Number Fact"))
       .animation(.default, value: viewStore.state.canRequestNumFact)
-      .tint(colorSchemeMode.wrappedValue == .night ? .red : userSelectedColor)
+      .tint(colorSchemeMode == .night ? .red : userSelectedColor)
       .transition(.asymmetric(insertion: .scale.animation(.bouncy), removal: .opacity.animation(.smooth(duration: 1))))
     }
   }
@@ -95,9 +95,10 @@ struct CalcScreenV_View: View {
           self.numDisplay(viewStore)
           
           CalcGridV(
-            store: self.store.scope(state: \.calcGridV,
-                                    action: CalcScreenVReducer.Action.calcGridV
-                                   )
+            store: self.store.scope(
+              state: \.calcGridV,
+              action: CalcScreenVReducer.Action.calcGridV
+            )
           )
         }
         .padding(.horizontal)
@@ -110,22 +111,23 @@ struct CalcScreenV_View: View {
         self.numberFactsButton(viewStore)
       }
       
+      
     }
   }
 }
 
-#Preview("CalcScreenV_View (in CalcScreen)") {
+
+#Preview("CalcScreenV_View (in CalcScreen)", traits: .portrait) {
   CalcScreen(
     store: .init(
       initialState: .init(
-        hScreen: .init(calcGridH: .init()),
-        vScreen: .init(calcGridV: .init()),
-        userSettings: .init()
+        hScreen: .init(currentNum: "0", calcGridH: .init()),
+        vScreen: .init(currentNum: "0", calcGridV: .init()),
+        userSettings: .init(colorSchemeMode: .night, accentColor: .green)
       ),
       reducer: {
         CalcScreenReducer()._printChanges()
-      }
-    )
+      })
   )
 }
 

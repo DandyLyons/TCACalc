@@ -76,8 +76,8 @@ struct CalcScreen: View {
       .environment(\.userSelectedColor, viewStore.currentTintColor)
       
       // MARK: View Styling
-      .colorSchemeMode(viewStore.binding(get: \.colorSchemeMode, send: { .internalAction(.colorScreenModeChanged($0))}))
-      .tint(viewStore.currentTintColor)
+      .tint(viewStore.colorSchemeMode == .night ? .red : viewStore.currentTintColor)
+      .colorSchemeMode(viewStore.colorSchemeMode)
       
       // MARK: View Presentation
       .sheet(
@@ -90,9 +90,9 @@ struct CalcScreen: View {
             SettingsView(store: settingsStore)
               .navigationTitle("Settings")
           }
-          .colorSchemeMode(viewStore.binding(get: \.colorSchemeMode, send: { .internalAction(.colorScreenModeChanged($0))}))
+          .colorSchemeMode(viewStore.colorSchemeMode)
+          .environment(\.colorSchemeMode, viewStore.colorSchemeMode)
           .accessibilityLabel(Text("Settings Screen"))
-          .tint(viewStore.currentTintColor)
         }
       )
       .alert(store: self.store.scope(state: \.$presentation, action: { .presentation($0)}),
@@ -182,14 +182,14 @@ Feel free to submit an issue or pull request on my GitHub repo. 😄
   }
 }
 
-#Preview("CalcScreen V"
+#Preview("CalcScreen"
 ) {
   CalcScreen(
     store: .init(
       initialState: .init(
         hScreen: .init(currentNum: "0", calcGridH: .init()),
         vScreen: .init(currentNum: "0", calcGridV: .init()),
-        userSettings: .init(isDebugModeOn: false)
+        userSettings: .init(colorSchemeMode: .night, accentColor: .green)
       ),
       reducer: {
         CalcScreenReducer()._printChanges()

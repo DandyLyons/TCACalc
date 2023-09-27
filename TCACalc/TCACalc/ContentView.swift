@@ -11,14 +11,28 @@ import ComposableArchitecture
 
 struct ContentView: View {
   var body: some View {
+//    CalcScreen(
+//      store: .init(
+//        initialState: .init(
+//          hScreen: .init(currentNum: "0", calcGridH: .init()),
+//          vScreen: .init(currentNum: "0", calcGridV: .init()),
+//          userSettings: .init()
+//        )) {
+//          CalcScreenReducer()._printChanges()
+//        }
+//    )
+    
+    
     CalcScreen(
       store: .init(
         initialState: .init(
           hScreen: .init(currentNum: "0", calcGridH: .init()),
           vScreen: .init(currentNum: "0", calcGridV: .init()),
-          userSettings: .init()
+          presentation: .settings(.init(.init(colorSchemeMode: .night))),
+          userSettings: .init(colorSchemeMode: .night, accentColor: .blue)
+          
         )) {
-          CalcScreenReducer()._printChanges()
+          CalcScreenReducer()
         }
     )
   }

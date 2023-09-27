@@ -136,6 +136,7 @@ public struct CalcGridV: View {
   }
   
   @Environment(\.userSelectedColor) var userSelectedColor
+  
     
   public var body: some View {
     WithViewStore(self.store, observe: ViewState.init ) { viewStore in

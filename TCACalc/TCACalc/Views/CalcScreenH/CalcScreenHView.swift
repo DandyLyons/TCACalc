@@ -35,7 +35,7 @@ struct CalcScreenHView: View {
     }
     .padding([.leading])
     .accessibilityLabel(Text("Open Settings"))
-    .tint(colorSchemeMode.wrappedValue == .night ? .red : userSelectedColor)
+    .tint(colorSchemeMode == .night ? .red : userSelectedColor)
   }
   
   @ViewBuilder
@@ -49,7 +49,7 @@ struct CalcScreenHView: View {
     .accessibilityLabel(Text("Get Number Fact"))
     .disabled(!viewStore.state.canRequestNumFact)
     .animation(.default, value: viewStore.state.canRequestNumFact)
-    .tint(colorSchemeMode.wrappedValue == .night ? .red : userSelectedColor)
+    .tint(colorSchemeMode == .night ? .red : userSelectedColor)
     .transition(.asymmetric(insertion: .scale.animation(.bouncy), removal: .opacity.animation(.smooth(duration: 1))))
   }
   
