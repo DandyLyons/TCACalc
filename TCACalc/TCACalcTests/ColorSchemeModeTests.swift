@@ -12,6 +12,7 @@ import SwiftUI
 @testable import TCACalc
 import PlusNightMode
 import Dependencies
+import ComposableArchitecture
 
 
 final class PlusNightModeTests: XCTestCase {
@@ -37,7 +38,7 @@ final class PlusNightModeTests: XCTestCase {
         layout: .device(config: .iPhone13Pro),
         traits: .init(userInterfaceStyle: .light)
       ),
-      record: false
+      record: true
     )
   }
   
@@ -47,6 +48,7 @@ final class PlusNightModeTests: XCTestCase {
           hScreen: .init(currentNum: "0", calcGridH: .init()),
           vScreen: .init(currentNum: "0", calcGridV: .init()),
           userSettings: .init(colorSchemeMode: .dark, accentColor: .blue)
+                                              //👆🏼 the user set their theme to dark in app
         )) {
           CalcScreenReducer()._printChanges()
         }
@@ -59,8 +61,10 @@ final class PlusNightModeTests: XCTestCase {
         perceptualPrecision: 0.98,
         layout: .device(config: .iPhone13Pro),
         traits: .init(userInterfaceStyle: .light)
+                                          // 👆🏼
+        // the snapshot should be in dark mode even though the device is in light mode
       ),
-      record: false
+      record: true
     )
   }
   
@@ -84,7 +88,7 @@ final class PlusNightModeTests: XCTestCase {
         layout: .device(config: .iPhone13Pro),
         traits: .init(userInterfaceStyle: .dark)
       ),
-      record: false
+      record: true
     )
   }
   
@@ -228,7 +232,7 @@ final class PlusNightModeTests: XCTestCase {
         traits: .init(userInterfaceStyle: .light)
       ),
       named: "Settings_Auto_Light",
-      record: false
+      record: true
     )
     assertSnapshot(
       of: view,
@@ -239,7 +243,7 @@ final class PlusNightModeTests: XCTestCase {
         traits: .init(userInterfaceStyle: .dark)
       )),
       named: "Settings_Auto_Dark",
-      record: false
+      record: true
     )
   }
 }

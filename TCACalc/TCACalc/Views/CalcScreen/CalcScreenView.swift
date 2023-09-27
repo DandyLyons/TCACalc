@@ -64,7 +64,10 @@ struct CalcScreen: View {
   @Dependency(\.logger) var logger
   
   var body: some View {
+    
     WithViewStore(store, observe: ViewState.init) { viewStore in
+      let _ = print("the resolvedColorScheme is \(viewStore.colorSchemeMode.resolvedColorScheme)")
+      let _ = print("the colorSchemeMode is \(viewStore.colorSchemeMode)")
       Group {
         VHView {
           self.vScreen(viewStore)
@@ -189,7 +192,7 @@ Feel free to submit an issue or pull request on my GitHub repo. 😄
       initialState: .init(
         hScreen: .init(currentNum: "0", calcGridH: .init()),
         vScreen: .init(currentNum: "0", calcGridV: .init()),
-        userSettings: .init(colorSchemeMode: .night, accentColor: .green)
+        userSettings: .init(colorSchemeMode: .auto, accentColor: .green)
       ),
       reducer: {
         CalcScreenReducer()._printChanges()
