@@ -219,11 +219,14 @@ public struct CalcGridH: View {
         Button { viewStore.send(.view(.onTapNegateSignButton))} label: {Image(systemName: "plus.forwardslash.minus") }
           .accessibilityLabel(Text("Negative"))
         Button {viewStore.send(.view(.onTapPercentButton))} label: { Text("%") }
+          .accessibilityLabel("Percent")
       }.buttonStyle(self.grayStyle)
-      Button {viewStore.send(.view(.onTapDivideButton))} label: { 
+        
+      Button {viewStore.send(.view(.onTapDivideButton))} label: {
         self.withCircleBackground(bool: viewStore.isDivideOn, color: userSelectedColor) {
           Image(systemName: "divide") }
         }
+      .accessibilityLabel("Divide")
     }
   }
   
@@ -281,7 +284,7 @@ public struct CalcGridH: View {
       Button {viewStore.send(.view(.onTapMinusButton))} label: { 
         self.withCircleBackground(bool: viewStore.isMinusOn, color: userSelectedColor) {
           Image(systemName: "minus") }
-      }
+      }.accessibilityLabel("Subtract")
     }
   }
   
@@ -339,9 +342,11 @@ public struct CalcGridH: View {
         Button(".") { viewStore.send(.view(.onTapDecimalButton)) }
           .accessibilityLabel(Text("Decimal"))
       }.buttonStyle(self.midgrayStyle)
-      Button {viewStore.send(.view(.onTapEqualButton))} label: { 
-        Image(systemName: "equal") }
-          .modifier(self.offTintBackground(userSelectedColor))
+      Button {viewStore.send(.view(.onTapEqualButton))} label: {
+        Image(systemName: "equal")
+      }
+      .modifier(self.offTintBackground(userSelectedColor))
+      .accessibilityLabel("Equals")
     }
   }
   

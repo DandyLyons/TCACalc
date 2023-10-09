@@ -152,6 +152,7 @@ public struct CalcGridV: View {
             .accessibilityLabel(Text("Negative"))
           Button("%") { viewStore.send(.view(.onTapPercentButton)) }
             .buttonStyle(self.grayStyle)
+            .accessibilityLabel("Percent")
           Button { viewStore.send(.view(.onTapDivideButton)) } label: {
             self.withCircleBackground(bool: viewStore.isDivideOn, color: userSelectedColor) {
               Image(systemName: "divide")

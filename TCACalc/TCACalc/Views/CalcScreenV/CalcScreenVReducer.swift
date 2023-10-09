@@ -21,6 +21,9 @@ struct CalcScreenVReducer: Reducer {
     
     var calcGridV: CalcGridVFeature.State
     var canRequestNumFact: Bool = true
+    var a11yFocus: A11yFocus?
+    enum A11yFocus: Hashable { case numDisplay }
+    
   }
   enum Action: Equatable {
     
@@ -32,6 +35,10 @@ struct CalcScreenVReducer: Reducer {
       case onTapSettingsButton
       case onTapNumDisplay
       case onTapNumberFactsButton
+      
+      case a11yFocusChanged(CalcScreenVReducer.State.A11yFocus?)
+      
+      case onAppear
     }
     case delegate(Delegate)
     enum Delegate: Equatable {
@@ -54,10 +61,17 @@ struct CalcScreenVReducer: Reducer {
               return .run { send in
                   await send(.delegate(.numDisplayTapped))
               }
+              
             case .onTapNumberFactsButton:
               return .run { send in
                 await send(.delegate(.requestNumFact))
               }
+            case .onAppear:
+              state.a11yFocus = .numDisplay
+              return .none
+            case .a11yFocusChanged(let newFocus):
+              state.a11yFocus = newFocus
+              return .none
           }
           
   // Reducer should not be responding to its own delegate calls.

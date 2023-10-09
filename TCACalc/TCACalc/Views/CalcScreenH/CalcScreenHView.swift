@@ -16,14 +16,17 @@ import PlusNightMode
 struct CalcScreenHView: View {
   let store: StoreOf<CalcScreenHReducer>
   @Environment(\.colorScheme) var colorScheme
+  @AccessibilityFocusState var a11yFocus: CalcScreenHReducer.State.A11yFocus?
   
   struct ViewState: Equatable {
     let currentNum: String
     let canRequestNumFact: Bool
+    let a11yFocus: CalcScreenHReducer.State.A11yFocus?
     
     init(state: CalcScreenHReducer.State) {
       self.currentNum = state.currentNum
       self.canRequestNumFact = state.canRequestNumFact
+      self.a11yFocus = state.a11yFocus
     }
   }
   
@@ -36,7 +39,7 @@ struct CalcScreenHView: View {
         .padding(.top)
     }
     .padding([.leading])
-    .accessibilityLabel(Text("Open Settings"))
+    .accessibilityLabel("Settings")
     .tint(colorSchemeMode == .night ? .red : userSelectedColor)
   }
   
@@ -71,8 +74,6 @@ struct CalcScreenHView: View {
             Spacer()
             
             Text(viewStore.currentNum)
-              .accessibilityLabel(Text("Result"))
-              .accessibilityValue(Text(viewStore.currentNum))
               .font(.system(size: 50, weight: .semibold, design: .default))
               .monospacedDigit()
               .preferredColorScheme(colorScheme.opposite)
@@ -81,11 +82,25 @@ struct CalcScreenHView: View {
               .contentTransition(.numericText(countsDown: true)) // feature idea: set countsdown to match if the number is increasing/decreasing
               .animation(.snappy, value: viewStore.currentNum)
             
-              .onTapGesture {
-                viewStore.send(.view(.onTapNumDisplay))
-              }
             
           }
+          .accessibilityFocused(self.$a11yFocus, equals: .numDisplay)
+          .accessibilityLabel("Result")
+          .accessibilityValue(viewStore.currentNum)
+          .accessibilityAddTraits(.isSummaryElement)
+          .accessibilityAction(named: "Clear") {
+            viewStore.send(.calcGridH(.view(.onTapACButton)))
+          }
+          .onTapGesture {
+            viewStore.send(.view(.onTapNumDisplay))
+          }
+          .bind(
+            viewStore.binding(get: \.a11yFocus,
+                              send: {
+                                .view(.a11yFocusChanged($0))
+                              }),
+            to: self.$a11yFocus
+          )
           
           CalcGridH(store: self.store.scope(state: \.calcGridH,
                                             action: CalcScreenHReducer.Action.calcGridH)
@@ -102,21 +117,46 @@ struct CalcScreenHView: View {
         }
         
       }
+      .onAppear { viewStore.send(.view(.onAppear)) }
       
     }
   }
 }
 
-#Preview("CalcScreenHView in CalcScreen", traits: .landscapeLeft) {
-  CalcScreen(
-    store: .init(
-      initialState: .init(
-        hScreen: .init(calcGridH: .init()),
-        vScreen: .init(calcGridV: .init()),
-        userSettings: .init()
-      ),
-      reducer: {
-        CalcScreenReducer()._printChanges()
-      })
-  )
+// MARK: Previews
+
+struct CalcScreenHView_Previews: PreviewProvider {
+  
+  static var previews: some View {
+//    CalcScreenHView(store: Store(
+//      initialState: .init(calcGridH: .init()),
+//      reducer: {})
+//    )
+//    .previewInterfaceOrientation(.landscapeLeft)
+    CalcScreen(
+      store: .init(
+        initialState: .init(
+          hScreen: .init(calcGridH: .init()),
+          vScreen: .init(calcGridV: .init()),
+          userSettings: .init()
+        ),
+        reducer: {
+          CalcScreenReducer()._printChanges()
+        })
+    )
+  }
 }
+
+//#Preview("CalcScreenHView in CalcScreen", traits: .landscapeLeft) {
+//  CalcScreen(
+//    store: .init(
+//      initialState: .init(
+//        hScreen: .init(calcGridH: .init()),
+//        vScreen: .init(calcGridV: .init()),
+//        userSettings: .init()
+//      ),
+//      reducer: {
+//        CalcScreenReducer()._printChanges()
+//      })
+//  )
+//}

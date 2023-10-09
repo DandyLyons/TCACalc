@@ -129,6 +129,8 @@ struct CalcScreenReducer: Reducer {
           switch calculationDelegateAction {
             case .didFinishCalculating:
               state.calculationReducerDidUpdate()
+              state.vScreen.a11yFocus = state.calculation.status == .equal ? .numDisplay : nil
+              state.hScreen.a11yFocus = state.calculation.status == .equal ? .numDisplay : nil
               return .none
           }
         case .calculation: return .none
@@ -313,7 +315,7 @@ struct CalcScreenReducer: Reducer {
               // MARK: Settings
             case .settings(let settingsAction):
               switch settingsAction {
-                case ._internal, .binding, .view, .presentation: return .none
+                case ._internal, .binding, .view, .presentation, .none: return .none
                   
                 case .delegate(let settingsDelegateActions):
                   switch settingsDelegateActions {
@@ -332,6 +334,8 @@ struct CalcScreenReducer: Reducer {
           }
           
         case .presentation(.dismiss):
+          state.vScreen.a11yFocus = .numDisplay
+          state.hScreen.a11yFocus = .numDisplay
           return .none
         
         case .factResponse(let fact):

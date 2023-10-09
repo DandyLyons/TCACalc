@@ -21,37 +21,35 @@ struct CalcScreenV_View: View {
   struct ViewState: Equatable {
     let currentNum: String
     let canRequestNumFact: Bool
+    let a11yFocus: CalcScreenVReducer.State.A11yFocus?
     
     init(state: CalcScreenVReducer.State) {
       self.currentNum = state.currentNum
       self.canRequestNumFact = state.canRequestNumFact
+      self.a11yFocus = state.a11yFocus
     }
   }
   
+  @AccessibilityFocusState var a11yFocus: CalcScreenVReducer.State.A11yFocus?
+    
   @ViewBuilder
   func numDisplay(_ viewStore: ViewStore<ViewState, CalcScreenVReducer.Action>) -> some View {
-    Text(viewStore.currentNum)
-      .font(.system(size: 60, weight: .semibold, design: .default))
-      .monospacedDigit()
-    
-      .accessibilityRepresentation {
-        HStack {
-          
-          Text(viewStore.currentNum)
-            .accessibilityAddTraits(.isSummaryElement)
-            .accessibilityLabel(Text("Result"))
-            .accessibilityValue(Text(viewStore.currentNum))
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .ignoresSafeArea(edges: .horizontal)
-      }
-    
-      .preferredColorScheme(colorScheme.opposite)
-      .textSelection(.enabled)
-      .padding()
-      .contentTransition(.numericText(countsDown: true)) // feature idea: set countsdown to match if the number is increasing/decreasing
-      .animation(.snappy, value: viewStore.currentNum)
-      .onTapGesture { viewStore.send(.view(.onTapNumDisplay)) }
+    HStack {
+      Spacer()
+      Text(viewStore.currentNum)
+        .font(.system(size: 60, weight: .semibold, design: .default))
+        .monospacedDigit()
+        .preferredColorScheme(colorScheme.opposite)
+        .textSelection(.enabled)
+        .padding()
+        .contentTransition(.numericText())
+        .animation(.snappy, value: viewStore.currentNum)
+        .onTapGesture { viewStore.send(.view(.onTapNumDisplay)) }
+    }
+    .accessibilityAddTraits(.isSummaryElement)
+    .accessibilityLabel("Result")
+    .accessibilityValue(viewStore.currentNum)
+    .accessibilityAction(named: "Clear") { viewStore.send(.calcGridV(.view(.onTapACButton)))}
   }
   
   @ViewBuilder
@@ -62,7 +60,7 @@ struct CalcScreenV_View: View {
         .frame(width: 50, height: 50)
     }
     .padding([.leading])
-    .accessibilityLabel(Text("Open Settings"))
+    .accessibilityLabel("Settings")
     .tint(colorSchemeMode == .night ? .red : userSelectedColor)
   }
   
@@ -91,10 +89,18 @@ struct CalcScreenV_View: View {
         self.view(for: colorScheme, light: { Color.white }, dark: { Color.black })
           .ignoresSafeArea()
         
-        VStack(alignment: .trailing, spacing: 0) {
+        VStack(spacing: 0) {
           Spacer()
           
           self.numDisplay(viewStore)
+            .accessibilityFocused(self.$a11yFocus, equals: .numDisplay)
+            .bind(
+              viewStore.binding(get: \.a11yFocus,
+                                send: {
+                                  .view(.a11yFocusChanged($0))
+                                }),
+              to: self.$a11yFocus
+            )
           
           CalcGridV(
             store: self.store.scope(
@@ -106,6 +112,7 @@ struct CalcScreenV_View: View {
         .padding(.horizontal)
         
       }
+      .onAppear(perform: { viewStore.send(.view(.onAppear))})
       .overlay(alignment: .topLeading) {
         self.settingsButton(viewStore)
       }
@@ -133,4 +140,26 @@ struct CalcScreenV_View: View {
       })
   )
 }
+
+
+struct CalcScreenV_View_Previews: PreviewProvider {
+  
+  static var previews: some View {
+    CalcScreenV_View(store: Store(
+      initialState: .init(calcGridV: .init()),
+      reducer: {})
+    )
+  }
+}
+
+//#Preview("CalcScreenV_View", traits: .portrait) {
+//  CalcScreenV_View(
+//    store: .init(
+//      initialState: .init(calcGridV: .init()),
+//      reducer: {
+////        CalcScreenVReducer()
+//      }
+//    )
+//  )
+//}
 

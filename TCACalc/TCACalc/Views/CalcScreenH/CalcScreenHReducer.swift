@@ -15,6 +15,9 @@ struct CalcScreenHReducer: Reducer {
     var currentNum: String = "0"
     var calcGridH: CalcGridHFeature.State
     var canRequestNumFact: Bool = true
+    
+    var a11yFocus: A11yFocus?
+    enum A11yFocus: Hashable { case numDisplay }
   }
   enum Action: Equatable {
     
@@ -26,6 +29,10 @@ struct CalcScreenHReducer: Reducer {
       case onTapSettingsButton
       case onTapNumDisplay
       case onTapNumberFactsButton
+      
+      case a11yFocusChanged(CalcScreenHReducer.State.A11yFocus?)
+      
+      case onAppear
     }
     case delegate(Delegate)
     enum Delegate: Equatable {
@@ -33,8 +40,6 @@ struct CalcScreenHReducer: Reducer {
       case numDisplayTapped
       case requestNumFact
     }
-    
-    
   }
   
   var body: some ReducerOf<Self> {
@@ -55,6 +60,13 @@ struct CalcScreenHReducer: Reducer {
               return .run { send in
                 await send(.delegate(.requestNumFact))
               }
+            case .a11yFocusChanged(let newFocus):
+              state.a11yFocus = newFocus
+              return .none
+              
+            case .onAppear:
+              state.a11yFocus = .numDisplay
+              return .none
           }
           
           // Reducers should not be responding to their own delegate calls
@@ -65,6 +77,7 @@ struct CalcScreenHReducer: Reducer {
           return .none
       }
     }
+    
     Scope(state: \.calcGridH, action: /Action.calcGridH) {
       CalcGridHFeature()
     }
