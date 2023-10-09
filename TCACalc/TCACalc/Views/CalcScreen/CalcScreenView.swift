@@ -13,10 +13,13 @@ import TCACalc_UI
 // MARK: View
 import SwiftUI
 
+
+/// The Parent View of every component View in TCACalc
 struct CalcScreen: View {
   typealias ViewStoreOf_CalcScreen = ViewStore<ViewState, CalcScreenReducer.Action>
   let store: StoreOf<CalcScreenReducer>
   
+  /// The state observed by ``CalcScreen``
   struct ViewState: Equatable {
     let isNightModeOn: Bool
     let colorSchemeMode: ColorSchemeMode

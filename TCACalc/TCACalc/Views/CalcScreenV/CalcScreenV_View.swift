@@ -12,6 +12,8 @@ import TCACalc_UI
 import ComposableArchitecture
 
 
+
+/// The View that ``CalcScreenView`` will show when in portrait orientation
 struct CalcScreenV_View: View {
   let store: StoreOf<CalcScreenVReducer>
   @Environment(\.colorScheme) var colorScheme
@@ -117,6 +119,7 @@ struct CalcScreenV_View: View {
 }
 
 
+// MARK: Previews
 #Preview("CalcScreenV_View (in CalcScreen)", traits: .portrait) {
   CalcScreen(
     store: .init(

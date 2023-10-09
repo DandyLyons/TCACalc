@@ -13,7 +13,9 @@ import PlusNightMode
 
 
 
+/// The Reducer for the `SettingsView`
 struct SettingsReducer: Reducer {
+  /// The State for the `SettingsReducer`
   struct State: Equatable {
     @BindingState var userSettings: UserSettings
     @PresentationState var presentation: Presentation.State?
@@ -26,6 +28,7 @@ struct SettingsReducer: Reducer {
     }
       
   }
+  /// The Action for the `SettingsReducer`
   enum Action: Equatable, BindableAction {
     case view(ViewAction)
     case delegate(DelegateAction)
@@ -46,12 +49,16 @@ struct SettingsReducer: Reducer {
       case onTapDoneButton
     }
     
+    /// Use this Action if you explicitly want this Action to be ignored
+    /// Useful for when you want to create an inert binding
+    case none
     
   }
   
   struct Presentation: Reducer {
     enum State: Equatable {
       case alert(AlertState<Action.Alert>)
+      case exampleNightMode
     }
     
     enum Action: Equatable {
@@ -61,7 +68,7 @@ struct SettingsReducer: Reducer {
       }
     }
     
-    var body: some ReducerOf<Self> {
+    var body: some ReducerOf<SettingsReducer.Presentation> {
       Reduce<State, Action> { state, action in
         switch action {
           case .alert(let alertAction):
@@ -129,6 +136,14 @@ struct SettingsView: View {
   struct ViewState: Equatable {
     @BindingViewState var userSettings: UserSettings
     
+    
+    
+    /// Create a ViewState for SettingsView using a BindingViewStore
+    /// - Parameter bindingViewStore: For use with @BindingState
+    ///
+    /// - ViewState allows our ViewStore to observe only the the State necessary for rendering the View.
+    /// - The BindingReducer allows TCA to make SwiftUI Bindings automatically for us.
+    /// - And BindingViewStore ensures compatibility between our ViewState and our BindingReducer.
     init(bindingViewStore: BindingViewStore<SettingsReducer.State>) {
       self._userSettings = bindingViewStore.$userSettings
     }
@@ -136,6 +151,11 @@ struct SettingsView: View {
   
   @ViewBuilder
   func appearancePicker(style: some PickerStyle, _ viewStore: ViewStore<ViewState, SettingsReducer.Action>) -> some View {
+  /// The Picker View for Light/Dark/Night mode
+  /// - Parameters:
+  ///   - style: the type of Picker you would like to show
+  ///   - viewStore: the ViewStore for TCA communication
+  /// - Returns: the Picker View
     Picker("Appearance", selection: viewStore.$userSettings.colorSchemeMode) {
       ForEach(ColorSchemeMode.allCases) { colorSchemeMode in
         Text(colorSchemeMode.localizedString)
@@ -183,7 +203,6 @@ struct SettingsView: View {
              action: SettingsReducer.Presentation.Action.alert
       )
     }
-//    .colorSchemeMode(colorSchemeMode)
   }
 }
 

@@ -38,11 +38,12 @@ final class PlusNightModeTests: XCTestCase {
         layout: .device(config: .iPhone13Pro),
         traits: .init(userInterfaceStyle: .light)
       ),
-      record: true
+      record: false
     )
   }
   
-  func testCalcScreenDarkMode() {    var view = CalcScreen(
+  func testCalcScreenDarkMode() {    
+    var view = CalcScreen(
       store: .init(
         initialState: .init(
           hScreen: .init(currentNum: "0", calcGridH: .init()),
@@ -64,7 +65,7 @@ final class PlusNightModeTests: XCTestCase {
                                           // 👆🏼
         // the snapshot should be in dark mode even though the device is in light mode
       ),
-      record: true
+      record: false
     )
   }
   
@@ -88,7 +89,7 @@ final class PlusNightModeTests: XCTestCase {
         layout: .device(config: .iPhone13Pro),
         traits: .init(userInterfaceStyle: .dark)
       ),
-      record: true
+      record: false
     )
   }
   
@@ -113,7 +114,7 @@ final class PlusNightModeTests: XCTestCase {
         traits: .init(userInterfaceStyle: .light)
       ),
       named: "CalcScreen_Auto_Light",
-      record: true
+      record: false
     )
     assertSnapshot(
       of: view,
@@ -124,7 +125,7 @@ final class PlusNightModeTests: XCTestCase {
         traits: .init(userInterfaceStyle: .dark)
       )),
       named: "CalcScreen_Auto_Dark",
-      record: true
+      record: false
     )
   }
   
@@ -232,7 +233,7 @@ final class PlusNightModeTests: XCTestCase {
         traits: .init(userInterfaceStyle: .light)
       ),
       named: "Settings_Auto_Light",
-      record: true
+      record: false
     )
     assertSnapshot(
       of: view,
@@ -243,15 +244,8 @@ final class PlusNightModeTests: XCTestCase {
         traits: .init(userInterfaceStyle: .dark)
       )),
       named: "Settings_Auto_Dark",
-      record: true
+      record: false
     )
   }
 }
-private let referenceSize = CGSize(width: 1170, height: 2532)
 
-private extension SwiftUI.View {
-  
-  func referenceFrame() -> some View {
-    self.frame(width: referenceSize.width, height: referenceSize.height)
-  }
-}

@@ -12,7 +12,7 @@ import SwiftUI
 import Dependencies
 
 @MainActor
-final class CalcScreen_UITest: XCTestCase {
+final class TCACalcAppTests: XCTestCase {
   func testSnapshotOfAppStartup() async {
     var view = ContentView()
     

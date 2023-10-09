@@ -9,6 +9,8 @@ import SwiftUI
 import TCACalc_UI
 import ComposableArchitecture
 
+
+/// The Root View of the entire TCACalc App
 struct ContentView: View {
   var body: some View {
     CalcScreen(

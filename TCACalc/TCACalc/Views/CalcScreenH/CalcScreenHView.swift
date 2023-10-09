@@ -11,6 +11,8 @@ import ComposableArchitecture
 import TCACalc_UI
 import PlusNightMode
 
+
+/// The View that ``CalcScreen`` will show when in landscape orientation.
 struct CalcScreenHView: View {
   let store: StoreOf<CalcScreenHReducer>
   @Environment(\.colorScheme) var colorScheme
