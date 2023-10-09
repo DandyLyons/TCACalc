@@ -19,6 +19,8 @@ struct SettingsReducer: Reducer {
   struct State: Equatable {
     @BindingState var userSettings: UserSettings
     @PresentationState var presentation: Presentation.State?
+    var showingExampleNightMode = false
+    @BindingState var isExampleNightModePresented: Bool = false
     
     init(_ userSettings: UserSettings = .init(),
          presentation: Presentation.State? = nil
@@ -44,6 +46,7 @@ struct SettingsReducer: Reducer {
     enum InternalAction: Equatable {
       case showError(ShowError)
       enum ShowError { case saveError }
+      case isExampleNightModePresented(Bool)
     }
     enum ViewAction: Equatable {
       case onTapDoneButton
@@ -121,7 +124,11 @@ struct SettingsReducer: Reducer {
                   state.presentation = .alert(.alert_saveError())
                   return .none
               }
+            case .isExampleNightModePresented(let newValue):
+              state.isExampleNightModePresented = newValue
+              return .none
           }
+        case .none: return .none
       }
     }
     .ifLet(\.$presentation, action: /Action.presentation) {
@@ -135,6 +142,8 @@ struct SettingsView: View {
   
   struct ViewState: Equatable {
     @BindingViewState var userSettings: UserSettings
+    var showingExampleNightMode: Bool
+    @BindingViewState var isExampleNightModePresented: Bool
     
     
     
@@ -146,16 +155,21 @@ struct SettingsView: View {
     /// - And BindingViewStore ensures compatibility between our ViewState and our BindingReducer.
     init(bindingViewStore: BindingViewStore<SettingsReducer.State>) {
       self._userSettings = bindingViewStore.$userSettings
+      self.showingExampleNightMode = bindingViewStore.showingExampleNightMode
+      self._isExampleNightModePresented = bindingViewStore.$isExampleNightModePresented
     }
   }
   
   @ViewBuilder
-  func appearancePicker(style: some PickerStyle, _ viewStore: ViewStore<ViewState, SettingsReducer.Action>) -> some View {
   /// The Picker View for Light/Dark/Night mode
   /// - Parameters:
   ///   - style: the type of Picker you would like to show
   ///   - viewStore: the ViewStore for TCA communication
   /// - Returns: the Picker View
+  func appearancePicker(
+    style: some PickerStyle,
+    _ viewStore: ViewStore<ViewState, SettingsReducer.Action>
+  ) -> some View {
     Picker("Appearance", selection: viewStore.$userSettings.colorSchemeMode) {
       ForEach(ColorSchemeMode.allCases) { colorSchemeMode in
         Text(colorSchemeMode.localizedString)
@@ -179,6 +193,11 @@ struct SettingsView: View {
         }
         Section {
           Toggle("Debug Mode", isOn: viewStore.$userSettings.isDebugModeOn)
+          #if DEBUG
+          Button("Example night Mode View", action: { viewStore.send(._internal(.isExampleNightModePresented(true)))}
+          )
+          #endif
+          
         } header: {
           Text("🪲 Debugging")
         } footer: {
@@ -202,6 +221,12 @@ struct SettingsView: View {
              state: /SettingsReducer.Presentation.State.alert,
              action: SettingsReducer.Presentation.Action.alert
       )
+      #if DEBUG
+      .sheet(isPresented: viewStore.$isExampleNightModePresented) {
+        ExampleNightModeView()
+      }
+      #endif
+
     }
   }
 }
