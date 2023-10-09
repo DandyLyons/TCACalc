@@ -71,21 +71,33 @@ struct VHView<VView: View, HView: View>: View {
   }
   
   var body: some View {
-    
-    
+    switch visibleView {
+      case .vertical:
+        self.vView()
+      case .horizontal:
+        self.hView()
+    }
+  }
+  
+  /// Another implementation of `body`
+  ///
+  /// Use this implementation if you notice there are identity issues when switching between v and h views. 
+  var identitySafeBody: some View {
     ZStack {
       self.vView()
         .zIndex(visibleView == .vertical ? 1 : -1)
         .opacity(visibleView == .vertical ? 1 : 0.001)
         .accessibilityHidden(visibleView != .vertical)
-// This opacity is a workaround. SwiftUI appears to completely remove 0 opacity
-// Views from the hierarchy, thus destroying all state for that View.
+        .disabled(visibleView != .vertical)
+      // This opacity is a workaround. SwiftUI appears to completely remove 0 opacity
+      // Views from the hierarchy, thus destroying all state for that View.
       
       self.hView()
         .zIndex(visibleView == .horizontal ? 1 : -1)
         .opacity(visibleView == .horizontal ? 1 : 0.001)
         .accessibilityHidden(visibleView != .horizontal)
-        
+        .disabled(visibleView != .horizontal)
+      
     }
   }
   
