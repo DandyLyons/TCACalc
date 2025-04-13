@@ -5,6 +5,13 @@ Welcome to TCACalc, an example of a calculator app implemented in [TCA](https://
 
 ![](https://github.com/DandyLyons/TCACalc/blob/main/TCACalc/README/RocketSim_Recording_iPhone_14_Pro_2023-09-12_15.38.38.gif?raw=true)
 
+## Outdated Example
+It should be noted that this example of TCA is outdated. Point free has since released newer versions and updates that improve upon this architecture. In particular, TCA now has support for native Swift observation, meaning the use of views like `ViewStore` is no longer necessary, and there are much easier ways to use TCA. For more information, have a look at the many valuable migration guides for TCA including: 
+
+1. [Migrating to 1.4](https://swiftpackageindex.com/pointfreeco/swift-composable-architecture/main/documentation/composablearchitecture/migratingto1.4): the `@Reducer` macro
+2. [Migrating to 1.7](https://swiftpackageindex.com/pointfreeco/swift-composable-architecture/main/documentation/composablearchitecture/migratingto1.7): `@ObservableState` macro
+3. [Migrating to 1.8](https://swiftpackageindex.com/pointfreeco/swift-composable-architecture/main/documentation/composablearchitecture/migratingto1.8): Simplify `@Reducer` macro. 
+
 ## Features
 
 - Animated Text View

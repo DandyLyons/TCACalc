@@ -13,7 +13,6 @@ struct TCACalcApp: App {
     var body: some Scene {
         WindowGroup {
           ContentView()
-//          ExampleNightModeView()
         }
     }
 }
